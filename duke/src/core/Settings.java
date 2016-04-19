@@ -10,7 +10,7 @@ public class Settings {
 	public static int GAME_FRAME_WIDTH;
 	public static int GAME_FRAME_HEIGHT;
 
-	public static int TILE_SIZE = 20;
+	public static int TILE_SIZE = 30;
 	public static int WORLD_WIDTH = 100;
 	public static int WORLD_HEIGHT = 100;
 
