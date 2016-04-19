@@ -20,6 +20,7 @@ public class Core implements Runnable {
 		viewManager = new ViewManager(this);
 		inputManager = new InputManager(viewManager);
 		TileManager.load();
+
 	}
 
 	private void setupGUI() {
