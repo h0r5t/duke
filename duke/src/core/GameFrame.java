@@ -8,12 +8,9 @@ import javax.swing.JFrame;
 public class GameFrame extends JFrame {
 
 	private static String title = "stratstuff v0.1";
-	private InputManager inputManager;
 
-	public GameFrame(InputManager inputHandler, GameWindowAdapter windowAdapter) {
+	public GameFrame(GameWindowAdapter windowAdapter) {
 		super(title);
-		System.out.println("test");
-		this.inputManager = inputHandler;
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		setSize((int) screen.getWidth(), (int) screen.getHeight() - 40);
 		Settings.GAME_FRAME_WIDTH = (int) screen.getWidth();

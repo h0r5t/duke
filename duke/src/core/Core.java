@@ -6,26 +6,39 @@ public class Core implements Runnable {
 	private GamePanel gamePanel;
 
 	private InputManager inputManager;
+	private ViewManager viewManager;
+
+	private World world;
 
 	public Core() {
+		initMgrs();
 		setupGUI();
+		world = World.generateWorld();
+	}
+
+	private void initMgrs() {
+		viewManager = new ViewManager(this);
+		inputManager = new InputManager(viewManager);
+		TileManager.load();
 	}
 
 	private void setupGUI() {
-		gameFrame = new GameFrame(inputManager, new GameWindowAdapter(this));
-		gamePanel = new GamePanel();
+		gameFrame = new GameFrame(new GameWindowAdapter(this));
+		gamePanel = new GamePanel(inputManager, viewManager);
 		gameFrame.add(gamePanel);
 		gameFrame.setVisible(true);
 	}
 
 	private void loop() {
-
+		inputManager.update();
+		gamePanel.repaint();
 	}
 
 	@Override
 	public void run() {
 		while (true) {
 
+			gamePanel.requestFocus();
 			loop();
 
 			try {
@@ -34,6 +47,10 @@ public class Core implements Runnable {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public World getWorld() {
+		return world;
 	}
 
 	public static void main(String[] args) {
