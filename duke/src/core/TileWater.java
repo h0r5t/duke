@@ -7,7 +7,7 @@ public class TileWater extends Tile {
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
-		g.setColor(Color.BLUE);
+		g.setColor(Color.decode(Colors.DARK_BLUE));
 		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
 
 		g.setColor(Color.BLACK);
