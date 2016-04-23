@@ -2,10 +2,10 @@ package core;
 
 import java.awt.Color;
 
-public class TileLand extends Tile {
+public class TileWoods extends Tile {
 
-	public TileLand() {
-		generateTexture(Color.decode(Colors.COLOR_LAND));
+	public TileWoods() {
+		generateTexture(Color.decode(Colors.COLOR_WOODS));
 	}
 
 	@Override

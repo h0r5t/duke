@@ -28,6 +28,10 @@ public class InputManager {
 	}
 
 	public void keyReleased(KeyEvent e) {
+
+		if (e.getKeyCode() == KeyEvent.VK_F1)
+			Settings.DRAW_TILE_BORDERS = !Settings.DRAW_TILE_BORDERS;
+
 		keysPressed.put(e.getKeyCode(), false);
 	}
 }

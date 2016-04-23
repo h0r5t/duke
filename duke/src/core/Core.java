@@ -11,16 +11,14 @@ public class Core implements Runnable {
 	private World world;
 
 	public Core() {
+		world = World.generateWorld();
 		initMgrs();
 		setupGUI();
-		world = World.generateWorld();
 	}
 
 	private void initMgrs() {
 		viewManager = new ViewManager(this);
 		inputManager = new InputManager(viewManager);
-		TileManager.load();
-
 	}
 
 	private void setupGUI() {

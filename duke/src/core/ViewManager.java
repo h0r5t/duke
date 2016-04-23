@@ -13,15 +13,19 @@ public class ViewManager {
 	}
 
 	public void shiftScreenX(int delta) {
-		if (screenShiftX + delta < 0 || (screenShiftX + delta) / Settings.TILE_SIZE
-				+ Settings.SCREEN_WIDTH_IN_TILES() > Settings.WORLD_WIDTH)
+		if (screenShiftX + delta < 0
+				|| (screenShiftX + delta) / Settings.TILE_SIZE
+						+ Settings.SCREEN_WIDTH_IN_TILES()
+						- 3 > Settings.WORLD_WIDTH)
 			return;
 		screenShiftX += delta;
 	}
 
 	public void shiftScreenY(int delta) {
-		if (screenShiftY + delta < 0 || (screenShiftY + delta) / Settings.TILE_SIZE
-				+ Settings.SCREEN_HEIGHT_IN_TILES() > Settings.WORLD_HEIGHT)
+		if (screenShiftY + delta < 0
+				|| (screenShiftY + delta) / Settings.TILE_SIZE
+						+ Settings.SCREEN_HEIGHT_IN_TILES()
+						- 3 > Settings.WORLD_HEIGHT)
 			return;
 		screenShiftY += delta;
 	}
@@ -43,7 +47,7 @@ public class ViewManager {
 
 		for (int x = xstart; x < xstart + screenWidth + 2; x++) {
 			for (int y = ystart; y < ystart + screenHeight + 2; y++) {
-				TileManager.getTileWithID(w.getTile(x, y)).draw(g, (x - xstart) * tileSize - xrest,
+				w.getTile(x, y).draw(g, (x - xstart) * tileSize - xrest,
 						(y - ystart) * tileSize - yrest);
 			}
 		}

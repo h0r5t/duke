@@ -11,4 +11,9 @@ public class TileOOB extends Tile {
 		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
 	}
 
+	@Override
+	public boolean collides() {
+		return true;
+	}
+
 }

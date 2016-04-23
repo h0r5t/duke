@@ -11,8 +11,13 @@ public class Settings {
 	public static int GAME_FRAME_HEIGHT;
 
 	public static int TILE_SIZE = 30;
-	public static int WORLD_WIDTH = 100;
-	public static int WORLD_HEIGHT = 100;
+	public static int WORLD_WIDTH = 43;
+	public static int WORLD_HEIGHT = 21;
+
+	public static int TEXTURE_COLOR_VARIATION = 5;
+	public static int TEXTURE_ALPHA_VARIATION = 0;
+	public static int TEXTURE_SECTION_SIZE = 5;
+	public static boolean DRAW_TILE_BORDERS = false;
 
 	public static int SCREEN_WIDTH_IN_TILES() {
 		return Settings.GAME_FRAME_WIDTH / Settings.TILE_SIZE;
@@ -22,5 +27,5 @@ public class Settings {
 		return Settings.GAME_FRAME_HEIGHT / Settings.TILE_SIZE;
 	}
 
-	public static int SHIFT_SPEED = 10;
+	public static int SHIFT_SPEED = 5;
 }

@@ -1,17 +1,16 @@
 package core;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 
 public class TileWater extends Tile {
 
-	@Override
-	public void draw(Graphics2D g, int posX, int posY) {
-		g.setColor(Color.decode(Colors.DARK_BLUE));
-		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
+	public TileWater() {
+		generateTexture(Color.decode(Colors.COLOR_WATER));
+	}
 
-		g.setColor(Color.BLACK);
-		g.drawRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
+	@Override
+	public boolean collides() {
+		return true;
 	}
 
 }
