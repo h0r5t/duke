@@ -23,7 +23,7 @@ public class TilePathMarker implements Visual {
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
-		g.setColor(Color.YELLOW);
+		g.setColor(Color.GREEN);
 
 		int ts = Settings.TILE_SIZE;
 		g.drawOval(posX + ts / 4, posY + ts / 4, ts / 2, ts / 2);

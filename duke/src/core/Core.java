@@ -21,7 +21,7 @@ public class Core implements Runnable {
 	}
 
 	private void initMgrs() {
-		viewManager = new ViewManager(this);
+		viewManager = new ViewManager();
 		inputManager = new InputManager(this);
 		pathFinder = new PathFinder(this);
 	}

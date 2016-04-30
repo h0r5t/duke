@@ -7,6 +7,7 @@ public class InputControllerUnitSelected extends InputController {
 	private Core core;
 	private Unit selectedUnit;
 	private TilePath currentPath;
+	private MouseEvent lastEvent;
 
 	public InputControllerUnitSelected(Core core, Unit u) {
 		this.core = core;
@@ -15,6 +16,7 @@ public class InputControllerUnitSelected extends InputController {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		lastEvent = e;
 		if (currentPath != null)
 			currentPath.destroy();
 		Tile to = core.getViewManager().getTileFromScreenPos(e.getX(),
@@ -23,5 +25,4 @@ public class InputControllerUnitSelected extends InputController {
 				selectedUnit.getY());
 		currentPath = core.getPathFinder().findPath(from, to);
 	}
-
 }

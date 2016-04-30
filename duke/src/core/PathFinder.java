@@ -1,6 +1,7 @@
 package core;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.LinkedList;
 
@@ -20,11 +21,7 @@ public class PathFinder {
 	public TilePath findPath(Tile from, Tile to) {
 		PrintStream originalStream = System.out;
 		PrintStream dummyStream = null;
-		try {
-			dummyStream = new PrintStream("a");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		dummyStream = new PrintStream(new NullOutputStream());
 		System.setOut(dummyStream);
 
 		TilePath path = new TilePath(core);
@@ -41,6 +38,12 @@ public class PathFinder {
 
 		System.setOut(originalStream);
 		return path;
+	}
+
+	private class NullOutputStream extends OutputStream {
+		@Override
+		public void write(int b) throws IOException {
+		}
 	}
 
 }

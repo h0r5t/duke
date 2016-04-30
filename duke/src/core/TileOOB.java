@@ -11,7 +11,7 @@ public class TileOOB extends Tile {
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
-		g.setColor(Color.GRAY);
+		g.setColor(Color.BLACK);
 		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
 	}
 
