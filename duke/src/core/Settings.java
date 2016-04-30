@@ -2,7 +2,7 @@ package core;
 
 public class Settings {
 
-	public static final int SLEEP_TIME = 20;
+	public static final int SLEEP_TIME = 10;
 
 	public static final int GAME_FRAME_XPOS = 0;
 	public static final int GAME_FRAME_YPOS = 40;
@@ -11,8 +11,8 @@ public class Settings {
 	public static int GAME_FRAME_HEIGHT;
 
 	public static int TILE_SIZE = 30;
-	public static int WORLD_WIDTH = 43;
-	public static int WORLD_HEIGHT = 21;
+	public static int WORLD_WIDTH = 50;
+	public static int WORLD_HEIGHT = 30;
 
 	public static int TEXTURE_COLOR_VARIATION = 5;
 	public static int TEXTURE_ALPHA_VARIATION = 0;

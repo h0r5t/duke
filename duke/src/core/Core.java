@@ -7,18 +7,23 @@ public class Core implements Runnable {
 
 	private InputManager inputManager;
 	private ViewManager viewManager;
+	private PathFinder pathFinder;
 
-	private World world;
+	private static World world;
 
 	public Core() {
 		world = World.generateWorld();
 		initMgrs();
 		setupGUI();
+
+		UnitTest unitTest = new UnitTest(0, 5, 5);
+		world.addUnit(unitTest);
 	}
 
 	private void initMgrs() {
 		viewManager = new ViewManager(this);
-		inputManager = new InputManager(viewManager);
+		inputManager = new InputManager(this);
+		pathFinder = new PathFinder(this);
 	}
 
 	private void setupGUI() {
@@ -48,8 +53,20 @@ public class Core implements Runnable {
 		}
 	}
 
-	public World getWorld() {
+	public static World getWorld() {
 		return world;
+	}
+
+	public ViewManager getViewManager() {
+		return viewManager;
+	}
+
+	public InputManager getInputManager() {
+		return inputManager;
+	}
+
+	public PathFinder getPathFinder() {
+		return pathFinder;
 	}
 
 	public static void main(String[] args) {

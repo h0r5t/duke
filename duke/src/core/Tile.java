@@ -4,9 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public abstract class Tile implements Visual {
+import pathfinder.GraphNode;
+
+public abstract class Tile extends GraphNode implements Visual {
 
 	protected BufferedImage texture;
+
+	public Tile(int x, int y) {
+		super(UniqueIDFactory.getID(), x, y);
+	}
 
 	protected void generateTexture(Color baseColor) {
 		ColorAttributes myData = new ColorAttributes(baseColor,
@@ -18,6 +24,14 @@ public abstract class Tile implements Visual {
 	}
 
 	public abstract boolean collides();
+
+	public int getX() {
+		return (int) super.x();
+	}
+
+	public int getY() {
+		return (int) super.y();
+	}
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
