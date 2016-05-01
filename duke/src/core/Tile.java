@@ -22,7 +22,7 @@ public abstract class Tile extends GraphNode implements Visual {
 	protected void getChar() {
 		if (tileID == -1)
 			return;
-		myChar = Chars.getRandomCharacter(getTileID());
+		myChar = Chars.getRandomTileCharacter(getTileID());
 	}
 
 	public int getTileID() {

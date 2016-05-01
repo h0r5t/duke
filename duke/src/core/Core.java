@@ -17,7 +17,7 @@ public class Core implements Runnable {
 		initMgrs();
 		setupGUI();
 
-		UnitTest unitTest = new UnitTest(0, 5, 5);
+		UnitWorker unitTest = new UnitWorker(0, 5, 5);
 		world.addUnit(unitTest);
 	}
 
