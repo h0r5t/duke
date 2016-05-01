@@ -8,11 +8,14 @@ public class InputManager {
 
 	private ArrayList<InputController> activeInputControllers;
 	private DefaultHashMap<Integer, Boolean> keysPressed;
+	private Cursor cursor;
 
 	public InputManager(Core core) {
 		keysPressed = new DefaultHashMap<Integer, Boolean>();
 		activeInputControllers = new ArrayList<InputController>();
 		activeInputControllers.add(new MapInputController(core));
+
+		cursor = new Cursor(5, 5);
 	}
 
 	public void addInputController(InputController c) {
@@ -71,6 +74,10 @@ public class InputManager {
 		for (InputController controller : activeInputControllers) {
 			controller.mouseMoved(e);
 		}
+	}
+
+	public Cursor getCursor() {
+		return cursor;
 	}
 
 }

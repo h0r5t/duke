@@ -5,8 +5,8 @@ import java.awt.Graphics2D;
 
 public class TileOOB extends Tile {
 
-	public TileOOB(int x, int y) {
-		super(-1, x, y);
+	public TileOOB(int x, int y, int z) {
+		super(-1, x, y, z);
 	}
 
 	@Override

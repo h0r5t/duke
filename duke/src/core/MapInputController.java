@@ -7,6 +7,7 @@ public class MapInputController extends InputController {
 
 	private Core core;
 	private ViewManager viewManager;
+	private MouseEvent lastEvent;
 
 	public MapInputController(Core core) {
 		this.core = core;
@@ -23,17 +24,43 @@ public class MapInputController extends InputController {
 			viewManager.shiftScreenY(Settings.SHIFT_SPEED);
 		if (keysPressed.getDefault(KeyEvent.VK_W, false))
 			viewManager.shiftScreenY(Settings.SHIFT_SPEED * -1);
+
+		if (keysPressed.getDefault(KeyEvent.VK_RIGHT, false))
+			core.getInputManager().getCursor().moveX(1);
+		if (keysPressed.getDefault(KeyEvent.VK_LEFT, false))
+			core.getInputManager().getCursor().moveX(-1);
+		if (keysPressed.getDefault(KeyEvent.VK_UP, false))
+			core.getInputManager().getCursor().moveY(-1);
+		if (keysPressed.getDefault(KeyEvent.VK_DOWN, false))
+			core.getInputManager().getCursor().moveY(1);
+
+		// if (lastEvent != null)
+		// mouseMoved(lastEvent);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_F1)
 			Settings.DRAW_TILE_BORDERS = !Settings.DRAW_TILE_BORDERS;
+
+		if (e.getKeyCode() == KeyEvent.VK_X)
+			core.getViewManager().moveZ(1);
+		if (e.getKeyCode() == KeyEvent.VK_Y)
+			core.getViewManager().moveZ(-1);
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Tile tile = viewManager.getTileFromScreenPos(e.getX(), e.getY());
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		lastEvent = e;
+		Tile tile = viewManager.getTileFromScreenPos(e.getX(), e.getY());
+		if (tile == null)
+			return;
+		core.getInputManager().getCursor().setToTile(tile);
 	}
 
 }

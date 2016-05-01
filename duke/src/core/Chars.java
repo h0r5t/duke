@@ -18,6 +18,8 @@ public class Chars {
 		tileIDs.put("tile_land", 0);
 		tileIDs.put("tile_woods", 1);
 		tileIDs.put("tile_water", 2);
+		tileIDs.put("tile_ladderup", 3);
+		tileIDs.put("tile_ladderdown", 4);
 
 		tileIDCharMap = new HashMap<Integer, ArrayList<Character>>();
 		ArrayList<Character> list = new ArrayList<Character>();
@@ -36,6 +38,14 @@ public class Chars {
 		list = new ArrayList<Character>();
 		list.add(new Character("≈", Colors.COLOR_WATER));
 		tileIDCharMap.put(2, list);
+
+		list = new ArrayList<Character>();
+		list.add(new Character("▲", Color.GRAY));
+		tileIDCharMap.put(3, list);
+
+		list = new ArrayList<Character>();
+		list.add(new Character("▼", Color.GRAY));
+		tileIDCharMap.put(4, list);
 
 		// UNITS
 

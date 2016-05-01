@@ -9,13 +9,15 @@ public abstract class Unit implements Visual {
 
 	protected int x;
 	protected int y;
+	protected int z;
 	protected int unitID;
 	protected Character myChar;
 
-	public Unit(int id, int x, int y) {
+	public Unit(int id, int x, int y, int z) {
 		this.unitID = id;
 		this.x = x;
 		this.y = y;
+		this.z = z;
 		getChar();
 	}
 
@@ -35,10 +37,15 @@ public abstract class Unit implements Visual {
 		return y;
 	}
 
-	public void moveTo(int xpos, int ypos) {
-		Core.getWorld().moveUnit(this, x, y, xpos, ypos);
+	public int getZ() {
+		return z;
+	}
+
+	public void moveTo(int xpos, int ypos, int zpos) {
+		Core.getWorld().moveUnit(this, x, y, z, xpos, ypos, zpos);
 		this.x = xpos;
 		this.y = ypos;
+		this.z = zpos;
 	}
 
 	@Override

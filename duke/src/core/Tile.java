@@ -13,8 +13,8 @@ public abstract class Tile extends GraphNode implements Visual {
 	protected Character myChar;
 	protected int tileID;
 
-	public Tile(int tileID, int x, int y) {
-		super(UniqueIDFactory.getID(), x, y);
+	public Tile(int tileID, int x, int y, int z) {
+		super(UniqueIDFactory.getID(), x, y, z);
 		this.tileID = tileID;
 		getChar();
 	}
@@ -31,12 +31,24 @@ public abstract class Tile extends GraphNode implements Visual {
 
 	public abstract boolean collides();
 
+	public boolean isLadderDown() {
+		return false;
+	}
+
+	public boolean isLadderUp() {
+		return false;
+	}
+
 	public int getX() {
 		return (int) super.x();
 	}
 
 	public int getY() {
 		return (int) super.y();
+	}
+
+	public int getZ() {
+		return (int) super.z();
 	}
 
 	@Override

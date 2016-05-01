@@ -17,12 +17,12 @@ public class Core implements Runnable {
 		initMgrs();
 		setupGUI();
 
-		UnitWorker unitTest = new UnitWorker(0, 5, 5);
+		UnitWorker unitTest = new UnitWorker(5, 5, 0);
 		world.addUnit(unitTest);
 	}
 
 	private void initMgrs() {
-		viewManager = new ViewManager();
+		viewManager = new ViewManager(this);
 		inputManager = new InputManager(this);
 		pathFinder = new PathFinder(this);
 	}
