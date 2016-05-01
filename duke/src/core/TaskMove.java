@@ -16,8 +16,10 @@ public class TaskMove extends Task {
 		if (tilePath == null) {
 			tilePath = core.getPathFinder().findPath(unit.getTile(),
 					destinationTile);
-			if (tilePath == null)
+			if (tilePath == null) {
 				setStatus(TaskStatus.DONE);
+				return;
+			}
 		}
 		Tile nextTile = tilePath.popNext();
 		if (nextTile == null) {

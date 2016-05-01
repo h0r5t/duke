@@ -56,7 +56,7 @@ public abstract class Tile extends GraphNode implements Visual {
 		g.setColor(Color.BLACK);
 		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
 
-		Font font = new Font("Arial", Font.BOLD, Settings.CHAR_FONT_SIZE);
+		Font font = new Font("Arial", Font.BOLD, myChar.getFontSize());
 		g.setColor(myChar.getColor());
 
 		FontMetrics metrics = g.getFontMetrics(font);

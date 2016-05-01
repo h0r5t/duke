@@ -158,23 +158,12 @@ public class World extends Graph {
 		}
 	}
 
-	public static World generateWorld() {
-		World w = new World();
-		for (int i = 0; i < Settings.WORLD_WIDTH; i++) {
-			for (int o = 0; o < Settings.WORLD_HEIGHT; o++) {
-				for (int a = 0; a < Settings.WORLD_DEPTH; a++) {
-					w.setTileINITIAL(new TileLand(i, o, a));
-				}
-			}
-		}
-		w.setTileINITIAL(new TileWoods(10, 10, 0));
-		w.setTileINITIAL(new TileLadderDown(7, 5, 0));
-		w.setTileINITIAL(new TileLadderUp(7, 5, 1));
-		w.createInitialEdges();
-		return w;
-	}
-
 	public void setTileINITIAL(Tile tile) {
+		if (tile.getX() < 0 || tile.getX() > Settings.WORLD_WIDTH - 1
+				|| tile.getY() < 0 || tile.getY() > Settings.WORLD_HEIGHT - 1
+				|| tile.getZ() < 0 || tile.getZ() > Settings.WORLD_DEPTH - 1)
+			return;
+		removeNode(world[tile.getX()][tile.getY()][tile.getZ()]);
 		world[tile.getX()][tile.getY()][tile.getZ()] = tile.id();
 		addNode(tile);
 	}

@@ -20,32 +20,54 @@ public class Chars {
 		tileIDs.put("tile_water", 2);
 		tileIDs.put("tile_ladderup", 3);
 		tileIDs.put("tile_ladderdown", 4);
+		tileIDs.put("tile_rock", 5);
+		tileIDs.put("tile_bush", 6);
+		tileIDs.put("tile_stone", 7);
+		tileIDs.put("tile_mushroom", 8);
 
 		tileIDCharMap = new HashMap<Integer, ArrayList<Character>>();
 		ArrayList<Character> list = new ArrayList<Character>();
 
-		list.add(new Character(".", Colors.COLOR_LAND));
-		list.add(new Character(",", Colors.COLOR_LAND));
-		list.add(new Character("'", Colors.COLOR_LAND));
-		list.add(new Character("`", Colors.COLOR_LAND));
-		list.add(new Character("∙", Colors.COLOR_LAND));
+		list.add(new Character(".", Colors.COLOR_LAND, 18));
+		list.add(new Character(",", Colors.COLOR_LAND, 18));
+		list.add(new Character("'", Colors.COLOR_LAND, 18));
+		list.add(new Character("`", Colors.COLOR_LAND, 18));
+		list.add(new Character("∙", Colors.COLOR_LAND, 18));
 		tileIDCharMap.put(0, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("♣", Colors.COLOR_WOODS));
+		list.add(new Character("♣", Colors.COLOR_WOODS, 30));
+		list.add(new Character("♠", Colors.COLOR_WOODS, 30));
 		tileIDCharMap.put(1, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("≈", Colors.COLOR_WATER));
+		list.add(new Character("≈", Colors.COLOR_WATER, 36));
 		tileIDCharMap.put(2, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("▲", Color.GRAY));
+		list.add(new Character("▲", Color.GRAY, 26));
 		tileIDCharMap.put(3, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("▼", Color.GRAY));
+		list.add(new Character("▼", Color.GRAY, 26));
 		tileIDCharMap.put(4, list);
+
+		list = new ArrayList<Character>();
+		list.add(new Character("■", Color.DARK_GRAY, 26));
+		tileIDCharMap.put(5, list);
+
+		list = new ArrayList<Character>();
+		list.add(new Character("¥", Colors.COLOR_BUSH, 14));
+		list.add(new Character("φ", Colors.COLOR_BUSH, 14));
+		tileIDCharMap.put(6, list);
+
+		list = new ArrayList<Character>();
+		list.add(new Character("•", Colors.COLOR_STONE, 20));
+		tileIDCharMap.put(7, list);
+
+		list = new ArrayList<Character>();
+		list.add(new Character("♣", Colors.COLOR_MUSHROOM, 14));
+		tileIDCharMap.put(8, list);
 
 		// UNITS
 
@@ -55,7 +77,7 @@ public class Chars {
 		unitIDCharMap = new HashMap<Integer, ArrayList<Character>>();
 		list = new ArrayList<Character>();
 
-		list.add(new Character("☺", Color.ORANGE));
+		list.add(new Character("☺", Color.ORANGE, 26));
 		unitIDCharMap.put(0, list);
 	}
 

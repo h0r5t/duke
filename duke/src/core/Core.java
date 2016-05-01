@@ -16,13 +16,16 @@ public class Core implements Runnable {
 
 	public Core() {
 		Chars.load();
-		world = World.generateWorld();
+		world = WorldGenerator.generateWorld();
 		initMgrs();
 		setupGUI();
 
 		UnitWorker testWorker = new UnitWorker(5, 5, 0);
 		world.addUnit(testWorker);
 		unitManager.addUnit(testWorker);
+
+		world.setTile(new TileLadderDown(7, 5, 0));
+		world.setTile(new TileLadderUp(7, 5, 1));
 	}
 
 	private void initMgrs() {
