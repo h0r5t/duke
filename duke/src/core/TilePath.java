@@ -20,6 +20,13 @@ public class TilePath {
 			return;
 		}
 		path.add(t);
+	}
 
+	public Tile popNext() {
+		if (path.size() == 0)
+			return null;
+		Tile t = path.get(0);
+		path.remove(0);
+		return t;
 	}
 }

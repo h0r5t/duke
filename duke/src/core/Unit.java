@@ -12,6 +12,8 @@ public abstract class Unit implements Visual {
 	protected int z;
 	protected int unitID;
 	protected Character myChar;
+	protected Task currentTask;
+	protected TaskChain activeTaskChain;
 
 	public Unit(int id, int x, int y, int z) {
 		this.unitID = id;
@@ -19,6 +21,19 @@ public abstract class Unit implements Visual {
 		this.y = y;
 		this.z = z;
 		getChar();
+	}
+
+	public void update() {
+		if (currentTask != null) {
+			currentTask.update(this);
+			if (currentTask.status == TaskStatus.DONE) {
+				currentTask = null;
+				if (activeTaskChain != null) {
+					activeTaskChain.update(this);
+				}
+			}
+		}
+
 	}
 
 	protected void getChar() {
@@ -41,6 +56,19 @@ public abstract class Unit implements Visual {
 		return z;
 	}
 
+	public Task getCurrentTask() {
+		return currentTask;
+	}
+
+	public void setCurrentTask(Task currentTask) {
+		this.currentTask = currentTask;
+		this.currentTask.setStatus(TaskStatus.ASSIGNED);
+	}
+
+	public void setActiveTaskChain(TaskChain chain) {
+		activeTaskChain = chain;
+	}
+
 	public void moveTo(int xpos, int ypos, int zpos) {
 		Core.getWorld().moveUnit(this, x, y, z, xpos, ypos, zpos);
 		this.x = xpos;
@@ -61,5 +89,9 @@ public abstract class Unit implements Visual {
 		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
 		g.setFont(font);
 		g.drawString(text, posX + x, posY + y);
+	}
+
+	public Tile getTile() {
+		return Core.getWorld().getTile(x, y, z);
 	}
 }

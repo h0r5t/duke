@@ -28,6 +28,10 @@ public class ViewManager {
 		}
 	}
 
+	public int getCurrentZ() {
+		return currentZ;
+	}
+
 	public void addVisualAt(Visual v, int x, int y, int z) {
 		Tile t = Core.getWorld().getTile(x, y, z);
 		ArrayList<Visual> list;

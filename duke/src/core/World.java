@@ -29,6 +29,11 @@ public class World extends Graph {
 		tileIdUnitMap.put(getTile(newX, newY, newZ).id(), u);
 	}
 
+	public void moveUnit(Unit u, Tile from, Tile to) {
+		tileIdUnitMap.remove(from.id(), u);
+		tileIdUnitMap.remove(to.id(), u);
+	}
+
 	public Unit getUnitAt(Tile tile) {
 		return tileIdUnitMap.get(tile.id());
 	}

@@ -13,9 +13,9 @@ public class InputManager {
 	public InputManager(Core core) {
 		keysPressed = new DefaultHashMap<Integer, Boolean>();
 		activeInputControllers = new ArrayList<InputController>();
-		activeInputControllers.add(new MapInputController(core));
+		activeInputControllers.add(new InputControllerMain(core));
 
-		cursor = new Cursor(5, 5);
+		cursor = new Cursor(core, 5, 5);
 	}
 
 	public void addInputController(InputController c) {

@@ -5,10 +5,12 @@ import java.awt.Graphics2D;
 
 public class Cursor implements Visual {
 
+	private Core core;
 	private int xpos;
 	private int ypos;
 
-	public Cursor(int x, int y) {
+	public Cursor(Core core, int x, int y) {
+		this.core = core;
 		xpos = x;
 		ypos = y;
 	}
@@ -48,6 +50,11 @@ public class Cursor implements Visual {
 	public void setToTile(Tile tile) {
 		xpos = tile.getX();
 		ypos = tile.getY();
+	}
+
+	public Tile getTile() {
+		return Core.getWorld().getTile(xpos, ypos,
+				core.getViewManager().getCurrentZ());
 	}
 
 }

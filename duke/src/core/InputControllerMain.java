@@ -3,13 +3,13 @@ package core;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public class MapInputController extends InputController {
+public class InputControllerMain extends InputController {
 
 	private Core core;
 	private ViewManager viewManager;
-	private MouseEvent lastEvent;
+	// private MouseEvent lastEvent;
 
-	public MapInputController(Core core) {
+	public InputControllerMain(Core core) {
 		this.core = core;
 		this.viewManager = core.getViewManager();
 	}
@@ -47,6 +47,19 @@ public class MapInputController extends InputController {
 			core.getViewManager().moveZ(1);
 		if (e.getKeyCode() == KeyEvent.VK_Y)
 			core.getViewManager().moveZ(-1);
+
+		if (e.getKeyCode() == KeyEvent.VK_M) {
+			TaskMove tm1 = new TaskMove(core,
+					core.getInputManager().getCursor().getTile());
+			TaskMove tm2 = new TaskMove(core,
+					Core.getWorld().getTile(5, 20, 0));
+			TaskMove tm3 = new TaskMove(core, Core.getWorld().getTile(1, 1, 0));
+			TaskChain chain = new TaskChain();
+			chain.chainTask(tm1);
+			chain.chainTask(tm2);
+			chain.chainTask(tm3);
+			core.getTaskManager().addTask(chain);
+		}
 	}
 
 	@Override
@@ -56,7 +69,7 @@ public class MapInputController extends InputController {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		lastEvent = e;
+		// lastEvent = e;
 		Tile tile = viewManager.getTileFromScreenPos(e.getX(), e.getY());
 		if (tile == null)
 			return;

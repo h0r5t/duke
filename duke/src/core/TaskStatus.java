@@ -4,6 +4,8 @@ public enum TaskStatus {
 
 	OPEN,
 
-	ASSIGNED;
+	ASSIGNED,
+
+	DONE;
 
 }

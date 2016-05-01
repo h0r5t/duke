@@ -7,6 +7,9 @@ public class Core implements Runnable {
 
 	private InputManager inputManager;
 	private ViewManager viewManager;
+	private TaskManager taskManager;
+	private UnitManager unitManager;
+
 	private PathFinder pathFinder;
 
 	private static World world;
@@ -17,13 +20,16 @@ public class Core implements Runnable {
 		initMgrs();
 		setupGUI();
 
-		UnitWorker unitTest = new UnitWorker(5, 5, 0);
-		world.addUnit(unitTest);
+		UnitWorker testWorker = new UnitWorker(5, 5, 0);
+		world.addUnit(testWorker);
+		unitManager.addUnit(testWorker);
 	}
 
 	private void initMgrs() {
 		viewManager = new ViewManager(this);
 		inputManager = new InputManager(this);
+		taskManager = new TaskManager(this);
+		unitManager = new UnitManager(this);
 		pathFinder = new PathFinder(this);
 	}
 
@@ -36,6 +42,9 @@ public class Core implements Runnable {
 
 	private void loop() {
 		inputManager.update();
+		taskManager.update();
+		unitManager.update();
+
 		gamePanel.repaint();
 	}
 
@@ -64,6 +73,14 @@ public class Core implements Runnable {
 
 	public InputManager getInputManager() {
 		return inputManager;
+	}
+
+	public TaskManager getTaskManager() {
+		return taskManager;
+	}
+
+	public UnitManager getUnitManager() {
+		return unitManager;
 	}
 
 	public PathFinder getPathFinder() {
