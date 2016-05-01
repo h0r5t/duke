@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 
 public class GameFrame extends JFrame {
 
-	private static String title = "stratstuff v0.1";
+	private static String title = "duke";
 
 	public GameFrame(GameWindowAdapter windowAdapter) {
 		super(title);

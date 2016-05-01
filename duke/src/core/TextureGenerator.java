@@ -32,4 +32,31 @@ public class TextureGenerator {
 		return image;
 	}
 
+	public static BufferedImage generateCircle(ColorAttributes myData,
+			int sectionSize, boolean blackBorder, int width, int height) {
+		BufferedImage image = new BufferedImage(width, height,
+				BufferedImage.TYPE_INT_ARGB_PRE);
+		Graphics graphics = image.getGraphics();
+
+		Color c = new Color(0, 0, 0, 0);
+		graphics.setColor(c);
+		graphics.fillRect(0, 0, width, height);
+
+		int r = myData.getRandomRed();
+		int g = myData.getRandomGreen();
+		int b = myData.getRandomBlue();
+		int a = myData.getRandomAlpha();
+		int col = (a << 24) | (r << 16) | (g << 8) | b;
+		graphics.setColor(new Color(col));
+		graphics.fillOval(0, 0, width, height);
+
+		if (blackBorder) {
+			graphics.setColor(Color.BLACK);
+			graphics.drawOval(0, 0, image.getWidth() - 1,
+					image.getHeight() - 1);
+		}
+
+		return image;
+	}
+
 }

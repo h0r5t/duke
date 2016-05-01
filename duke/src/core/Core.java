@@ -12,6 +12,7 @@ public class Core implements Runnable {
 	private static World world;
 
 	public Core() {
+		Chars.load();
 		world = World.generateWorld();
 		initMgrs();
 		setupGUI();

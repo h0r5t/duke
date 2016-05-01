@@ -1,26 +1,32 @@
 package core;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
 
 import pathfinder.GraphNode;
 
 public abstract class Tile extends GraphNode implements Visual {
 
-	protected BufferedImage texture;
+	protected Character myChar;
+	protected int tileID;
 
-	public Tile(int x, int y) {
+	public Tile(int tileID, int x, int y) {
 		super(UniqueIDFactory.getID(), x, y);
+		this.tileID = tileID;
+		getChar();
 	}
 
-	protected void generateTexture(Color baseColor) {
-		ColorAttributes myData = new ColorAttributes(baseColor,
-				Settings.TEXTURE_COLOR_VARIATION,
-				Settings.TEXTURE_ALPHA_VARIATION);
-		texture = TextureGenerator.generateRectangle(myData,
-				Settings.TEXTURE_SECTION_SIZE, false, Settings.TILE_SIZE,
-				Settings.TILE_SIZE);
+	protected void getChar() {
+		if (tileID == -1)
+			return;
+		myChar = Chars.getRandomCharacter(getTileID());
+	}
+
+	public int getTileID() {
+		return tileID;
 	}
 
 	public abstract boolean collides();
@@ -35,8 +41,20 @@ public abstract class Tile extends GraphNode implements Visual {
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
-		g.drawImage(texture, posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE,
-				null);
+		g.setColor(Color.BLACK);
+		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
+
+		Font font = new Font("Arial", Font.BOLD, Settings.CHAR_FONT_SIZE);
+		g.setColor(myChar.getColor());
+
+		FontMetrics metrics = g.getFontMetrics(font);
+		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE,
+				Settings.TILE_SIZE);
+		String text = myChar.getChar() + "";
+		int x = (rect.width - metrics.stringWidth(text)) / 2;
+		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+		g.setFont(font);
+		g.drawString(text, posX + x, posY + y);
 
 		if (!Settings.DRAW_TILE_BORDERS)
 			return;

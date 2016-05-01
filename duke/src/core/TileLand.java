@@ -1,12 +1,9 @@
 package core;
 
-import java.awt.Color;
-
 public class TileLand extends Tile {
 
 	public TileLand(int x, int y) {
-		super(x, y);
-		generateTexture(Color.decode(Colors.COLOR_LAND));
+		super(Chars.getTileID("tile_land"), x, y);
 	}
 
 	@Override

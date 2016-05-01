@@ -10,9 +10,10 @@ public class Settings {
 	public static int GAME_FRAME_WIDTH;
 	public static int GAME_FRAME_HEIGHT;
 
-	public static int TILE_SIZE = 30;
-	public static int WORLD_WIDTH = 50;
-	public static int WORLD_HEIGHT = 30;
+	public static int TILE_SIZE = 20;
+	public static int CHAR_FONT_SIZE = 26;
+	public static int WORLD_WIDTH = 100;
+	public static int WORLD_HEIGHT = 100;
 
 	public static int TEXTURE_COLOR_VARIATION = 5;
 	public static int TEXTURE_ALPHA_VARIATION = 0;
