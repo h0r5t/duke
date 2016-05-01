@@ -34,11 +34,6 @@ public class MapInputController extends InputController {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Tile tile = viewManager.getTileFromScreenPos(e.getX(), e.getY());
-		Unit u = Core.getWorld().getUnitAt(tile);
-		if (u != null) {
-			core.getInputManager().addInputController(
-					new InputControllerUnitSelected(core, u));
-		}
 	}
 
 }
