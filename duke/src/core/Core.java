@@ -7,7 +7,7 @@ public class Core implements Runnable {
 
 	private InputManager inputManager;
 	private ViewManager viewManager;
-	private TaskManager taskManager;
+	private TaskDistributor taskManager;
 	private UnitManager unitManager;
 
 	private PathFinder pathFinder;
@@ -31,7 +31,7 @@ public class Core implements Runnable {
 	private void initMgrs() {
 		viewManager = new ViewManager(this);
 		inputManager = new InputManager(this);
-		taskManager = new TaskManager(this);
+		taskManager = new TaskDistributor(this);
 		unitManager = new UnitManager(this);
 		pathFinder = new PathFinder(this);
 	}
@@ -78,7 +78,7 @@ public class Core implements Runnable {
 		return inputManager;
 	}
 
-	public TaskManager getTaskManager() {
+	public TaskDistributor getTaskManager() {
 		return taskManager;
 	}
 

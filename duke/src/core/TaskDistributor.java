@@ -2,12 +2,12 @@ package core;
 
 import java.util.ArrayList;
 
-public class TaskManager {
+public class TaskDistributor {
 
 	private Core core;
 	private ArrayList<Task> taskList;
 
-	public TaskManager(Core core) {
+	public TaskDistributor(Core core) {
 		this.core = core;
 		taskList = new ArrayList<Task>();
 	}
