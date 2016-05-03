@@ -23,8 +23,7 @@ public class World extends Graph {
 		tileIdUnitMap.remove(getTile(u.getX(), u.getY(), u.getZ()).id(), u);
 	}
 
-	public void moveUnit(Unit u, int oldX, int oldY, int oldZ, int newX,
-			int newY, int newZ) {
+	public void moveUnit(Unit u, int oldX, int oldY, int oldZ, int newX, int newY, int newZ) {
 		tileIdUnitMap.remove(getTile(oldX, oldY, oldZ).id(), u);
 		tileIdUnitMap.put(getTile(newX, newY, newZ).id(), u);
 	}
@@ -43,6 +42,11 @@ public class World extends Graph {
 	}
 
 	public void setTile(Tile tile) {
+		if (tile.isLadderDown() || tile.isLadderUp()) {
+			setLadder(tile);
+			return;
+		}
+
 		int x = tile.getX();
 		int y = tile.getY();
 		int z = tile.getZ();
@@ -56,12 +60,65 @@ public class World extends Graph {
 		updateXYEdgesForTile(x + 1, y, z);
 		updateXYEdgesForTile(x, y - 1, z);
 		updateXYEdgesForTile(x, y + 1, z);
+	}
 
+	private void setLadder(Tile tile) {
 		if (tile.isLadderDown()) {
+			int x = tile.getX();
+			int y = tile.getY();
+			int z = tile.getZ();
+
+			TileLadderUp l = new TileLadderUp(x, y, z + 1);
+			removeNode(world[x][y][z]);
+			removeNode(world[x][y][z + 1]);
+			world[x][y][z] = tile.id();
+			world[x][y][z + 1] = l.id();
+			addNode(tile);
+			addNode(l);
+
+			updateXYEdgesForTile(x, y, z);
+			updateXYEdgesForTile(x - 1, y, z);
+			updateXYEdgesForTile(x + 1, y, z);
+			updateXYEdgesForTile(x, y - 1, z);
+			updateXYEdgesForTile(x, y + 1, z);
+
+			updateXYEdgesForTile(x, y, z + 1);
+			updateXYEdgesForTile(x - 1, y, z + 1);
+			updateXYEdgesForTile(x + 1, y, z + 1);
+			updateXYEdgesForTile(x, y - 1, z + 1);
+			updateXYEdgesForTile(x, y + 1, z + 1);
+
 			addZEdgesForTile(x, y, z);
+			addZEdgesForTile(x, y, z + 1);
 		}
+
 		if (tile.isLadderUp()) {
+			int x = tile.getX();
+			int y = tile.getY();
+			int z = tile.getZ();
+
+			TileLadderDown l = new TileLadderDown(x, y, z - 1);
+			removeNode(world[x][y][z]);
+			removeNode(world[x][y][z - 1]);
+			world[x][y][z] = tile.id();
+			world[x][y][z - 1] = l.id();
+			addNode(tile);
+			addNode(l);
+
+			updateXYEdgesForTile(x, y, z);
+			updateXYEdgesForTile(x - 1, y, z);
+			updateXYEdgesForTile(x + 1, y, z);
+			updateXYEdgesForTile(x, y - 1, z);
+			updateXYEdgesForTile(x, y + 1, z);
+
+			updateXYEdgesForTile(x, y, z - 1);
+			updateXYEdgesForTile(x - 1, y, z - 1);
+			updateXYEdgesForTile(x + 1, y, z - 1);
+			updateXYEdgesForTile(x, y - 1, z - 1);
+			updateXYEdgesForTile(x, y + 1, z - 1);
+
 			addZEdgesForTile(x, y, z);
+			addZEdgesForTile(x, y, z - 1);
 		}
 	}
 
@@ -150,8 +207,7 @@ public class World extends Graph {
 			for (int y = 0; y < Settings.WORLD_HEIGHT; y++) {
 				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {
 					updateXYEdgesForTile(x, y, z);
-					if (getTile(x, y, z).isLadderDown()
-							|| getTile(x, y, z).isLadderUp())
+					if (getTile(x, y, z).isLadderDown() || getTile(x, y, z).isLadderUp())
 						addZEdgesForTile(x, y, z);
 				}
 			}
@@ -159,9 +215,8 @@ public class World extends Graph {
 	}
 
 	public void setTileINITIAL(Tile tile) {
-		if (tile.getX() < 0 || tile.getX() > Settings.WORLD_WIDTH - 1
-				|| tile.getY() < 0 || tile.getY() > Settings.WORLD_HEIGHT - 1
-				|| tile.getZ() < 0 || tile.getZ() > Settings.WORLD_DEPTH - 1)
+		if (tile.getX() < 0 || tile.getX() > Settings.WORLD_WIDTH - 1 || tile.getY() < 0
+				|| tile.getY() > Settings.WORLD_HEIGHT - 1 || tile.getZ() < 0 || tile.getZ() > Settings.WORLD_DEPTH - 1)
 			return;
 		removeNode(world[tile.getX()][tile.getY()][tile.getZ()]);
 		world[tile.getX()][tile.getY()][tile.getZ()] = tile.id();

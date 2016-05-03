@@ -25,7 +25,8 @@ public class Core implements Runnable {
 		unitManager.addUnit(testWorker);
 
 		world.setTile(new TileLadderDown(7, 5, 0));
-		world.setTile(new TileLadderUp(7, 5, 1));
+		world.setTile(new TileLand(7, 6, 1));
+		world.setTile(new TileLand(7, 6, 0));
 	}
 
 	private void initMgrs() {

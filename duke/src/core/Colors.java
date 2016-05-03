@@ -10,4 +10,5 @@ public class Colors {
 	public static final Color COLOR_BUSH = Color.decode("#006600");
 	public static final Color COLOR_STONE = Color.decode("#333333");
 	public static final Color COLOR_MUSHROOM = Color.decode("#4d0000");
+	public static final Color COLOR_BG = Color.decode("#0d0d0d");
 }

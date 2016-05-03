@@ -49,16 +49,8 @@ public class InputControllerMain extends InputController {
 			core.getViewManager().moveZ(-1);
 
 		if (e.getKeyCode() == KeyEvent.VK_M) {
-			TaskMove tm1 = new TaskMove(core,
-					core.getInputManager().getCursor().getTile());
-			TaskMove tm2 = new TaskMove(core,
-					Core.getWorld().getTile(5, 20, 0));
-			TaskMove tm3 = new TaskMove(core, Core.getWorld().getTile(1, 1, 0));
-			TaskChain chain = new TaskChain();
-			chain.chainTask(tm1);
-			chain.chainTask(tm2);
-			chain.chainTask(tm3);
-			core.getTaskManager().addTask(chain);
+			TaskMove tm1 = new TaskMove(core, core.getInputManager().getCursor().getTile());
+			core.getTaskManager().addTask(tm1);
 		}
 	}
 
