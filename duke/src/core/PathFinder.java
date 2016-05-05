@@ -27,8 +27,47 @@ public class PathFinder {
 			TilePath t = findPath(from, to.get(i));
 			if (t == null)
 				continue;
-			if (t.getPathLength() < length)
+			if (t.getPathLength() < length) {
 				currentShortest = to.get(i);
+				length = t.getPathLength();
+			}
+
+		}
+		return currentShortest;
+	}
+
+	public static Tile findSourceTileWithShortestPath(ArrayList<Tile> from, Tile to) {
+		Tile currentShortest = from.get(0);
+		int length = Integer.MAX_VALUE;
+
+		for (int i = 0; i < from.size(); i++) {
+			TilePath t = findPath(from.get(i), to);
+			if (t == null)
+				continue;
+			if (t.getPathLength() < length) {
+				currentShortest = from.get(i);
+				length = t.getPathLength();
+			}
+
+		}
+		return currentShortest;
+	}
+
+	public static Unit findUnitWithShortestPath(ArrayList<Unit> units, Tile to) {
+		Unit currentShortest = units.get(0);
+		int length = Integer.MAX_VALUE;
+
+		for (int i = 0; i < units.size(); i++) {
+			TilePath t = findPath(units.get(i).getTile(), to);
+			if (t == null) {
+				continue;
+			}
+
+			if (t.getPathLength() < length) {
+				currentShortest = units.get(i);
+				length = t.getPathLength();
+			}
+
 		}
 		return currentShortest;
 	}

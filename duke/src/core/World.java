@@ -1,44 +1,24 @@
 package core;
 
-import java.util.HashMap;
-
 import pathfinder.Graph;
 
 public class World extends Graph {
 
+	private Core core;
 	private int[][][] world;
-	private HashMap<Integer, Unit> tileIdUnitMap;
 
-	public World() {
+	public World(Core core) {
 		super();
+		this.core = core;
 		world = new int[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT][Settings.WORLD_DEPTH];
-		tileIdUnitMap = new HashMap<Integer, Unit>();
-	}
-
-	public void addUnit(Unit u) {
-		tileIdUnitMap.put(getTile(u.getX(), u.getY(), u.getZ()).id(), u);
-	}
-
-	public void removeUnit(Unit u) {
-		tileIdUnitMap.remove(getTile(u.getX(), u.getY(), u.getZ()).id(), u);
-	}
-
-	public void moveUnit(Unit u, int oldX, int oldY, int oldZ, int newX, int newY, int newZ) {
-		tileIdUnitMap.remove(getTile(oldX, oldY, oldZ).id(), u);
-		tileIdUnitMap.put(getTile(newX, newY, newZ).id(), u);
-	}
-
-	public void moveUnit(Unit u, Tile from, Tile to) {
-		tileIdUnitMap.remove(from.id(), u);
-		tileIdUnitMap.remove(to.id(), u);
 	}
 
 	public Unit getUnitAt(Tile tile) {
-		return tileIdUnitMap.get(tile.id());
+		return core.getUnitManager().getUnitAt(tile);
 	}
 
 	public Unit getUnitAt(int x, int y, int z) {
-		return tileIdUnitMap.get(getTile(x, y, z).id());
+		return core.getUnitManager().getUnitAt(x, y, z);
 	}
 
 	public void setTile(Tile tile) {

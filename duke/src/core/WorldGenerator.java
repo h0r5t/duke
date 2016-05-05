@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class WorldGenerator {
 
-	public static World generateWorld() {
-		World world = new World();
+	public static World generateWorld(Core core) {
+		World world = new World(core);
 		world = generateBaseTiles(world);
 		world = generateSurface(world);
 

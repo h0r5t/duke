@@ -16,7 +16,7 @@ public class TaskDistributor {
 		taskList.add(t);
 	}
 
-	public Task getNextOpenTask() {
+	private Task getNextOpenTask() {
 		for (Task t : taskList) {
 			if (t.status == TaskStatus.OPEN)
 				return t;
@@ -26,7 +26,23 @@ public class TaskDistributor {
 	}
 
 	public void update() {
+		distributeTasks();
 		removeDoneTasks();
+	}
+
+	private void distributeTasks() {
+		ArrayList<Unit> availableUnits = core.getUnitManager().getAvailableUnits();
+		if (availableUnits.size() == 0)
+			return;
+		Task t = getNextOpenTask();
+		if (t != null)
+			if (t.getUnitPreference() == TaskUnitPreference.UNIT_ANY)
+				availableUnits.get(0).setCurrentTask(t);
+			else if (t.getUnitPreference() == TaskUnitPreference.UNIT_CLOSEST) {
+				Unit closest = PathFinder.findUnitWithShortestPath(availableUnits, t.getFirstDestinationTile());
+				if (closest != null)
+					closest.setCurrentTask(t);
+			}
 	}
 
 	private void removeDoneTasks() {

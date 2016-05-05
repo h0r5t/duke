@@ -1,8 +1,6 @@
 package core;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ViewManager {
 
@@ -10,11 +8,9 @@ public class ViewManager {
 	private int currentZ = 0;
 	private int screenShiftX;
 	private int screenShiftY;
-	private HashMap<Integer, ArrayList<Visual>> tileIdVisualsMap;
 
 	public ViewManager(Core core) {
 		this.core = core;
-		tileIdVisualsMap = new HashMap<Integer, ArrayList<Visual>>();
 	}
 
 	public void moveZ(int delta) {
@@ -30,27 +26,6 @@ public class ViewManager {
 
 	public int getCurrentZ() {
 		return currentZ;
-	}
-
-	public void addVisualAt(Visual v, int x, int y, int z) {
-		Tile t = Core.getWorld().getTile(x, y, z);
-		ArrayList<Visual> list;
-		if (!tileIdVisualsMap.containsKey(t.id())) {
-			list = new ArrayList<Visual>();
-			list.add(v);
-			tileIdVisualsMap.put(t.id(), list);
-		} else {
-			list = tileIdVisualsMap.get(t.id());
-			list.add(v);
-			tileIdVisualsMap.put(t.id(), list);
-		}
-	}
-
-	public void removeVisualAt(Visual v, int x, int y, int z) {
-		Tile t = Core.getWorld().getTile(x, y, z);
-		ArrayList<Visual> list = tileIdVisualsMap.get(t.id());
-		list.remove(v);
-		tileIdVisualsMap.put(t.id(), list);
 	}
 
 	public void shiftScreenX(int delta) {
@@ -91,16 +66,11 @@ public class ViewManager {
 				Tile tile = w.getTile(x, y, z);
 				tile.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
 
-				ArrayList<Visual> visualsList = tileIdVisualsMap.get(w.getTile(x, y, z).id());
-				if (visualsList != null) {
-					for (Visual v : visualsList) {
-						v.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
+				if (tile.isVisible()) {
+					Unit u = w.getUnitAt(x, y, z);
+					if (u != null) {
+						u.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
 					}
-				}
-
-				Unit u = w.getUnitAt(x, y, z);
-				if (u != null) {
-					u.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
 				}
 
 				if (cursor.getXpos() == x && cursor.getYpos() == y) {

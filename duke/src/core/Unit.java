@@ -60,6 +60,10 @@ public abstract class Unit implements Visual {
 		return currentTask;
 	}
 
+	public boolean hasTask() {
+		return currentTask != null;
+	}
+
 	public void setCurrentTask(Task currentTask) {
 		this.currentTask = currentTask;
 		this.currentTask.setStatus(TaskStatus.ASSIGNED);
@@ -70,7 +74,6 @@ public abstract class Unit implements Visual {
 	}
 
 	public void moveTo(int xpos, int ypos, int zpos) {
-		Core.getWorld().moveUnit(this, x, y, z, xpos, ypos, zpos);
 		this.x = xpos;
 		this.y = ypos;
 		this.z = zpos;
@@ -82,8 +85,7 @@ public abstract class Unit implements Visual {
 		g.setColor(myChar.getColor());
 
 		FontMetrics metrics = g.getFontMetrics(font);
-		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE,
-				Settings.TILE_SIZE);
+		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
 		String text = myChar.getChar() + "";
 		int x = (rect.width - metrics.stringWidth(text)) / 2;
 		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();

@@ -10,6 +10,15 @@ public class TaskMoveSingleTarget extends Task {
 	}
 
 	@Override
+	public TaskUnitPreference getUnitPreference() {
+		return TaskUnitPreference.UNIT_CLOSEST;
+	}
+
+	public Tile getFirstDestinationTile() {
+		return destinationTile;
+	}
+
+	@Override
 	public void update(Unit unit) {
 		if (tilePath == null) {
 			tilePath = PathFinder.findPath(unit.getTile(), destinationTile);

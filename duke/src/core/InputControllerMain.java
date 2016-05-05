@@ -50,17 +50,17 @@ public class InputControllerMain extends InputController {
 
 		if (e.getKeyCode() == KeyEvent.VK_M) {
 			TaskMoveSingleTarget tm1 = new TaskMoveSingleTarget(core.getInputManager().getCursor().getTile());
-			core.getTaskManager().addTask(tm1);
+			core.getTaskDistributor().addTask(tm1);
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_N) {
 			TaskActionMine miningTask = new TaskActionMine(core.getInputManager().getCursor().getTile());
-			core.getTaskManager().addTask(miningTask);
+			core.getTaskDistributor().addTask(miningTask);
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_B) {
 			TaskMoveAndMine miningTask = new TaskMoveAndMine(core.getInputManager().getCursor().getTile());
-			core.getTaskManager().addTask(miningTask);
+			core.getTaskDistributor().addTask(miningTask);
 		}
 	}
 

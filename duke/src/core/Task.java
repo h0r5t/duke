@@ -4,6 +4,14 @@ public abstract class Task {
 
 	protected TaskStatus status = TaskStatus.OPEN;
 
+	public TaskUnitPreference getUnitPreference() {
+		return TaskUnitPreference.UNIT_ANY;
+	}
+
+	public Tile getFirstDestinationTile() {
+		return null;
+	}
+
 	public TaskStatus getStatus() {
 		return status;
 	}

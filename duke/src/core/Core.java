@@ -7,7 +7,7 @@ public class Core implements Runnable {
 
 	private InputManager inputManager;
 	private ViewManager viewManager;
-	private TaskDistributor taskManager;
+	private TaskDistributor taskDistributor;
 	private UnitManager unitManager;
 
 	private static PathFinder pathFinder;
@@ -16,13 +16,18 @@ public class Core implements Runnable {
 
 	public Core() {
 		Chars.load();
-		world = WorldGenerator.generateWorld();
+		world = WorldGenerator.generateWorld(this);
 		initMgrs();
 		setupGUI();
 
 		UnitWorker testWorker = new UnitWorker(5, 5, 0);
-		world.addUnit(testWorker);
 		unitManager.addUnit(testWorker);
+
+		UnitWorker testWorker2 = new UnitWorker(6, 5, 0);
+		unitManager.addUnit(testWorker2);
+
+		UnitWorker testWorker3 = new UnitWorker(4, 5, 0);
+		unitManager.addUnit(testWorker3);
 
 		world.setTile(new TileLadderDown(7, 5, 0));
 		world.setTile(new TileLand(7, 6, 0));
@@ -31,7 +36,7 @@ public class Core implements Runnable {
 	private void initMgrs() {
 		viewManager = new ViewManager(this);
 		inputManager = new InputManager(this);
-		taskManager = new TaskDistributor(this);
+		taskDistributor = new TaskDistributor(this);
 		unitManager = new UnitManager(this);
 		pathFinder = new PathFinder();
 	}
@@ -45,7 +50,7 @@ public class Core implements Runnable {
 
 	private void loop() {
 		inputManager.update();
-		taskManager.update();
+		taskDistributor.update();
 		unitManager.update();
 
 		gamePanel.repaint();
@@ -78,8 +83,8 @@ public class Core implements Runnable {
 		return inputManager;
 	}
 
-	public TaskDistributor getTaskManager() {
-		return taskManager;
+	public TaskDistributor getTaskDistributor() {
+		return taskDistributor;
 	}
 
 	public UnitManager getUnitManager() {
