@@ -54,17 +54,15 @@ public class ViewManager {
 	}
 
 	public void shiftScreenX(int delta) {
-		if (screenShiftX + delta < 0
-				|| (screenShiftX + delta) / Settings.TILE_SIZE + Settings
-						.SCREEN_WIDTH_IN_TILES() > Settings.WORLD_WIDTH + 2)
+		if (screenShiftX + delta < 0 || (screenShiftX + delta) / Settings.TILE_SIZE
+				+ Settings.SCREEN_WIDTH_IN_TILES() > Settings.WORLD_WIDTH + 2)
 			return;
 		screenShiftX += delta;
 	}
 
 	public void shiftScreenY(int delta) {
-		if (screenShiftY + delta < 0
-				|| (screenShiftY + delta) / Settings.TILE_SIZE + Settings
-						.SCREEN_HEIGHT_IN_TILES() > Settings.WORLD_HEIGHT + 2)
+		if (screenShiftY + delta < 0 || (screenShiftY + delta) / Settings.TILE_SIZE
+				+ Settings.SCREEN_HEIGHT_IN_TILES() > Settings.WORLD_HEIGHT + 2)
 			return;
 		screenShiftY += delta;
 	}
@@ -89,27 +87,24 @@ public class ViewManager {
 		int z = currentZ;
 		for (int x = xstart; x < xstart + screenWidth + 2; x++) {
 			for (int y = ystart; y < ystart + screenHeight + 2; y++) {
-				w.getTile(x, y, z).draw(g, (x - xstart) * tileSize - xrest,
-						(y - ystart) * tileSize - yrest);
 
-				ArrayList<Visual> visualsList = tileIdVisualsMap
-						.get(w.getTile(x, y, z).id());
+				Tile tile = w.getTile(x, y, z);
+				tile.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
+
+				ArrayList<Visual> visualsList = tileIdVisualsMap.get(w.getTile(x, y, z).id());
 				if (visualsList != null) {
 					for (Visual v : visualsList) {
-						v.draw(g, (x - xstart) * tileSize - xrest,
-								(y - ystart) * tileSize - yrest);
+						v.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
 					}
 				}
 
 				Unit u = w.getUnitAt(x, y, z);
 				if (u != null) {
-					u.draw(g, (x - xstart) * tileSize - xrest,
-							(y - ystart) * tileSize - yrest);
+					u.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
 				}
 
 				if (cursor.getXpos() == x && cursor.getYpos() == y) {
-					cursor.draw(g, (x - xstart) * tileSize - xrest,
-							(y - ystart) * tileSize - yrest);
+					cursor.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
 				}
 
 			}
@@ -125,8 +120,7 @@ public class ViewManager {
 	}
 
 	public Tile getTileFromScreenPos(int x, int y) {
-		return Core.getWorld().getTile(translateScreenPosToTilePosX(x),
-				translateScreenPosToTilePosY(y), currentZ);
+		return Core.getWorld().getTile(translateScreenPosToTilePosX(x), translateScreenPosToTilePosY(y), currentZ);
 	}
 
 }

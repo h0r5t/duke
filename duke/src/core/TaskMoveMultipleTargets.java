@@ -1,21 +1,21 @@
 package core;
 
-public class TaskMove extends Task {
+import java.util.ArrayList;
 
-	private Core core;
-	private Tile destinationTile;
+public class TaskMoveMultipleTargets extends Task {
+
+	private ArrayList<Tile> destinationTiles;
 	private TilePath tilePath;
 
-	public TaskMove(Core core, Tile to) {
-		this.core = core;
-		destinationTile = to;
+	public TaskMoveMultipleTargets(ArrayList<Tile> to) {
+		destinationTiles = to;
 	}
 
 	@Override
 	public void update(Unit unit) {
 		if (tilePath == null) {
-			tilePath = core.getPathFinder().findPath(unit.getTile(),
-					destinationTile);
+			Tile bestTile = PathFinder.findTargetTileWithShortestPath(unit.getTile(), destinationTiles);
+			tilePath = PathFinder.findPath(unit.getTile(), bestTile);
 			if (tilePath == null) {
 				setStatus(TaskStatus.DONE);
 				return;

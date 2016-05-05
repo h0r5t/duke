@@ -11,7 +11,7 @@ public class TaskChain extends Task {
 		taskChain = new ArrayList<Task>();
 	}
 
-	public void chainTask(Task t) {
+	public void queueTask(Task t) {
 		taskChain.add(t);
 	}
 

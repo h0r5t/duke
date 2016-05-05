@@ -49,8 +49,18 @@ public class InputControllerMain extends InputController {
 			core.getViewManager().moveZ(-1);
 
 		if (e.getKeyCode() == KeyEvent.VK_M) {
-			TaskMove tm1 = new TaskMove(core, core.getInputManager().getCursor().getTile());
+			TaskMoveSingleTarget tm1 = new TaskMoveSingleTarget(core.getInputManager().getCursor().getTile());
 			core.getTaskManager().addTask(tm1);
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_N) {
+			TaskActionMine miningTask = new TaskActionMine(core.getInputManager().getCursor().getTile());
+			core.getTaskManager().addTask(miningTask);
+		}
+
+		if (e.getKeyCode() == KeyEvent.VK_B) {
+			TaskMoveAndMine miningTask = new TaskMoveAndMine(core.getInputManager().getCursor().getTile());
+			core.getTaskManager().addTask(miningTask);
 		}
 	}
 

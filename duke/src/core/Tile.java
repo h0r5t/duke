@@ -12,12 +12,15 @@ public abstract class Tile extends GraphNode implements Visual {
 
 	protected Character myChar;
 	protected int tileID;
-	protected boolean isVisible;
+	private boolean isVisible;
 
 	public Tile(int tileID, int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
 		this.tileID = tileID;
 		getChar();
+		if (z == 0) {
+			setVisible(true);
+		}
 	}
 
 	public boolean isVisible() {
@@ -64,6 +67,9 @@ public abstract class Tile extends GraphNode implements Visual {
 	public void draw(Graphics2D g, int posX, int posY) {
 		g.setColor(Colors.COLOR_BG);
 		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
+
+		if (!isVisible())
+			return;
 
 		Font font = new Font("Arial", Font.BOLD, myChar.getFontSize());
 		g.setColor(myChar.getColor());

@@ -3,6 +3,7 @@ package core;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import pathfinder.GraphNode;
@@ -10,22 +11,38 @@ import pathfinder.GraphSearch_Astar;
 
 public class PathFinder {
 
-	private Core core;
-	private World world;
-
-	public PathFinder(Core core) {
-		this.core = core;
-		this.world = Core.getWorld();
+	public PathFinder() {
 	}
 
-	public TilePath findPath(Tile from, Tile to) {
+	public static boolean pathExists(Tile from, Tile to) {
+		TilePath t = findPath(from, to);
+		return t != null;
+	}
+
+	public static Tile findTargetTileWithShortestPath(Tile from, ArrayList<Tile> to) {
+		Tile currentShortest = to.get(0);
+		int length = Integer.MAX_VALUE;
+
+		for (int i = 0; i < to.size(); i++) {
+			TilePath t = findPath(from, to.get(i));
+			if (t == null)
+				continue;
+			if (t.getPathLength() < length)
+				currentShortest = to.get(i);
+		}
+		return currentShortest;
+	}
+
+	public static TilePath findPath(Tile from, Tile to) {
+		if (from == null || to == null)
+			return null;
 		PrintStream originalStream = System.out;
 		PrintStream dummyStream = null;
 		dummyStream = new PrintStream(new NullOutputStream());
 		System.setOut(dummyStream);
 
-		TilePath path = new TilePath(core);
-		GraphSearch_Astar search = new GraphSearch_Astar(world);
+		TilePath path = new TilePath();
+		GraphSearch_Astar search = new GraphSearch_Astar(Core.getWorld());
 		LinkedList<GraphNode> route = search.search(from.id(), to.id());
 		if (route == null) {
 			System.setOut(originalStream);
@@ -40,7 +57,7 @@ public class PathFinder {
 		return path;
 	}
 
-	private class NullOutputStream extends OutputStream {
+	private static class NullOutputStream extends OutputStream {
 		@Override
 		public void write(int b) throws IOException {
 		}

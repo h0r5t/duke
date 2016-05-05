@@ -16,4 +16,9 @@ public class TileLadderUp extends Tile {
 		return true;
 	}
 
+	@Override
+	public boolean isVisible() {
+		return true;
+	}
+
 }

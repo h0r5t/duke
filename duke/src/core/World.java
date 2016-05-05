@@ -60,13 +60,28 @@ public class World extends Graph {
 		updateXYEdgesForTile(x + 1, y, z);
 		updateXYEdgesForTile(x, y - 1, z);
 		updateXYEdgesForTile(x, y + 1, z);
+
+		if (getTile(x, y, z).isVisible()) {
+			getTile(x + 1, y, z).setVisible(true);
+			getTile(x + -1, y, z).setVisible(true);
+
+			getTile(x, y + 1, z).setVisible(true);
+			getTile(x, y - 1, z).setVisible(true);
+
+			getTile(x + 1, y + 1, z).setVisible(true);
+			getTile(x + 1, y - 1, z).setVisible(true);
+
+			getTile(x - 1, y + 1, z).setVisible(true);
+			getTile(x - 1, y - 1, z).setVisible(true);
+		}
 	}
 
 	private void setLadder(Tile tile) {
+		int x = tile.getX();
+		int y = tile.getY();
+		int z = tile.getZ();
+
 		if (tile.isLadderDown()) {
-			int x = tile.getX();
-			int y = tile.getY();
-			int z = tile.getZ();
 
 			TileLadderUp l = new TileLadderUp(x, y, z + 1);
 			removeNode(world[x][y][z]);
@@ -90,12 +105,21 @@ public class World extends Graph {
 
 			addZEdgesForTile(x, y, z);
 			addZEdgesForTile(x, y, z + 1);
+
+			getTile(x + 1, y, z + 1).setVisible(true);
+			getTile(x + -1, y, z + 1).setVisible(true);
+
+			getTile(x, y + 1, z + 1).setVisible(true);
+			getTile(x, y - 1, z + 1).setVisible(true);
+
+			getTile(x + 1, y + 1, z + 1).setVisible(true);
+			getTile(x + 1, y - 1, z + 1).setVisible(true);
+
+			getTile(x - 1, y + 1, z + 1).setVisible(true);
+			getTile(x - 1, y - 1, z + 1).setVisible(true);
 		}
 
 		if (tile.isLadderUp()) {
-			int x = tile.getX();
-			int y = tile.getY();
-			int z = tile.getZ();
 
 			TileLadderDown l = new TileLadderDown(x, y, z - 1);
 			removeNode(world[x][y][z]);
@@ -119,7 +143,30 @@ public class World extends Graph {
 
 			addZEdgesForTile(x, y, z);
 			addZEdgesForTile(x, y, z - 1);
+
+			getTile(x + 1, y, z - 1).setVisible(true);
+			getTile(x + -1, y, z - 1).setVisible(true);
+
+			getTile(x, y + 1, z - 1).setVisible(true);
+			getTile(x, y - 1, z - 1).setVisible(true);
+
+			getTile(x + 1, y + 1, z - 1).setVisible(true);
+			getTile(x + 1, y - 1, z - 1).setVisible(true);
+
+			getTile(x - 1, y + 1, z - 1).setVisible(true);
+			getTile(x - 1, y - 1, z - 1).setVisible(true);
 		}
+	}
+
+	public void wasMined(Tile tileToMine) {
+		if (tileToMine.getZ() == 0)
+			setTile(new TileLand(tileToMine.getX(), tileToMine.getY(), tileToMine.getZ()));
+		else {
+			Tile t = new TileGround(tileToMine.getX(), tileToMine.getY(), tileToMine.getZ());
+			t.setVisible(true);
+			setTile(t);
+		}
+
 	}
 
 	public Tile getTile(int x, int y, int z) {
@@ -209,6 +256,19 @@ public class World extends Graph {
 					updateXYEdgesForTile(x, y, z);
 					if (getTile(x, y, z).isLadderDown() || getTile(x, y, z).isLadderUp())
 						addZEdgesForTile(x, y, z);
+					if (getTile(x, y, z).isVisible()) {
+						getTile(x + 1, y, z).setVisible(true);
+						getTile(x + -1, y, z).setVisible(true);
+
+						getTile(x, y + 1, z).setVisible(true);
+						getTile(x, y - 1, z).setVisible(true);
+
+						getTile(x + 1, y + 1, z).setVisible(true);
+						getTile(x + 1, y - 1, z).setVisible(true);
+
+						getTile(x - 1, y + 1, z).setVisible(true);
+						getTile(x - 1, y - 1, z).setVisible(true);
+					}
 				}
 			}
 		}

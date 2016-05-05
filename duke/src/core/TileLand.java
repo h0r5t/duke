@@ -11,4 +11,9 @@ public class TileLand extends Tile {
 		return false;
 	}
 
+	@Override
+	public boolean isVisible() {
+		return true;
+	}
+
 }

@@ -14,4 +14,9 @@ public class TileLadderDown extends Tile {
 	public boolean isLadderDown() {
 		return true;
 	}
+
+	@Override
+	public boolean isVisible() {
+		return true;
+	}
 }

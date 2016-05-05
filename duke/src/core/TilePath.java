@@ -4,12 +4,10 @@ import java.util.ArrayList;
 
 public class TilePath {
 
-	private Core core;
 	private ArrayList<Tile> path;
 	int counter = 0;
 
-	public TilePath(Core core) {
-		this.core = core;
+	public TilePath() {
 		path = new ArrayList<Tile>();
 	}
 
@@ -20,6 +18,10 @@ public class TilePath {
 			return;
 		}
 		path.add(t);
+	}
+
+	public int getPathLength() {
+		return path.size();
 	}
 
 	public Tile popNext() {

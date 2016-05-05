@@ -55,8 +55,7 @@ public class WorldGenerator {
 					if (a == 0 || a == width - 1 || b == 0 || b == height - 1) {
 						int c = r.nextInt(5);
 						if (c > 2)
-							world.setTileINITIAL(
-									new TileWater(x + a, y + b, 0));
+							world.setTileINITIAL(new TileWater(x + a, y + b, 0));
 					} else
 						world.setTileINITIAL(new TileWater(x + a, y + b, 0));
 				}

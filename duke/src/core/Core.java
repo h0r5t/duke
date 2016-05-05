@@ -10,7 +10,7 @@ public class Core implements Runnable {
 	private TaskDistributor taskManager;
 	private UnitManager unitManager;
 
-	private PathFinder pathFinder;
+	private static PathFinder pathFinder;
 
 	private static World world;
 
@@ -25,7 +25,6 @@ public class Core implements Runnable {
 		unitManager.addUnit(testWorker);
 
 		world.setTile(new TileLadderDown(7, 5, 0));
-		world.setTile(new TileLand(7, 6, 1));
 		world.setTile(new TileLand(7, 6, 0));
 	}
 
@@ -34,7 +33,7 @@ public class Core implements Runnable {
 		inputManager = new InputManager(this);
 		taskManager = new TaskDistributor(this);
 		unitManager = new UnitManager(this);
-		pathFinder = new PathFinder(this);
+		pathFinder = new PathFinder();
 	}
 
 	private void setupGUI() {
@@ -87,7 +86,7 @@ public class Core implements Runnable {
 		return unitManager;
 	}
 
-	public PathFinder getPathFinder() {
+	public static PathFinder getPathFinder() {
 		return pathFinder;
 	}
 

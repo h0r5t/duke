@@ -8,7 +8,7 @@ public class TileWoods extends Tile {
 
 	@Override
 	public boolean collides() {
-		return false;
+		return true;
 	}
 
 }
