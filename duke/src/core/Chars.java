@@ -9,11 +9,19 @@ public class Chars {
 
 	private static HashMap<String, Integer> tileIDs;
 	private static HashMap<String, Integer> unitIDs;
+	private static HashMap<String, Integer> itemIDs;
 
 	private static HashMap<Integer, ArrayList<Character>> tileIDCharMap;
 	private static HashMap<Integer, ArrayList<Character>> unitIDCharMap;
+	private static HashMap<Integer, ArrayList<Character>> itemIDCharMap;
 
 	public static void load() {
+		loadTiles();
+		loadUnits();
+		loadItems();
+	}
+
+	public static void loadTiles() {
 		tileIDs = new HashMap<String, Integer>();
 		tileIDs.put("tile_land", 0);
 		tileIDs.put("tile_woods", 1);
@@ -73,17 +81,28 @@ public class Chars {
 		list = new ArrayList<Character>();
 		list.add(new Character(" ", Colors.COLOR_MUSHROOM, 14));
 		tileIDCharMap.put(9, list);
+	}
 
-		// UNITS
-
+	private static void loadUnits() {
 		unitIDs = new HashMap<String, Integer>();
 		unitIDs.put("unit_worker", 0);
 
 		unitIDCharMap = new HashMap<Integer, ArrayList<Character>>();
-		list = new ArrayList<Character>();
+		ArrayList<Character> list = new ArrayList<Character>();
 
 		list.add(new Character("☺", Color.ORANGE, 26));
 		unitIDCharMap.put(0, list);
+	}
+
+	private static void loadItems() {
+		itemIDs = new HashMap<String, Integer>();
+		itemIDs.put("item_stone", 0);
+
+		itemIDCharMap = new HashMap<Integer, ArrayList<Character>>();
+		ArrayList<Character> list = new ArrayList<Character>();
+
+		list.add(new Character("•", Colors.COLOR_STONE, 26));
+		itemIDCharMap.put(0, list);
 	}
 
 	public static Integer getTileID(String s) {
@@ -101,6 +120,11 @@ public class Chars {
 
 	public static Character getRandomUnitCharacter(int unitID) {
 		ArrayList<Character> list = unitIDCharMap.get(unitID);
+		return list.get(new Random().nextInt(list.size()));
+	}
+
+	public static Character getRandomItemCharacter(int itemID) {
+		ArrayList<Character> list = itemIDCharMap.get(itemID);
 		return list.get(new Random().nextInt(list.size()));
 	}
 

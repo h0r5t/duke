@@ -22,8 +22,14 @@ public class Settings {
 	public static int TEXTURE_SECTION_SIZE = 5;
 	public static boolean DRAW_TILE_BORDERS = false;
 
+	public static int MENU_WIDTH = 300;
+
+	public static int MENU_STARTX() {
+		return Settings.GAME_FRAME_WIDTH - MENU_WIDTH - 5;
+	}
+
 	public static int SCREEN_WIDTH_IN_TILES() {
-		return Settings.GAME_FRAME_WIDTH / Settings.TILE_SIZE;
+		return (Settings.GAME_FRAME_WIDTH - MENU_WIDTH) / Settings.TILE_SIZE;
 	}
 
 	public static int SCREEN_HEIGHT_IN_TILES() {

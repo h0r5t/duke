@@ -11,15 +11,13 @@ import pathfinder.GraphSearch_Astar;
 
 public class PathFinder {
 
-	public PathFinder() {
-	}
-
 	public static boolean pathExists(Tile from, Tile to) {
 		TilePath t = findPath(from, to);
 		return t != null;
 	}
 
-	public static Tile findTargetTileWithShortestPath(Tile from, ArrayList<Tile> to) {
+	public static Tile findTargetTileWithShortestPath(Tile from,
+			ArrayList<Tile> to) {
 		Tile currentShortest = to.get(0);
 		int length = Integer.MAX_VALUE;
 
@@ -36,7 +34,8 @@ public class PathFinder {
 		return currentShortest;
 	}
 
-	public static Tile findSourceTileWithShortestPath(ArrayList<Tile> from, Tile to) {
+	public static Tile findSourceTileWithShortestPath(ArrayList<Tile> from,
+			Tile to) {
 		Tile currentShortest = from.get(0);
 		int length = Integer.MAX_VALUE;
 
@@ -53,7 +52,8 @@ public class PathFinder {
 		return currentShortest;
 	}
 
-	public static Unit findUnitWithShortestPath(ArrayList<Unit> units, Tile to) {
+	public static Unit findUnitWithShortestPath(ArrayList<Unit> units,
+			Tile to) {
 		Unit currentShortest = units.get(0);
 		int length = Integer.MAX_VALUE;
 

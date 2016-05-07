@@ -9,8 +9,7 @@ public class Core implements Runnable {
 	private ViewManager viewManager;
 	private TaskDistributor taskDistributor;
 	private UnitManager unitManager;
-
-	private static PathFinder pathFinder;
+	private MenuManager menuManager;
 
 	private static World world;
 
@@ -30,7 +29,6 @@ public class Core implements Runnable {
 		unitManager.addUnit(testWorker3);
 
 		world.setTile(new TileLadderDown(7, 5, 0));
-		world.setTile(new TileLand(7, 6, 0));
 	}
 
 	private void initMgrs() {
@@ -38,7 +36,7 @@ public class Core implements Runnable {
 		inputManager = new InputManager(this);
 		taskDistributor = new TaskDistributor(this);
 		unitManager = new UnitManager(this);
-		pathFinder = new PathFinder();
+		menuManager = new MenuManager(this);
 	}
 
 	private void setupGUI() {
@@ -91,8 +89,8 @@ public class Core implements Runnable {
 		return unitManager;
 	}
 
-	public static PathFinder getPathFinder() {
-		return pathFinder;
+	public MenuManager getMenuManager() {
+		return menuManager;
 	}
 
 	public static void main(String[] args) {

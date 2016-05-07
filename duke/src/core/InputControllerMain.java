@@ -3,7 +3,7 @@ package core;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public class InputControllerMain extends InputController {
+public class InputControllerMain extends InputAdapter {
 
 	private Core core;
 	private ViewManager viewManager;
@@ -47,26 +47,6 @@ public class InputControllerMain extends InputController {
 			core.getViewManager().moveZ(1);
 		if (e.getKeyCode() == KeyEvent.VK_Y)
 			core.getViewManager().moveZ(-1);
-
-		if (e.getKeyCode() == KeyEvent.VK_M) {
-			TaskMoveSingleTarget tm1 = new TaskMoveSingleTarget(core.getInputManager().getCursor().getTile());
-			core.getTaskDistributor().addTask(tm1);
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_N) {
-			TaskActionMine miningTask = new TaskActionMine(core.getInputManager().getCursor().getTile());
-			core.getTaskDistributor().addTask(miningTask);
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_B) {
-			TaskMoveAndMine miningTask = new TaskMoveAndMine(core.getInputManager().getCursor().getTile());
-			core.getTaskDistributor().addTask(miningTask);
-		}
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		Tile tile = viewManager.getTileFromScreenPos(e.getX(), e.getY());
 	}
 
 	@Override

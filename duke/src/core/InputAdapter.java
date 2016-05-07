@@ -3,7 +3,7 @@ package core;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public abstract class InputController {
+public abstract class InputAdapter {
 
 	public void keysPressed(DefaultHashMap<Integer, Boolean> keysPressed) {
 
