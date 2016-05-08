@@ -72,12 +72,8 @@ public class TaskDistributor {
 
 		u = availableUnits.get(0);
 
-		if (t.isReachableFor(u)) {
-			u.setCurrentTask(t);
-			t.setStatus(TaskStatus.ASSIGNED);
-		} else {
-			core.getUnitManager().lowerPrio(u);
-		}
+		u.setCurrentTask(t);
+		t.setStatus(TaskStatus.ASSIGNED);
 	}
 
 	private void deleteSomeTasks() {

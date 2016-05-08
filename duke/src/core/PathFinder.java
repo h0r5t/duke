@@ -96,6 +96,13 @@ public class PathFinder {
 	public static Path findPath(Coords3D from, Coords3D to) {
 		if (from == null || to == null)
 			return null;
+		if (Math.abs(from.getX() - to.getX()) == 1
+				&& (Math.abs(from.getY() - to.getY()) == 1)) {
+			Path path = new Path();
+			path.add(from);
+			path.add(to);
+			return path;
+		}
 		PrintStream originalStream = System.out;
 		PrintStream dummyStream = null;
 		dummyStream = new PrintStream(new NullOutputStream());
