@@ -9,11 +9,13 @@ public class MenuManager {
 	private Core core;
 	private Menu currentMenu;
 	private Menu parentMenu;
+	private int currentLoopTime;
 
 	public MenuManager(Core core) {
 		this.core = core;
 		currentMenu = new MenuRoot(this);
 		parentMenu = currentMenu;
+		currentLoopTime = 0;
 	}
 
 	public Menu getCurrentMenu() {
@@ -42,12 +44,20 @@ public class MenuManager {
 		g.fillRect(Settings.MENU_STARTX(), 0, Settings.MENU_WIDTH,
 				Settings.GAME_FRAME_HEIGHT);
 
-		g.setColor(Color.LIGHT_GRAY);
-		Font font = new Font("Arial", Font.PLAIN, 20);
+		g.setColor(Color.YELLOW);
+		Font font = new Font("Arial", Font.PLAIN, 16);
 		g.setFont(font);
 
-		int x = Settings.MENU_STARTX() + 20;
-		int y = 40;
+		int x = Settings.MENU_STARTX() + 100;
+		int y = 20;
+		g.drawString(currentLoopTime + " ms", x, y);
+
+		g.setColor(Color.LIGHT_GRAY);
+		font = new Font("Arial", Font.PLAIN, 20);
+		g.setFont(font);
+
+		x = Settings.MENU_STARTX() + 20;
+		y = 100;
 		for (String s : currentMenu.getMenuText()) {
 			g.drawString(s, x, y);
 			y += 25;
@@ -56,6 +66,10 @@ public class MenuManager {
 
 	public void update() {
 		currentMenu.update();
+	}
+
+	public void setLoopTime(int time) {
+		currentLoopTime = time;
 	}
 
 }

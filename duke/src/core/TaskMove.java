@@ -61,10 +61,4 @@ public class TaskMove extends Task {
 			moveCooldown = unit.getMoveSpeed();
 		}
 	}
-
-	@Override
-	public boolean helperEnabled() {
-		return true;
-	}
-
 }

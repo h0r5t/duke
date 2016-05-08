@@ -4,13 +4,29 @@ import java.util.ArrayList;
 
 public class TaskMoveAndMine extends TaskChain {
 
+	private Coords3D miningTarget;
+	private TaskGroupMining myTaskGroup;
+
 	public TaskMoveAndMine(Coords3D targetToMine) {
 		super(TaskType.MINE);
+		this.miningTarget = targetToMine;
 		TaskMove moveTask = new TaskMove(getPossibleTargets(targetToMine));
 		queueTask(moveTask);
 
 		TaskActionMine miningTask = new TaskActionMine(targetToMine);
 		queueTask(miningTask);
+	}
+
+	public void setTaskGroup(TaskGroupMining t) {
+		this.myTaskGroup = t;
+	}
+
+	public TaskGroupMining getTaskGroup() {
+		return myTaskGroup;
+	}
+
+	public Coords3D getMiningTarget() {
+		return miningTarget;
 	}
 
 	private ArrayList<Coords3D> getPossibleTargets(Coords3D targetToMine) {
@@ -28,6 +44,28 @@ public class TaskMoveAndMine extends TaskChain {
 		possibleTargets.add(t4.getCoords3D());
 
 		return possibleTargets;
+	}
+
+	@Override
+	public void update(Unit unit) {
+		if (pickedUp == false) {
+			pickedUp = true;
+			unit.setCurrentTask(taskChain.get(0));
+			unit.setActiveTaskChain(this);
+		}
+		if (taskChain.get(0).getStatus() == TaskStatus.DONE) {
+			taskChain.remove(0);
+			if (taskChain.size() == 0) {
+				setStatus(TaskStatus.DONE);
+				unit.setActiveTaskChain(null);
+				TaskGroupMining taskGroup = getTaskGroup();
+				if (taskGroup != null) {
+					taskGroup.removeLock();
+				}
+			} else {
+				unit.setCurrentTask(taskChain.get(0));
+			}
+		}
 	}
 
 }

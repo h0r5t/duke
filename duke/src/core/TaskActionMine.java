@@ -36,10 +36,4 @@ public class TaskActionMine extends TaskAction {
 	public boolean isReachableFor(Unit unit) {
 		return true;
 	}
-
-	@Override
-	public boolean helperEnabled() {
-		return false;
-	}
-
 }

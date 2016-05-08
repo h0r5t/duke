@@ -67,10 +67,12 @@ public class ViewManager {
 			for (int y = ystart; y < ystart + screenHeight; y++) {
 
 				Tile tile = w.getTile(x, y, z);
-				tile.draw(g, (x - xstart) * tileSize - xrest,
-						(y - ystart) * tileSize - yrest);
+				if (tile != null) {
+					tile.draw(g, (x - xstart) * tileSize - xrest,
+							(y - ystart) * tileSize - yrest);
+				}
 
-				if (tile.isVisible()) {
+				if (tile != null && tile.isVisible()) {
 					Unit u = w.getUnitAt(x, y, z);
 					if (u != null) {
 						u.draw(g, (x - xstart) * tileSize - xrest,

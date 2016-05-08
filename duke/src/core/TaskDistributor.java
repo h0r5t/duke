@@ -2,20 +2,25 @@ package core;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TaskDistributor {
 
 	private Core core;
-	private CopyOnWriteArrayList<Task> taskList;
+	private ArrayList<Task> taskList;
+	private ArrayList<TaskGroupMining> taskGroups;
 
 	public TaskDistributor(Core core) {
 		this.core = core;
-		taskList = new CopyOnWriteArrayList<Task>();
+		taskList = new ArrayList<Task>();
+		taskGroups = new ArrayList<TaskGroupMining>();
 	}
 
 	public void addTask(Task t) {
 		taskList.add(t);
+	}
+
+	public void addTaskGroup(TaskGroupMining t) {
+		taskGroups.add(t);
 	}
 
 	private Task getNextOpenTask() {
@@ -26,36 +31,53 @@ public class TaskDistributor {
 		return null;
 	}
 
+	private void manageTaskGroups() {
+		ArrayList<TaskGroupMining> toDelete = new ArrayList<TaskGroupMining>();
+		for (TaskGroupMining taskGroup : taskGroups) {
+			if (!taskGroup.isLocked()) {
+				ArrayList nextTaskLayer = taskGroup.getNextTaskLayer();
+				if (nextTaskLayer == null) {
+					toDelete.add(taskGroup);
+				} else {
+					if (nextTaskLayer.get(0) instanceof TaskMoveAndMine) {
+						for (Object o : nextTaskLayer) {
+							taskList.add((TaskMoveAndMine) o);
+							taskGroup.addLock();
+						}
+					}
+				}
+			}
+
+		}
+		taskGroups.removeAll(toDelete);
+	}
+
 	public void update() {
-		distributeTasks();
+		manageTaskGroups();
+		distributeOpenTasks();
 		deleteSomeTasks();
-		sortOpenTasks();
 	}
 
-	private void sortOpenTasks() {
+	private void distributeOpenTasks() {
+		ArrayList<UnitWorker> availableUnits;
+		Task t;
+		UnitWorker u;
 
-	}
-
-	private void distributeTasks() {
-		ArrayList<UnitWorker> availableUnits = core.getUnitManager()
-				.getAvailableWorkerUnits();
+		availableUnits = core.getUnitManager().getAvailableWorkerUnits();
 		if (availableUnits.size() == 0)
 			return;
-		Task t = getNextOpenTask();
+		t = getNextOpenTask();
 		if (t == null)
 			return;
 
-		UnitWorker u = availableUnits.get(0);
+		u = availableUnits.get(0);
+
 		if (t.isReachableFor(u)) {
 			u.setCurrentTask(t);
 			t.setStatus(TaskStatus.ASSIGNED);
 		} else {
-			// move unit and task to bottom of their lists.
-			// core.getUnitManager().lowerPrio(u);
-			taskList.remove(t);
-			taskList.add(t);
+			core.getUnitManager().lowerPrio(u);
 		}
-
 	}
 
 	private void deleteSomeTasks() {

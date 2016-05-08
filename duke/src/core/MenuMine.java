@@ -19,24 +19,17 @@ public class MenuMine extends Menu {
 			areaSelection = new AreaSelection(cursor.getXpos(),
 					cursor.getYpos(), cursor.getZpos());
 		} else {
-			createMiningTasks();
+			createMiningTaskGroup();
 			areaSelection = null;
 			menuMgr.goToParentMenu();
 		}
 	}
 
-	private void createMiningTasks() {
-		for (Coords3D c : areaSelection.getLocations()) {
-			Tile t = c.getTile();
-			if (!t.collides()) {
-				t.setSelected(false);
-			} else {
-				TaskMoveAndMine miningTask = new TaskMoveAndMine(
-						new Coords3D(t.getX(), t.getY(), t.getZ()));
-				menuMgr.getCore().getTaskDistributor().addTask(miningTask);
-			}
-
-		}
+	private void createMiningTaskGroup() {
+		TaskGroupMining taskGroup = new TaskGroupMining(areaSelection.getX(),
+				areaSelection.getY(), areaSelection.getWidth(),
+				areaSelection.getHeight(), areaSelection.getLocations());
+		menuMgr.getCore().getTaskDistributor().addTaskGroup(taskGroup);
 	}
 
 	private void selectorMoved() {

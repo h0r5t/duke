@@ -15,8 +15,6 @@ public abstract class Task {
 		return myType;
 	}
 
-	public abstract boolean helperEnabled();
-
 	public abstract boolean isReachableFor(Unit unit);
 
 	public TaskStatus getStatus() {

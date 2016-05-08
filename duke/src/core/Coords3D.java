@@ -21,6 +21,22 @@ public class Coords3D {
 		return false;
 	}
 
+	public Coords3D getRight() {
+		return new Coords3D(x + 1, y, z);
+	}
+
+	public Coords3D getLeft() {
+		return new Coords3D(x - 1, y, z);
+	}
+
+	public Coords3D getBottom() {
+		return new Coords3D(x, y + 1, z);
+	}
+
+	public Coords3D getTop() {
+		return new Coords3D(x, y - 1, z);
+	}
+
 	public int getX() {
 		return x;
 	}

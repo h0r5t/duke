@@ -8,6 +8,8 @@ public class AreaSelection {
 	private int startY;
 	private int z;
 	private ArrayList<Coords3D> locations;
+	private int width;
+	private int height;
 
 	public AreaSelection(int startX, int startY, int z) {
 		this.startX = startX;
@@ -44,6 +46,17 @@ public class AreaSelection {
 				Core.getWorld().getTile(c).setSelected(false);
 			}
 		}
+
+		this.width = endX - startX;
+		this.height = endY - startY;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 	public ArrayList<Coords3D> getLocations() {
@@ -54,6 +67,14 @@ public class AreaSelection {
 		for (Coords3D c : locations) {
 			c.getTile().setSelected(false);
 		}
+	}
+
+	public int getX() {
+		return startX;
+	}
+
+	public int getY() {
+		return startY;
 	}
 
 }

@@ -11,6 +11,25 @@ import pathfinder.GraphSearch_Astar;
 
 public class PathFinder {
 
+	private static Coords3D reachablePoint;
+
+	public static void setReachablePoint(Coords3D point) {
+		reachablePoint = point;
+	}
+
+	public static boolean shouldBeReachableRange1(Coords3D point) {
+
+		return pathExists(reachablePoint, point)
+				|| pathExists(reachablePoint, point.getRight())
+				|| pathExists(reachablePoint, point.getLeft())
+				|| pathExists(reachablePoint, point.getTop())
+				|| pathExists(reachablePoint, point.getBottom());
+	}
+
+	public static boolean shouldBeReachable(Coords3D point) {
+		return pathExists(reachablePoint, point);
+	}
+
 	public static boolean pathExists(Coords3D from, Coords3D to) {
 		Path t = findPath(from, to);
 		return t != null;

@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class UnitManager {
 
@@ -60,8 +61,7 @@ public class UnitManager {
 
 	public void lowerPrio(UnitWorker u) {
 		// moves unit to bottom of list (handle locked-in units.)
-		workerUnits.remove(u);
-		workerUnits.add(u);
+		Collections.rotate(workerUnits, -1);
 	}
 
 }

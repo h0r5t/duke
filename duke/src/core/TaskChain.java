@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class TaskChain extends Task {
 
-	private ArrayList<Task> taskChain;
-	private boolean pickedUp = false;
+	protected ArrayList<Task> taskChain;
+	protected boolean pickedUp = false;
 
 	public TaskChain(TaskType taskType) {
 		super(taskType);
@@ -38,10 +38,4 @@ public class TaskChain extends Task {
 			}
 		}
 	}
-
-	@Override
-	public boolean helperEnabled() {
-		return taskChain.get(0).helperEnabled();
-	}
-
 }
