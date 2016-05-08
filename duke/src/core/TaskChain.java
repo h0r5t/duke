@@ -7,8 +7,14 @@ public class TaskChain extends Task {
 	private ArrayList<Task> taskChain;
 	private boolean pickedUp = false;
 
-	public TaskChain() {
+	public TaskChain(TaskType taskType) {
+		super(taskType);
 		taskChain = new ArrayList<Task>();
+	}
+
+	@Override
+	public boolean isReachableFor(Unit unit) {
+		return taskChain.get(0).isReachableFor(unit);
 	}
 
 	public void queueTask(Task t) {
@@ -27,10 +33,15 @@ public class TaskChain extends Task {
 			if (taskChain.size() == 0) {
 				setStatus(TaskStatus.DONE);
 				unit.setActiveTaskChain(null);
-				return;
+			} else {
+				unit.setCurrentTask(taskChain.get(0));
 			}
-			unit.setCurrentTask(taskChain.get(0));
 		}
+	}
+
+	@Override
+	public boolean helperEnabled() {
+		return taskChain.get(0).helperEnabled();
 	}
 
 }

@@ -1,15 +1,17 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TaskDistributor {
 
 	private Core core;
-	private ArrayList<Task> taskList;
+	private CopyOnWriteArrayList<Task> taskList;
 
 	public TaskDistributor(Core core) {
 		this.core = core;
-		taskList = new ArrayList<Task>();
+		taskList = new CopyOnWriteArrayList<Task>();
 	}
 
 	public void addTask(Task t) {
@@ -21,40 +23,60 @@ public class TaskDistributor {
 			if (t.status == TaskStatus.OPEN)
 				return t;
 		}
-
 		return null;
 	}
 
 	public void update() {
 		distributeTasks();
-		removeDoneTasks();
+		deleteSomeTasks();
+		sortOpenTasks();
+	}
+
+	private void sortOpenTasks() {
+
 	}
 
 	private void distributeTasks() {
-		ArrayList<Unit> availableUnits = core.getUnitManager().getAvailableUnits();
+		ArrayList<UnitWorker> availableUnits = core.getUnitManager()
+				.getAvailableWorkerUnits();
 		if (availableUnits.size() == 0)
 			return;
 		Task t = getNextOpenTask();
-		if (t != null)
-			if (t.getUnitPreference() == TaskUnitPreference.UNIT_ANY)
-				availableUnits.get(0).setCurrentTask(t);
-			else if (t.getUnitPreference() == TaskUnitPreference.UNIT_CLOSEST) {
-				Unit closest = PathFinder.findUnitWithShortestPath(availableUnits, t.getFirstDestinationTile());
-				if (closest != null)
-					closest.setCurrentTask(t);
-			}
+		if (t == null)
+			return;
+
+		UnitWorker u = availableUnits.get(0);
+		if (t.isReachableFor(u)) {
+			u.setCurrentTask(t);
+			t.setStatus(TaskStatus.ASSIGNED);
+		} else {
+			// move unit and task to bottom of their lists.
+			// core.getUnitManager().lowerPrio(u);
+			taskList.remove(t);
+			taskList.add(t);
+		}
+
 	}
 
-	private void removeDoneTasks() {
-		ArrayList<Task> toDelete = new ArrayList<Task>();
+	private void deleteSomeTasks() {
+		if (taskList.size() == 0)
+			return;
+		int i = new Random().nextInt(taskList.size());
+		Task t = taskList.get(i);
+		if (t.status == TaskStatus.DONE) {
+			taskList.remove(i);
+		}
+	}
+
+	public ArrayList<String> getTasksInfoList() {
+		ArrayList<String> taskInfo = new ArrayList<String>();
 		for (Task t : taskList) {
-			if (t.status == TaskStatus.DONE)
-				toDelete.add(t);
+			taskInfo.add(String.valueOf(t.getType()).toLowerCase() + ", "
+					+ String.valueOf(t.getStatus()).toLowerCase() + ", "
+					+ t.getTaskID());
 		}
 
-		for (Task t : toDelete) {
-			taskList.remove(t);
-		}
+		return taskInfo;
 	}
 
 }

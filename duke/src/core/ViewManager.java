@@ -59,10 +59,10 @@ public class ViewManager {
 		int xrest = screenShiftX % Settings.TILE_SIZE;
 		int ystart = screenShiftY / Settings.TILE_SIZE;
 		int yrest = screenShiftY % Settings.TILE_SIZE;
+		int z = currentZ;
 
 		Cursor cursor = core.getInputManager().getCursor();
 
-		int z = currentZ;
 		for (int x = xstart; x < xstart + screenWidth; x++) {
 			for (int y = ystart; y < ystart + screenHeight; y++) {
 

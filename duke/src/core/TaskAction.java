@@ -6,7 +6,8 @@ public abstract class TaskAction extends Task implements Callbackable {
 	private boolean callbackCalled;
 	private int callbackContext;
 
-	public TaskAction() {
+	public TaskAction(TaskType type) {
+		super(type);
 		wasCalled = false;
 		callbackCalled = false;
 	}

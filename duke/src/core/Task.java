@@ -3,14 +3,21 @@ package core;
 public abstract class Task {
 
 	protected TaskStatus status = TaskStatus.OPEN;
+	private TaskType myType;
+	private int taskID;
 
-	public TaskUnitPreference getUnitPreference() {
-		return TaskUnitPreference.UNIT_ANY;
+	public Task(TaskType taskType) {
+		myType = taskType;
+		taskID = UniqueIDFactory.getID();
 	}
 
-	public Tile getFirstDestinationTile() {
-		return null;
+	public TaskType getType() {
+		return myType;
 	}
+
+	public abstract boolean helperEnabled();
+
+	public abstract boolean isReachableFor(Unit unit);
 
 	public TaskStatus getStatus() {
 		return status;
@@ -21,5 +28,9 @@ public abstract class Task {
 	}
 
 	public abstract void update(Unit unit);
+
+	public int getTaskID() {
+		return taskID;
+	}
 
 }

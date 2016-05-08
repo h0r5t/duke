@@ -11,15 +11,17 @@ public abstract class Unit implements Visual {
 	protected int y;
 	protected int z;
 	protected int unitID;
+	protected int moveSpeed;
 	protected Character myChar;
 	protected Task currentTask;
 	protected TaskChain activeTaskChain;
 
-	public Unit(int id, int x, int y, int z) {
+	public Unit(int id, int x, int y, int z, int moveSpeed) {
 		this.unitID = id;
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.moveSpeed = moveSpeed;
 		getChar();
 	}
 
@@ -28,9 +30,8 @@ public abstract class Unit implements Visual {
 			currentTask.update(this);
 			if (currentTask.status == TaskStatus.DONE) {
 				currentTask = null;
-				if (activeTaskChain != null) {
+				if (activeTaskChain != null)
 					activeTaskChain.update(this);
-				}
 			}
 		}
 
@@ -56,6 +57,10 @@ public abstract class Unit implements Visual {
 		return z;
 	}
 
+	public int getMoveSpeed() {
+		return moveSpeed;
+	}
+
 	public Task getCurrentTask() {
 		return currentTask;
 	}
@@ -66,7 +71,6 @@ public abstract class Unit implements Visual {
 
 	public void setCurrentTask(Task currentTask) {
 		this.currentTask = currentTask;
-		this.currentTask.setStatus(TaskStatus.ASSIGNED);
 	}
 
 	public void setActiveTaskChain(TaskChain chain) {
@@ -85,7 +89,8 @@ public abstract class Unit implements Visual {
 		g.setColor(myChar.getColor());
 
 		FontMetrics metrics = g.getFontMetrics(font);
-		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
+		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE,
+				Settings.TILE_SIZE);
 		String text = myChar.getChar() + "";
 		int x = (rect.width - metrics.stringWidth(text)) / 2;
 		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
@@ -95,5 +100,9 @@ public abstract class Unit implements Visual {
 
 	public Tile getTile() {
 		return Core.getWorld().getTile(x, y, z);
+	}
+
+	public Coords3D getCoords() {
+		return new Coords3D(x, y, z);
 	}
 }

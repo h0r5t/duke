@@ -19,14 +19,10 @@ public class Core implements Runnable {
 		initMgrs();
 		setupGUI();
 
-		UnitWorker testWorker = new UnitWorker(5, 5, 0);
-		unitManager.addUnit(testWorker);
-
-		UnitWorker testWorker2 = new UnitWorker(6, 5, 0);
-		unitManager.addUnit(testWorker2);
-
-		UnitWorker testWorker3 = new UnitWorker(4, 5, 0);
-		unitManager.addUnit(testWorker3);
+		for (int i = 0; i < 50; i++) {
+			UnitWorker worker = new UnitWorker(2 + i, 7, 0);
+			unitManager.addUnit(worker);
+		}
 
 		world.setTile(new TileLadderDown(7, 5, 0));
 	}
@@ -50,6 +46,7 @@ public class Core implements Runnable {
 		inputManager.update();
 		taskDistributor.update();
 		unitManager.update();
+		menuManager.update();
 
 		gamePanel.repaint();
 	}

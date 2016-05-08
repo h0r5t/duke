@@ -8,18 +8,25 @@ public class MenuManager {
 
 	private Core core;
 	private Menu currentMenu;
+	private Menu parentMenu;
 
 	public MenuManager(Core core) {
 		this.core = core;
 		currentMenu = new MenuRoot(this);
+		parentMenu = currentMenu;
 	}
 
 	public Menu getCurrentMenu() {
 		return currentMenu;
 	}
 
-	public void goToMenu(Menu currentMenu) {
-		this.currentMenu = currentMenu;
+	public void goToMenu(Menu newMenu) {
+		parentMenu = currentMenu;
+		currentMenu = newMenu;
+	}
+
+	public void goToParentMenu() {
+		currentMenu = parentMenu;
 	}
 
 	public Cursor getCursor() {
@@ -35,7 +42,7 @@ public class MenuManager {
 		g.fillRect(Settings.MENU_STARTX(), 0, Settings.MENU_WIDTH,
 				Settings.GAME_FRAME_HEIGHT);
 
-		g.setColor(Color.WHITE);
+		g.setColor(Color.LIGHT_GRAY);
 		Font font = new Font("Arial", Font.PLAIN, 20);
 		g.setFont(font);
 
@@ -45,6 +52,10 @@ public class MenuManager {
 			g.drawString(s, x, y);
 			y += 25;
 		}
+	}
+
+	public void update() {
+		currentMenu.update();
 	}
 
 }

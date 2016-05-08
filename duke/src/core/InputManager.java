@@ -20,6 +20,7 @@ public class InputManager {
 
 	public void update() {
 		mainInputController.keysPressed(keysPressed);
+		core.getMenuManager().getCurrentMenu().keysPressed(keysPressed);
 	}
 
 	public void keyPressed(KeyEvent e) {

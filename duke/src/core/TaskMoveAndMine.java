@@ -4,27 +4,28 @@ import java.util.ArrayList;
 
 public class TaskMoveAndMine extends TaskChain {
 
-	public TaskMoveAndMine(Tile tileToMine) {
-		TaskMoveMultipleTargets moveTask = new TaskMoveMultipleTargets(getPossibleTargets(tileToMine));
+	public TaskMoveAndMine(Coords3D targetToMine) {
+		super(TaskType.MINE);
+		TaskMove moveTask = new TaskMove(getPossibleTargets(targetToMine));
 		queueTask(moveTask);
 
-		TaskActionMine miningTask = new TaskActionMine(tileToMine);
+		TaskActionMine miningTask = new TaskActionMine(targetToMine);
 		queueTask(miningTask);
 	}
 
-	private ArrayList<Tile> getPossibleTargets(Tile tileToMine) {
-		int x = tileToMine.getX();
-		int y = tileToMine.getY();
+	private ArrayList<Coords3D> getPossibleTargets(Coords3D targetToMine) {
+		int x = targetToMine.getX();
+		int y = targetToMine.getY();
 
-		ArrayList<Tile> possibleTargets = new ArrayList<Tile>();
-		Tile t1 = Core.getWorld().getTile(x + 1, y, tileToMine.getZ());
-		Tile t2 = Core.getWorld().getTile(x - 1, y, tileToMine.getZ());
-		Tile t3 = Core.getWorld().getTile(x, y + 1, tileToMine.getZ());
-		Tile t4 = Core.getWorld().getTile(x, y - 1, tileToMine.getZ());
-		possibleTargets.add(t1);
-		possibleTargets.add(t2);
-		possibleTargets.add(t3);
-		possibleTargets.add(t4);
+		ArrayList<Coords3D> possibleTargets = new ArrayList<Coords3D>();
+		Tile t1 = Core.getWorld().getTile(x + 1, y, targetToMine.getZ());
+		Tile t2 = Core.getWorld().getTile(x - 1, y, targetToMine.getZ());
+		Tile t3 = Core.getWorld().getTile(x, y + 1, targetToMine.getZ());
+		Tile t4 = Core.getWorld().getTile(x, y - 1, targetToMine.getZ());
+		possibleTargets.add(t1.getCoords3D());
+		possibleTargets.add(t2.getCoords3D());
+		possibleTargets.add(t3.getCoords3D());
+		possibleTargets.add(t4.getCoords3D());
 
 		return possibleTargets;
 	}

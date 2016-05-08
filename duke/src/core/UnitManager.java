@@ -6,10 +6,12 @@ public class UnitManager {
 
 	private Core core;
 	private ArrayList<Unit> units;
+	private ArrayList<UnitWorker> workerUnits;
 
 	public UnitManager(Core core) {
 		this.core = core;
 		units = new ArrayList<Unit>();
+		workerUnits = new ArrayList<UnitWorker>();
 	}
 
 	public Unit getUnitAt(Tile tile) {
@@ -26,11 +28,13 @@ public class UnitManager {
 
 	public void addUnit(Unit u) {
 		units.add(u);
+		if (u instanceof UnitWorker)
+			workerUnits.add((UnitWorker) u);
 	}
 
-	public ArrayList<Unit> getAvailableUnits() {
-		ArrayList<Unit> available = new ArrayList<Unit>();
-		for (Unit u : units) {
+	public ArrayList<UnitWorker> getAvailableWorkerUnits() {
+		ArrayList<UnitWorker> available = new ArrayList<UnitWorker>();
+		for (UnitWorker u : workerUnits) {
 			if (!u.hasTask()) {
 				available.add(u);
 			}
@@ -52,6 +56,12 @@ public class UnitManager {
 		for (Unit u : units) {
 			u.update();
 		}
+	}
+
+	public void lowerPrio(UnitWorker u) {
+		// moves unit to bottom of list (handle locked-in units.)
+		workerUnits.remove(u);
+		workerUnits.add(u);
 	}
 
 }

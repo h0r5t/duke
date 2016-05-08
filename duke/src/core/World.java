@@ -54,6 +54,7 @@ public class World extends Graph {
 			getTile(x - 1, y + 1, z).setVisible(true);
 			getTile(x - 1, y - 1, z).setVisible(true);
 		}
+
 	}
 
 	private void setLadder(Tile tile) {
@@ -138,11 +139,13 @@ public class World extends Graph {
 		}
 	}
 
-	public void wasMined(Tile tileToMine) {
-		if (tileToMine.getZ() == 0)
-			setTile(new TileLand(tileToMine.getX(), tileToMine.getY(), tileToMine.getZ()));
+	public void wasMined(Coords3D targetToMine) {
+		if (targetToMine.getZ() == 0)
+			setTile(new TileLand(targetToMine.getX(), targetToMine.getY(),
+					targetToMine.getZ()));
 		else {
-			Tile t = new TileGround(tileToMine.getX(), tileToMine.getY(), tileToMine.getZ());
+			Tile t = new TileGround(targetToMine.getX(), targetToMine.getY(),
+					targetToMine.getZ());
 			t.setVisible(true);
 			setTile(t);
 		}
@@ -153,6 +156,10 @@ public class World extends Graph {
 		if (x < 0 || x >= world.length || y < 0 || y >= world[0].length)
 			return new TileOOB(x, y, z);
 		return (Tile) getNode(world[x][y][z]);
+	}
+
+	public Tile getTile(Coords3D coords) {
+		return getTile(coords.getX(), coords.getY(), coords.getZ());
 	}
 
 	public int getWidth() {
@@ -234,7 +241,8 @@ public class World extends Graph {
 			for (int y = 0; y < Settings.WORLD_HEIGHT; y++) {
 				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {
 					updateXYEdgesForTile(x, y, z);
-					if (getTile(x, y, z).isLadderDown() || getTile(x, y, z).isLadderUp())
+					if (getTile(x, y, z).isLadderDown()
+							|| getTile(x, y, z).isLadderUp())
 						addZEdgesForTile(x, y, z);
 					if (getTile(x, y, z).isVisible()) {
 						getTile(x + 1, y, z).setVisible(true);
@@ -255,8 +263,9 @@ public class World extends Graph {
 	}
 
 	public void setTileINITIAL(Tile tile) {
-		if (tile.getX() < 0 || tile.getX() > Settings.WORLD_WIDTH - 1 || tile.getY() < 0
-				|| tile.getY() > Settings.WORLD_HEIGHT - 1 || tile.getZ() < 0 || tile.getZ() > Settings.WORLD_DEPTH - 1)
+		if (tile.getX() < 0 || tile.getX() > Settings.WORLD_WIDTH - 1
+				|| tile.getY() < 0 || tile.getY() > Settings.WORLD_HEIGHT - 1
+				|| tile.getZ() < 0 || tile.getZ() > Settings.WORLD_DEPTH - 1)
 			return;
 		removeNode(world[tile.getX()][tile.getY()][tile.getZ()]);
 		world[tile.getX()][tile.getY()][tile.getZ()] = tile.id();

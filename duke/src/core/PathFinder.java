@@ -11,68 +11,70 @@ import pathfinder.GraphSearch_Astar;
 
 public class PathFinder {
 
-	public static boolean pathExists(Tile from, Tile to) {
-		TilePath t = findPath(from, to);
+	public static boolean pathExists(Coords3D from, Coords3D to) {
+		Path t = findPath(from, to);
 		return t != null;
 	}
 
-	public static Tile findTargetTileWithShortestPath(Tile from,
-			ArrayList<Tile> to) {
-		Tile currentShortest = to.get(0);
+	public static Coords3D findTargetTileWithShortestPath(Coords3D from,
+			ArrayList<Coords3D> to) {
+		Tile currentShortest = null;
 		int length = Integer.MAX_VALUE;
 
 		for (int i = 0; i < to.size(); i++) {
-			TilePath t = findPath(from, to.get(i));
+			Path t = findPath(from, to.get(i));
 			if (t == null)
 				continue;
 			if (t.getPathLength() < length) {
-				currentShortest = to.get(i);
+				currentShortest = to.get(i).getTile();
 				length = t.getPathLength();
 			}
 
 		}
-		return currentShortest;
+		if (currentShortest == null)
+			return null;
+		return currentShortest.getCoords3D();
 	}
 
-	public static Tile findSourceTileWithShortestPath(ArrayList<Tile> from,
-			Tile to) {
-		Tile currentShortest = from.get(0);
-		int length = Integer.MAX_VALUE;
+	// public static Tile findSourceTileWithShortestPath(ArrayList<Tile> from,
+	// Tile to) {
+	// Tile currentShortest = from.get(0);
+	// int length = Integer.MAX_VALUE;
+	//
+	// for (int i = 0; i < from.size(); i++) {
+	// Path t = findPath(from.get(i), to);
+	// if (t == null)
+	// continue;
+	// if (t.getPathLength() < length) {
+	// currentShortest = from.get(i);
+	// length = t.getPathLength();
+	// }
+	//
+	// }
+	// return currentShortest;
+	// }
 
-		for (int i = 0; i < from.size(); i++) {
-			TilePath t = findPath(from.get(i), to);
-			if (t == null)
-				continue;
-			if (t.getPathLength() < length) {
-				currentShortest = from.get(i);
-				length = t.getPathLength();
-			}
+	// public static Unit findUnitWithShortestPath(ArrayList<Unit> units,
+	// Tile to) {
+	// Unit currentShortest = units.get(0);
+	// int length = Integer.MAX_VALUE;
+	//
+	// for (int i = 0; i < units.size(); i++) {
+	// Path t = findPath(units.get(i).getTile(), to);
+	// if (t == null) {
+	// continue;
+	// }
+	//
+	// if (t.getPathLength() < length) {
+	// currentShortest = units.get(i);
+	// length = t.getPathLength();
+	// }
+	//
+	// }
+	// return currentShortest;
+	// }
 
-		}
-		return currentShortest;
-	}
-
-	public static Unit findUnitWithShortestPath(ArrayList<Unit> units,
-			Tile to) {
-		Unit currentShortest = units.get(0);
-		int length = Integer.MAX_VALUE;
-
-		for (int i = 0; i < units.size(); i++) {
-			TilePath t = findPath(units.get(i).getTile(), to);
-			if (t == null) {
-				continue;
-			}
-
-			if (t.getPathLength() < length) {
-				currentShortest = units.get(i);
-				length = t.getPathLength();
-			}
-
-		}
-		return currentShortest;
-	}
-
-	public static TilePath findPath(Tile from, Tile to) {
+	public static Path findPath(Coords3D from, Coords3D to) {
 		if (from == null || to == null)
 			return null;
 		PrintStream originalStream = System.out;
@@ -80,16 +82,17 @@ public class PathFinder {
 		dummyStream = new PrintStream(new NullOutputStream());
 		System.setOut(dummyStream);
 
-		TilePath path = new TilePath();
+		Path path = new Path();
 		GraphSearch_Astar search = new GraphSearch_Astar(Core.getWorld());
-		LinkedList<GraphNode> route = search.search(from.id(), to.id());
+		LinkedList<GraphNode> route = search.search(from.getTile().id(),
+				to.getTile().id());
 		if (route == null) {
 			System.setOut(originalStream);
 			return null;
 		}
 		for (GraphNode node : route) {
 			Tile t = (Tile) node;
-			path.add(t);
+			path.add(t.getCoords3D());
 		}
 
 		System.setOut(originalStream);

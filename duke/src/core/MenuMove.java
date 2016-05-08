@@ -10,19 +10,29 @@ public class MenuMove extends Menu {
 		addLine("select target location...");
 	}
 
+	private void onEnter() {
+		TaskMove task = new TaskMove(menuMgr.getCursor().getCoords3D());
+		menuMgr.getCore().getTaskDistributor().addTask(task);
+	}
+
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			TaskMoveSingleTarget task = new TaskMoveSingleTarget(
-					menuMgr.getCursor().getTile());
-			menuMgr.getCore().getTaskDistributor().addTask(task);
+			onEnter();
+		}
+
+		else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			menuMgr.goToParentMenu();
 		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		TaskMoveSingleTarget task = new TaskMoveSingleTarget(
-				menuMgr.getCursor().getTile());
-		menuMgr.getCore().getTaskDistributor().addTask(task);
+		onEnter();
+	}
+
+	@Override
+	public void update() {
+
 	}
 }

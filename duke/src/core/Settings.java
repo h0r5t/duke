@@ -2,7 +2,7 @@ package core;
 
 public class Settings {
 
-	public static final int SLEEP_TIME = 50;
+	public static final int SLEEP_TIME = 30;
 
 	public static final int GAME_FRAME_XPOS = 0;
 	public static final int GAME_FRAME_YPOS = 40;

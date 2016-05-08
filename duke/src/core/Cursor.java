@@ -23,6 +23,10 @@ public class Cursor implements Visual {
 		return ypos;
 	}
 
+	public int getZpos() {
+		return core.getViewManager().getCurrentZ();
+	}
+
 	public void moveX(int x) {
 		xpos += x;
 		if (xpos < 0)
@@ -52,9 +56,8 @@ public class Cursor implements Visual {
 		ypos = tile.getY();
 	}
 
-	public Tile getTile() {
-		return Core.getWorld().getTile(xpos, ypos,
-				core.getViewManager().getCurrentZ());
+	public Coords3D getCoords3D() {
+		return new Coords3D(xpos, ypos, getZpos());
 	}
 
 }

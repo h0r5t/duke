@@ -24,4 +24,10 @@ public abstract class Menu extends InputAdapter {
 		return menuText;
 	}
 
+	public void setMenuText(ArrayList<String> menuText) {
+		this.menuText = menuText;
+	}
+
+	public abstract void update();
+
 }
