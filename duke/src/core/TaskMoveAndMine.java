@@ -29,6 +29,29 @@ public class TaskMoveAndMine extends TaskChain {
 		return miningTarget;
 	}
 
+	@Override
+	public void update(Unit unit) {
+		if (pickedUp == false) {
+			pickedUp = true;
+			unit.setCurrentTask(taskChain.get(0));
+			unit.setActiveTaskChain(this);
+		}
+		if (taskChain.get(0).getStatus() == TaskStatus.DONE) {
+			taskChain.remove(0);
+			if (taskChain.size() == 0) {
+				// report to group
+				TaskGroupMining g = getTaskGroup();
+				if (g != null)
+					g.taskEnded(this);
+
+				setStatus(TaskStatus.DONE);
+				unit.setActiveTaskChain(null);
+			} else {
+				unit.setCurrentTask(taskChain.get(0));
+			}
+		}
+	}
+
 	private ArrayList<Coords3D> getPossibleTargets(Coords3D targetToMine) {
 		int x = targetToMine.getX();
 		int y = targetToMine.getY();

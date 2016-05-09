@@ -34,11 +34,11 @@ public class TaskDistributor {
 	private void manageTaskGroups() {
 		ArrayList<TaskGroupMining> toDelete = new ArrayList<TaskGroupMining>();
 		for (TaskGroupMining taskGroup : taskGroups) {
-			TaskMoveAndMine nextTask = taskGroup.getNextTask();
-			if (nextTask == null) {
+			ArrayList<TaskMoveAndMine> nextTasks = taskGroup.getNextTasks();
+			if (nextTasks.size() == 0) {
 				// toDelete.add(taskGroup);
 			} else {
-				taskList.add(nextTask);
+				taskList.addAll(nextTasks);
 			}
 		}
 		taskGroups.removeAll(toDelete);
