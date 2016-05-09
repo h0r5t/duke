@@ -36,14 +36,14 @@ public class AreaSelection {
 			for (int o = startY; o < endY + 1; o++) {
 				coord = new Coords3D(i, o, z);
 				Tile tile = coord.getTile();
-				tile.setSelected(true);
+				tile.select(this);
 				locations.add(coord);
 			}
 		}
 
 		for (Coords3D c : oldLocations) {
 			if (!locations.contains(c)) {
-				Core.getWorld().getTile(c).setSelected(false);
+				Core.getWorld().getTile(c).deselect(this);
 			}
 		}
 
@@ -65,7 +65,7 @@ public class AreaSelection {
 
 	public void reset() {
 		for (Coords3D c : locations) {
-			c.getTile().setSelected(false);
+			c.getTile().deselect(this);
 		}
 	}
 

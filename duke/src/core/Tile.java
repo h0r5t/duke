@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import pathfinder.GraphNode;
 
@@ -13,11 +14,12 @@ public abstract class Tile extends GraphNode implements Visual {
 	protected Character myChar;
 	protected int tileID;
 	private boolean isVisible;
-	private boolean isSelected;
+	private ArrayList<AreaSelection> selections;
 
 	public Tile(int tileID, int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
 		this.tileID = tileID;
+		this.selections = new ArrayList<AreaSelection>();
 		getChar();
 		if (z == 0) {
 			setVisible(true);
@@ -33,11 +35,17 @@ public abstract class Tile extends GraphNode implements Visual {
 	}
 
 	public boolean isSelected() {
-		return isSelected;
+		return selections.size() > 0;
 	}
 
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
+	public void select(AreaSelection selection) {
+		if (selections.contains(selection))
+			return;
+		selections.add(selection);
+	}
+
+	public void deselect(AreaSelection selection) {
+		selections.remove(selection);
 	}
 
 	protected void getChar() {
@@ -86,12 +94,10 @@ public abstract class Tile extends GraphNode implements Visual {
 			g.setColor(myChar.getColor());
 
 			FontMetrics metrics = g.getFontMetrics(font);
-			Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE,
-					Settings.TILE_SIZE);
+			Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
 			String text = myChar.getChar() + "";
 			int x = (rect.width - metrics.stringWidth(text)) / 2;
-			int y = ((rect.height - metrics.getHeight()) / 2)
-					+ metrics.getAscent();
+			int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
 			g.setFont(font);
 			g.drawString(text, posX + x, posY + y);
 		}
@@ -101,10 +107,9 @@ public abstract class Tile extends GraphNode implements Visual {
 			g.drawRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
 		}
 
-		if (isSelected) {
+		if (isSelected()) {
 			g.setColor(Color.CYAN);
-			g.drawRect(posX + 1, posY + 1, Settings.TILE_SIZE - 3,
-					Settings.TILE_SIZE - 3);
+			g.drawRect(posX + 1, posY + 1, Settings.TILE_SIZE - 3, Settings.TILE_SIZE - 3);
 		}
 
 	}

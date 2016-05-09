@@ -46,26 +46,4 @@ public class TaskMoveAndMine extends TaskChain {
 		return possibleTargets;
 	}
 
-	@Override
-	public void update(Unit unit) {
-		if (pickedUp == false) {
-			pickedUp = true;
-			unit.setCurrentTask(taskChain.get(0));
-			unit.setActiveTaskChain(this);
-		}
-		if (taskChain.get(0).getStatus() == TaskStatus.DONE) {
-			taskChain.remove(0);
-			if (taskChain.size() == 0) {
-				setStatus(TaskStatus.DONE);
-				unit.setActiveTaskChain(null);
-				TaskGroupMining taskGroup = getTaskGroup();
-				if (taskGroup != null) {
-					taskGroup.removeLock();
-				}
-			} else {
-				unit.setCurrentTask(taskChain.get(0));
-			}
-		}
-	}
-
 }

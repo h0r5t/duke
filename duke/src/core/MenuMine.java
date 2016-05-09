@@ -16,8 +16,7 @@ public class MenuMine extends Menu {
 	private void onEnter() {
 		if (areaSelection == null) {
 			Cursor cursor = menuMgr.getCursor();
-			areaSelection = new AreaSelection(cursor.getXpos(),
-					cursor.getYpos(), cursor.getZpos());
+			areaSelection = new AreaSelection(cursor.getXpos(), cursor.getYpos(), cursor.getZpos());
 		} else {
 			createMiningTaskGroup();
 			areaSelection = null;
@@ -26,16 +25,13 @@ public class MenuMine extends Menu {
 	}
 
 	private void createMiningTaskGroup() {
-		TaskGroupMining taskGroup = new TaskGroupMining(areaSelection.getX(),
-				areaSelection.getY(), areaSelection.getWidth(),
-				areaSelection.getHeight(), areaSelection.getLocations());
+		TaskGroupMining taskGroup = new TaskGroupMining(areaSelection);
 		menuMgr.getCore().getTaskDistributor().addTaskGroup(taskGroup);
 	}
 
 	private void selectorMoved() {
 		if (areaSelection != null) {
-			areaSelection.setEnd(menuMgr.getCursor().getXpos(),
-					menuMgr.getCursor().getYpos());
+			areaSelection.setEnd(menuMgr.getCursor().getXpos(), menuMgr.getCursor().getYpos());
 		}
 	}
 

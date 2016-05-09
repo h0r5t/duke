@@ -34,20 +34,12 @@ public class TaskDistributor {
 	private void manageTaskGroups() {
 		ArrayList<TaskGroupMining> toDelete = new ArrayList<TaskGroupMining>();
 		for (TaskGroupMining taskGroup : taskGroups) {
-			if (!taskGroup.isLocked()) {
-				ArrayList nextTaskLayer = taskGroup.getNextTaskLayer();
-				if (nextTaskLayer == null) {
-					toDelete.add(taskGroup);
-				} else {
-					if (nextTaskLayer.get(0) instanceof TaskMoveAndMine) {
-						for (Object o : nextTaskLayer) {
-							taskList.add((TaskMoveAndMine) o);
-							taskGroup.addLock();
-						}
-					}
-				}
+			TaskMoveAndMine nextTask = taskGroup.getNextTask();
+			if (nextTask == null) {
+				// toDelete.add(taskGroup);
+			} else {
+				taskList.add(nextTask);
 			}
-
 		}
 		taskGroups.removeAll(toDelete);
 	}
@@ -89,9 +81,8 @@ public class TaskDistributor {
 	public ArrayList<String> getTasksInfoList() {
 		ArrayList<String> taskInfo = new ArrayList<String>();
 		for (Task t : taskList) {
-			taskInfo.add(String.valueOf(t.getType()).toLowerCase() + ", "
-					+ String.valueOf(t.getStatus()).toLowerCase() + ", "
-					+ t.getTaskID());
+			taskInfo.add(String.valueOf(t.getType()).toLowerCase() + ", " + String.valueOf(t.getStatus()).toLowerCase()
+					+ ", " + t.getTaskID());
 		}
 
 		return taskInfo;

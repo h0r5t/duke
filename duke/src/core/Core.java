@@ -20,6 +20,7 @@ public class Core implements Runnable {
 		setupGUI();
 
 		for (int i = 0; i < 20; i++) {
+			world.setTile(new TileLand(2 + i, 7, 0));
 			UnitWorker worker = new UnitWorker(2 + i, 7, 0);
 			unitManager.addUnit(worker);
 		}
