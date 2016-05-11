@@ -2,7 +2,7 @@ package core;
 
 import java.util.ArrayList;
 
-public class TaskMove extends Task {
+public class TaskMove extends Task implements UsesPathFinderASync {
 
 	private Path path;
 	private int moveCooldown;
@@ -60,5 +60,11 @@ public class TaskMove extends Task {
 			unit.moveTo(nextTile.getX(), nextTile.getY(), nextTile.getZ());
 			moveCooldown = unit.getMoveSpeed();
 		}
+	}
+
+	@Override
+	public void pathCallback(Path path) {
+		// TODO Auto-generated method stub
+
 	}
 }

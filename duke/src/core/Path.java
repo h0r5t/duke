@@ -6,9 +6,18 @@ public class Path {
 
 	private ArrayList<Coords3D> path;
 	int counter = 0;
+	private boolean isNull;
 
 	public Path() {
 		path = new ArrayList<Coords3D>();
+	}
+
+	public Path(boolean isNull) {
+		this.isNull = isNull;
+	}
+
+	public boolean isNull() {
+		return isNull;
 	}
 
 	public void add(Coords3D t) {

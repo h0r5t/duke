@@ -14,12 +14,12 @@ public abstract class Tile extends GraphNode implements Visual {
 	protected Character myChar;
 	protected int tileID;
 	private boolean isVisible;
-	private ArrayList<AreaSelection> selections;
+	private ArrayList<SelectionArea> selections;
 
 	public Tile(int tileID, int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
 		this.tileID = tileID;
-		this.selections = new ArrayList<AreaSelection>();
+		this.selections = new ArrayList<SelectionArea>();
 		getChar();
 		if (z == 0) {
 			setVisible(true);
@@ -38,13 +38,13 @@ public abstract class Tile extends GraphNode implements Visual {
 		return selections.size() > 0;
 	}
 
-	public void select(AreaSelection selection) {
+	public void select(SelectionArea selection) {
 		if (selections.contains(selection))
 			return;
 		selections.add(selection);
 	}
 
-	public void deselect(AreaSelection selection) {
+	public void deselect(SelectionArea selection) {
 		selections.remove(selection);
 	}
 
@@ -94,10 +94,12 @@ public abstract class Tile extends GraphNode implements Visual {
 			g.setColor(myChar.getColor());
 
 			FontMetrics metrics = g.getFontMetrics(font);
-			Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
+			Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE,
+					Settings.TILE_SIZE);
 			String text = myChar.getChar() + "";
 			int x = (rect.width - metrics.stringWidth(text)) / 2;
-			int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+			int y = ((rect.height - metrics.getHeight()) / 2)
+					+ metrics.getAscent();
 			g.setFont(font);
 			g.drawString(text, posX + x, posY + y);
 		}
@@ -109,7 +111,8 @@ public abstract class Tile extends GraphNode implements Visual {
 
 		if (isSelected()) {
 			g.setColor(Color.CYAN);
-			g.drawRect(posX + 1, posY + 1, Settings.TILE_SIZE - 3, Settings.TILE_SIZE - 3);
+			g.drawRect(posX + 1, posY + 1, Settings.TILE_SIZE - 3,
+					Settings.TILE_SIZE - 3);
 		}
 
 	}

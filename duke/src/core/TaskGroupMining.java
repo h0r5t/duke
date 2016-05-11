@@ -12,7 +12,7 @@ public class TaskGroupMining {
 	private int width;
 	private int height;
 
-	public TaskGroupMining(AreaSelection area) {
+	public TaskGroupMining(SelectionArea area) {
 		this.xstart = area.getX();
 		this.ystart = area.getY();
 		this.width = area.getWidth() + 1;
@@ -26,7 +26,8 @@ public class TaskGroupMining {
 				c.getTile().deselect(area);
 				continue;
 			}
-			points[c.getX() - xstart][c.getY() - ystart] = new TaskMoveAndMine(c);
+			points[c.getX() - xstart][c.getY() - ystart] = new TaskMoveAndMine(
+					c);
 			points[c.getX() - xstart][c.getY() - ystart].setTaskGroup(this);
 			all.add(points[c.getX() - xstart][c.getY() - ystart]);
 		}
@@ -35,13 +36,15 @@ public class TaskGroupMining {
 
 	public void taskEnded(TaskMoveAndMine t) {
 		Coords3D left = t.getMiningTarget().getLeft();
-		if (allContains(left) && PathFinder.shouldBeReachableSurrounding(left)) {
+		if (allContains(left)
+				&& PathFinder.shouldBeReachableSurrounding(left)) {
 			toRelease.add(points[left.getX() - xstart][left.getY() - ystart]);
 			all.remove(points[left.getX() - xstart][left.getY() - ystart]);
 		}
 
 		Coords3D right = t.getMiningTarget().getRight();
-		if (allContains(right) && PathFinder.shouldBeReachableSurrounding(right)) {
+		if (allContains(right)
+				&& PathFinder.shouldBeReachableSurrounding(right)) {
 			toRelease.add(points[right.getX() - xstart][right.getY() - ystart]);
 			all.remove(points[right.getX() - xstart][right.getY() - ystart]);
 		}
@@ -77,26 +80,15 @@ public class TaskGroupMining {
 	}
 
 	private void sort() {
-		// check all outer tasks for reachability
+		// check all tasks for reachability
 		for (int x = 0; x < width; x++) {
-			Coords3D c1 = points[x][0].getMiningTarget();
-			Coords3D c2 = points[x][height - 1].getMiningTarget();
-			if (PathFinder.shouldBeReachableSurrounding(c1)) {
-				toRelease.add(points[x][0]);
-			}
-			if (PathFinder.shouldBeReachableSurrounding(c2)) {
-				toRelease.add(points[x][height - 1]);
-			}
-		}
-
-		for (int y = 0; y < height; y++) {
-			Coords3D c1 = points[0][y].getMiningTarget();
-			Coords3D c2 = points[width - 1][y].getMiningTarget();
-			if (PathFinder.shouldBeReachableSurrounding(c1)) {
-				toRelease.add(points[0][y]);
-			}
-			if (PathFinder.shouldBeReachableSurrounding(c2)) {
-				toRelease.add(points[width - 1][y]);
+			for (int y = 0; y < height; y++) {
+				if (points[x][y] != null) {
+					Coords3D c = points[x][y].getMiningTarget();
+					if (PathFinder.shouldBeReachableSurrounding(c)) {
+						toRelease.add(points[x][y]);
+					}
+				}
 			}
 		}
 	}

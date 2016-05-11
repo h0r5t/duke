@@ -20,7 +20,11 @@ public class UnitManager {
 	}
 
 	public Unit getUnitAt(int x, int y, int z) {
-		for (Unit u : units) {
+		for (int i = 0; i < units.size(); i++) {
+			Unit u = units.get(i);
+			if (u == null) {
+				continue;
+			}
 			if (u.getX() == x && u.getY() == y && u.getZ() == z)
 				return u;
 		}

@@ -2,7 +2,7 @@ package core;
 
 import java.util.ArrayList;
 
-public class AreaSelection {
+public class SelectionArea {
 
 	private int startX;
 	private int startY;
@@ -11,7 +11,7 @@ public class AreaSelection {
 	private int width;
 	private int height;
 
-	public AreaSelection(int startX, int startY, int z) {
+	public SelectionArea(int startX, int startY, int z) {
 		this.startX = startX;
 		this.startY = startY;
 		this.z = z;
@@ -66,6 +66,13 @@ public class AreaSelection {
 	public void reset() {
 		for (Coords3D c : locations) {
 			c.getTile().deselect(this);
+		}
+	}
+
+	public void removeNonColliding() {
+		for (Coords3D c : locations) {
+			if (!c.getTile().collides())
+				c.getTile().deselect(this);
 		}
 	}
 
