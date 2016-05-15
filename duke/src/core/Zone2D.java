@@ -2,7 +2,7 @@ package core;
 
 import java.util.ArrayList;
 
-public class SelectionArea {
+public class Zone2D {
 
 	private int startX;
 	private int startY;
@@ -10,13 +10,15 @@ public class SelectionArea {
 	private ArrayList<Coords3D> locations;
 	private int width;
 	private int height;
+	private SelectionType zoneType;
 
-	public SelectionArea(int startX, int startY, int z) {
+	public Zone2D(int startX, int startY, int z, SelectionType zoneType) {
 		this.startX = startX;
 		this.startY = startY;
 		this.z = z;
 		locations = new ArrayList<Coords3D>();
 		setEnd(startX, startY);
+		this.zoneType = zoneType;
 	}
 
 	public int getZ() {
@@ -59,7 +61,7 @@ public class SelectionArea {
 		return height;
 	}
 
-	public ArrayList<Coords3D> getLocations() {
+	public ArrayList<Coords3D> getCoords() {
 		return locations;
 	}
 
@@ -69,9 +71,13 @@ public class SelectionArea {
 		}
 	}
 
-	public void removeNonColliding() {
+	public SelectionType getSelectionType() {
+		return zoneType;
+	}
+
+	public void removeNonMineables() {
 		for (Coords3D c : locations) {
-			if (!c.getTile().collides())
+			if (!c.getTile().canBeMined())
 				c.getTile().deselect(this);
 		}
 	}

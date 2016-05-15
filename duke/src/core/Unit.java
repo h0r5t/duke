@@ -15,6 +15,7 @@ public abstract class Unit implements Visual {
 	protected Character myChar;
 	protected Task currentTask;
 	protected TaskChain activeTaskChain;
+	private Inventory inventory;
 
 	public Unit(int id, int x, int y, int z, int moveSpeed) {
 		this.unitID = id;
@@ -22,7 +23,12 @@ public abstract class Unit implements Visual {
 		this.y = y;
 		this.z = z;
 		this.moveSpeed = moveSpeed;
+		inventory = new Inventory();
 		getChar();
+	}
+
+	public Inventory getInventory() {
+		return inventory;
 	}
 
 	public void update() {
@@ -38,7 +44,7 @@ public abstract class Unit implements Visual {
 	}
 
 	protected void getChar() {
-		myChar = Chars.getRandomUnitCharacter(unitID);
+		myChar = GameData.getRandomUnitCharacter(unitID);
 	}
 
 	public int getUnitID() {

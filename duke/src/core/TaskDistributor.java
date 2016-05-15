@@ -23,12 +23,20 @@ public class TaskDistributor {
 		taskGroups.add(t);
 	}
 
-	private Task getNextOpenTask() {
+	private Task getNextOpenTask(UnitWorker u) {
+		int highestPrio = 0;
+		Task highestTask = null;
+
 		for (Task t : taskList) {
-			if (t.status == TaskStatus.OPEN)
-				return t;
+			if (t.status == TaskStatus.OPEN) {
+				int taskPrio = u.getTaskPriorities().getPriorityForTask(t);
+				if (taskPrio > highestPrio) {
+					highestPrio = taskPrio;
+					highestTask = t;
+				}
+			}
 		}
-		return null;
+		return highestTask;
 	}
 
 	private void manageTaskGroups() {
@@ -58,11 +66,10 @@ public class TaskDistributor {
 		availableUnits = core.getUnitManager().getAvailableWorkerUnits();
 		if (availableUnits.size() == 0)
 			return;
-		t = getNextOpenTask();
+		u = availableUnits.get(0);
+		t = getNextOpenTask(u);
 		if (t == null)
 			return;
-
-		u = availableUnits.get(0);
 
 		u.setCurrentTask(t);
 		t.setStatus(TaskStatus.ASSIGNED);

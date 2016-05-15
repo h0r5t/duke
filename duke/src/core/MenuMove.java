@@ -35,4 +35,9 @@ public class MenuMove extends Menu {
 	public void update() {
 
 	}
+
+	@Override
+	public Menu getParentMenu() {
+		return new MenuRoot(menuMgr);
+	}
 }

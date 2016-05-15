@@ -9,6 +9,7 @@ public class MenuRoot extends Menu {
 		addLine("m: move");
 		addLine("r: mine/remove trees");
 		addLine("t: tasks");
+		addLine("z: zones");
 	}
 
 	@Override
@@ -24,11 +25,20 @@ public class MenuRoot extends Menu {
 		else if (e.getKeyCode() == KeyEvent.VK_T) {
 			menuMgr.goToMenu(new MenuTasksView(menuMgr));
 		}
+
+		else if (e.getKeyCode() == KeyEvent.VK_Z) {
+			menuMgr.goToMenu(new MenuZones(menuMgr));
+		}
 	}
 
 	@Override
 	public void update() {
 
+	}
+
+	@Override
+	public Menu getParentMenu() {
+		return this;
 	}
 
 }

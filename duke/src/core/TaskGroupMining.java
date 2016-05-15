@@ -15,7 +15,7 @@ public class TaskGroupMining implements Runnable {
 	private int height;
 	private boolean sorted = false;
 
-	public TaskGroupMining(SelectionArea area) {
+	public TaskGroupMining(Zone2D area) {
 		this.xstart = area.getX();
 		this.ystart = area.getY();
 		this.width = area.getWidth() + 1;
@@ -25,8 +25,8 @@ public class TaskGroupMining implements Runnable {
 		ended = new CopyOnWriteArrayList<TaskMoveAndMine>();
 		toRelease = new ArrayList<TaskMoveAndMine>();
 
-		for (Coords3D c : area.getLocations()) {
-			if (!c.getTile().collides()) {
+		for (Coords3D c : area.getCoords()) {
+			if (!c.getTile().canBeMined()) {
 				c.getTile().deselect(area);
 				continue;
 			}

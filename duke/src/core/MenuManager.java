@@ -8,13 +8,11 @@ public class MenuManager {
 
 	private Core core;
 	private Menu currentMenu;
-	private Menu parentMenu;
 	private int currentLoopTime;
 
 	public MenuManager(Core core) {
 		this.core = core;
 		currentMenu = new MenuRoot(this);
-		parentMenu = currentMenu;
 		currentLoopTime = 0;
 	}
 
@@ -23,12 +21,11 @@ public class MenuManager {
 	}
 
 	public void goToMenu(Menu newMenu) {
-		parentMenu = currentMenu;
 		currentMenu = newMenu;
 	}
 
 	public void goToParentMenu() {
-		currentMenu = parentMenu;
+		currentMenu = currentMenu.getParentMenu();
 	}
 
 	public Cursor getCursor() {

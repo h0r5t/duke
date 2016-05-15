@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 
 public class MenuMine extends Menu {
 
-	private SelectionArea areaSelection;
+	private Zone2D areaSelection;
 	private boolean cursorMoved = false;
 
 	public MenuMine(MenuManager menuMgr) {
@@ -16,8 +16,8 @@ public class MenuMine extends Menu {
 	private void onEnter() {
 		if (areaSelection == null) {
 			Cursor cursor = menuMgr.getCursor();
-			areaSelection = new SelectionArea(cursor.getXpos(),
-					cursor.getYpos(), cursor.getZpos());
+			areaSelection = new Zone2D(cursor.getXpos(), cursor.getYpos(),
+					cursor.getZpos(), SelectionType.TYPE_DESIGNATION);
 		} else {
 			createMiningTaskGroup();
 			areaSelection = null;
@@ -27,7 +27,7 @@ public class MenuMine extends Menu {
 
 	private void createMiningTaskGroup() {
 		TaskGroupMining taskGroup = new TaskGroupMining(areaSelection);
-		areaSelection.removeNonColliding();
+		areaSelection.removeNonMineables();
 		menuMgr.getCore().getTaskDistributor().addTaskGroup(taskGroup);
 		new Thread(taskGroup).start();
 	}
@@ -76,6 +76,11 @@ public class MenuMine extends Menu {
 			selectorMoved();
 			cursorMoved = false;
 		}
+	}
+
+	@Override
+	public Menu getParentMenu() {
+		return new MenuRoot(menuMgr);
 	}
 
 }

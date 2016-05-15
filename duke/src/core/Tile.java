@@ -14,16 +14,24 @@ public abstract class Tile extends GraphNode implements Visual {
 	protected Character myChar;
 	protected int tileID;
 	private boolean isVisible;
-	private ArrayList<SelectionArea> selections;
+	private ArrayList<Zone2D> selections;
 
 	public Tile(int tileID, int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
 		this.tileID = tileID;
-		this.selections = new ArrayList<SelectionArea>();
+		this.selections = new ArrayList<Zone2D>();
 		getChar();
 		if (z == 0) {
 			setVisible(true);
 		}
+	}
+
+	public Item getItemDroppedOnMining() {
+		return null;
+	}
+
+	public boolean canBeMined() {
+		return false;
 	}
 
 	public boolean isVisible() {
@@ -38,20 +46,20 @@ public abstract class Tile extends GraphNode implements Visual {
 		return selections.size() > 0;
 	}
 
-	public void select(SelectionArea selection) {
+	public void select(Zone2D selection) {
 		if (selections.contains(selection))
 			return;
 		selections.add(selection);
 	}
 
-	public void deselect(SelectionArea selection) {
+	public void deselect(Zone2D selection) {
 		selections.remove(selection);
 	}
 
 	protected void getChar() {
 		if (tileID == -1)
 			return;
-		myChar = Chars.getRandomTileCharacter(getTileID());
+		myChar = GameData.getRandomTileCharacter(getTileID());
 	}
 
 	public int getTileID() {
@@ -110,9 +118,18 @@ public abstract class Tile extends GraphNode implements Visual {
 		}
 
 		if (isSelected()) {
-			g.setColor(Color.CYAN);
-			g.drawRect(posX, posY, Settings.TILE_SIZE - 1,
-					Settings.TILE_SIZE - 1);
+			if (selections.get(0)
+					.getSelectionType() == SelectionType.TYPE_DESIGNATION) {
+				g.setColor(Color.CYAN);
+				g.drawRect(posX, posY, Settings.TILE_SIZE - 1,
+						Settings.TILE_SIZE - 1);
+			} else if (selections.get(0)
+					.getSelectionType() == SelectionType.TYPE_ZONE) {
+				g.setColor(Color.MAGENTA);
+				g.fillRect(posX, posY, Settings.TILE_SIZE - 1,
+						Settings.TILE_SIZE - 1);
+			}
+
 		}
 
 	}

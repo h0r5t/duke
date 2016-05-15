@@ -14,12 +14,13 @@ public class Core implements Runnable {
 	private TaskDistributor taskDistributor;
 	private UnitManager unitManager;
 	private MenuManager menuManager;
+	private LogisticsManager logisticsManager;
 
 	private static World world;
 
 	public Core() {
 		System.setOut(new PrintStream(new NullOutputStream()));
-		Chars.load();
+		GameData.load();
 		world = WorldGenerator.generateWorld(this);
 		initMgrs();
 		setupGUI();
@@ -39,6 +40,7 @@ public class Core implements Runnable {
 		taskDistributor = new TaskDistributor(this);
 		unitManager = new UnitManager(this);
 		menuManager = new MenuManager(this);
+		logisticsManager = new LogisticsManager(this);
 		inputManager = new InputManager(this);
 		new Thread(inputManager).start();
 	}
@@ -102,6 +104,10 @@ public class Core implements Runnable {
 
 	public MenuManager getMenuManager() {
 		return menuManager;
+	}
+
+	public LogisticsManager getLogisticsManager() {
+		return logisticsManager;
 	}
 
 	public static void main(String[] args) {

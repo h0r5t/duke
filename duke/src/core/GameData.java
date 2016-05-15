@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Chars {
+public class GameData {
 
 	private static HashMap<String, Integer> tileIDs;
 	private static HashMap<String, Integer> unitIDs;
@@ -111,6 +111,10 @@ public class Chars {
 
 	public static Integer getUnitID(String s) {
 		return unitIDs.get(s);
+	}
+
+	public static Integer getItemID(String s) {
+		return itemIDs.get(s);
 	}
 
 	public static Character getRandomTileCharacter(int tileID) {

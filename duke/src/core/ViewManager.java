@@ -1,6 +1,7 @@
 package core;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 public class ViewManager {
 
@@ -73,6 +74,11 @@ public class ViewManager {
 				}
 
 				if (tile != null && tile.isVisible()) {
+					ArrayList<Item> items = w.getItemsAt(tile.getCoords3D());
+					for (Item i : items) {
+						i.draw(g, (x - xstart) * tileSize - xrest,
+								(y - ystart) * tileSize - yrest);
+					}
 					Unit u = w.getUnitAt(x, y, z);
 					if (u != null) {
 						u.draw(g, (x - xstart) * tileSize - xrest,

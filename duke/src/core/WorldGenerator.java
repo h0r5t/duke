@@ -19,7 +19,7 @@ public class WorldGenerator {
 		for (int i = 0; i < trees; i++) {
 			int x = r.nextInt(Settings.WORLD_WIDTH);
 			int y = r.nextInt(Settings.WORLD_HEIGHT);
-			world.setTileINITIAL(new TileWoods(x, y, 0));
+			world.setTileINITIAL(new TileTree(x, y, 0));
 		}
 
 		int bushes = r.nextInt(200) + 50;

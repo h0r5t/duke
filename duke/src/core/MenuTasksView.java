@@ -20,4 +20,9 @@ public class MenuTasksView extends Menu {
 		}
 	}
 
+	@Override
+	public Menu getParentMenu() {
+		return new MenuRoot(menuMgr);
+	}
+
 }

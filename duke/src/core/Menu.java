@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public abstract class Menu extends InputAdapter {
 
-	private ArrayList<String> menuText;
+	protected ArrayList<String> menuText;
 	protected MenuManager menuMgr;
 
 	public Menu(MenuManager menuMgr) {
@@ -29,5 +29,7 @@ public abstract class Menu extends InputAdapter {
 	}
 
 	public abstract void update();
+
+	public abstract Menu getParentMenu();
 
 }

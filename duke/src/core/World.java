@@ -1,16 +1,20 @@
 package core;
 
+import java.util.ArrayList;
+
 import pathfinder.Graph;
 
 public class World extends Graph {
 
 	private Core core;
 	private int[][][] world;
+	private ItemStorage itemStorage;
 
 	public World(Core core) {
 		super();
 		this.core = core;
 		world = new int[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT][Settings.WORLD_DEPTH];
+		itemStorage = new ItemStorage();
 	}
 
 	public Unit getUnitAt(Tile tile) {
@@ -19,6 +23,26 @@ public class World extends Graph {
 
 	public Unit getUnitAt(int x, int y, int z) {
 		return core.getUnitManager().getUnitAt(x, y, z);
+	}
+
+	public void addItem(Item item, Coords3D c) {
+		itemStorage.addItem(item, c);
+	}
+
+	public void removeItem(Item item) {
+		itemStorage.removeItem(item);
+	}
+
+	public ArrayList<Item> getItemsAt(Coords3D c) {
+		return itemStorage.getItemsAt(c);
+	}
+
+	public Coords3D getItemPos(Item item) {
+		return itemStorage.getItemPos(item);
+	}
+
+	public ArrayList<Item> getItems() {
+		return itemStorage.getItems();
 	}
 
 	public void setTile(Tile tile) {
@@ -140,6 +164,7 @@ public class World extends Graph {
 	}
 
 	public void wasMined(Coords3D targetToMine) {
+		Item droppedItem = targetToMine.getTile().getItemDroppedOnMining();
 		if (targetToMine.getZ() == 0)
 			setTile(new TileLand(targetToMine.getX(), targetToMine.getY(),
 					targetToMine.getZ()));
@@ -149,7 +174,13 @@ public class World extends Graph {
 			t.setVisible(true);
 			setTile(t);
 		}
-
+		if (droppedItem != null) {
+			addItem(droppedItem, targetToMine);
+			TaskHaul haulTest = new TaskHaul(droppedItem,
+					core.getLogisticsManager().getStockPileManager()
+							.getStockpileForItem(droppedItem));
+			core.getTaskDistributor().addTask(haulTest);
+		}
 	}
 
 	public Tile getTile(int x, int y, int z) {

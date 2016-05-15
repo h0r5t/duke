@@ -4,6 +4,12 @@ public enum TaskType {
 
 	MOVE,
 
-	MINE;
+	MINE,
+
+	HAUL,
+
+	PICK_UP_ITEM,
+
+	DROP_ITEM;
 
 }
