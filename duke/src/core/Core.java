@@ -1,5 +1,9 @@
 package core;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 public class Core implements Runnable {
 
 	private GameFrame gameFrame;
@@ -14,12 +18,13 @@ public class Core implements Runnable {
 	private static World world;
 
 	public Core() {
+		System.setOut(new PrintStream(new NullOutputStream()));
 		Chars.load();
 		world = WorldGenerator.generateWorld(this);
 		initMgrs();
 		setupGUI();
 
-		for (int i = 0; i < 20; i++) {
+		for (int i = 0; i < 3; i++) {
 			world.setTile(new TileLand(2 + i, 7, 0));
 			UnitWorker worker = new UnitWorker(2 + i, 7, 0);
 			unitManager.addUnit(worker);
@@ -31,10 +36,11 @@ public class Core implements Runnable {
 
 	private void initMgrs() {
 		viewManager = new ViewManager(this);
-		inputManager = new InputManager(this);
 		taskDistributor = new TaskDistributor(this);
 		unitManager = new UnitManager(this);
 		menuManager = new MenuManager(this);
+		inputManager = new InputManager(this);
+		new Thread(inputManager).start();
 	}
 
 	private void setupGUI() {
@@ -48,10 +54,7 @@ public class Core implements Runnable {
 		menuManager.update();
 		taskDistributor.update();
 		gamePanel.repaint();
-
 		unitManager.update();
-		inputManager.update();
-
 	}
 
 	@Override
@@ -105,6 +108,14 @@ public class Core implements Runnable {
 		Core core = new Core();
 		Thread t = new Thread(core);
 		t.start();
+	}
+
+	private static class NullOutputStream extends OutputStream {
+		@Override
+		public void write(int b) throws IOException {
+
+		}
+
 	}
 
 }

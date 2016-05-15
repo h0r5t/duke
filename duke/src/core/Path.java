@@ -6,18 +6,19 @@ public class Path {
 
 	private ArrayList<Coords3D> path;
 	int counter = 0;
-	private boolean isNull;
+	private boolean isPossible;
 
-	public Path() {
+	public Path(boolean isPossible) {
 		path = new ArrayList<Coords3D>();
+		this.isPossible = isPossible;
 	}
 
-	public Path(boolean isNull) {
-		this.isNull = isNull;
+	public void set(Path p) {
+		path = p.getPathList();
 	}
 
-	public boolean isNull() {
-		return isNull;
+	public boolean isPossible() {
+		return isPossible;
 	}
 
 	public void add(Coords3D t) {
@@ -27,6 +28,10 @@ public class Path {
 			return;
 		}
 		path.add(t);
+	}
+
+	public ArrayList<Coords3D> getPathList() {
+		return path;
 	}
 
 	public int getPathLength() {

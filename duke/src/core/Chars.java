@@ -62,7 +62,7 @@ public class Chars {
 		tileIDCharMap.put(4, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("■", Color.DARK_GRAY, 40));
+		list.add(new Character("■", Color.DARK_GRAY, 35));
 		tileIDCharMap.put(5, list);
 
 		list = new ArrayList<Character>();

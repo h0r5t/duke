@@ -29,6 +29,7 @@ public class MenuMine extends Menu {
 		TaskGroupMining taskGroup = new TaskGroupMining(areaSelection);
 		areaSelection.removeNonColliding();
 		menuMgr.getCore().getTaskDistributor().addTaskGroup(taskGroup);
+		new Thread(taskGroup).start();
 	}
 
 	private void selectorMoved() {

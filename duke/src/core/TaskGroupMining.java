@@ -1,16 +1,19 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public class TaskGroupMining {
+public class TaskGroupMining implements Runnable {
 
 	private TaskMoveAndMine[][] points;
 	private ArrayList<TaskMoveAndMine> all;
+	private CopyOnWriteArrayList<TaskMoveAndMine> ended;
 	private ArrayList<TaskMoveAndMine> toRelease;
 	private int xstart;
 	private int ystart;
 	private int width;
 	private int height;
+	private boolean sorted = false;
 
 	public TaskGroupMining(SelectionArea area) {
 		this.xstart = area.getX();
@@ -19,6 +22,7 @@ public class TaskGroupMining {
 		this.height = area.getHeight() + 1;
 		points = new TaskMoveAndMine[this.width][this.height];
 		all = new ArrayList<TaskMoveAndMine>();
+		ended = new CopyOnWriteArrayList<TaskMoveAndMine>();
 		toRelease = new ArrayList<TaskMoveAndMine>();
 
 		for (Coords3D c : area.getLocations()) {
@@ -31,10 +35,13 @@ public class TaskGroupMining {
 			points[c.getX() - xstart][c.getY() - ystart].setTaskGroup(this);
 			all.add(points[c.getX() - xstart][c.getY() - ystart]);
 		}
-		sort();
 	}
 
 	public void taskEnded(TaskMoveAndMine t) {
+		ended.add(t);
+	}
+
+	private void processEndedTask(TaskMoveAndMine t) {
 		Coords3D left = t.getMiningTarget().getLeft();
 		if (allContains(left)
 				&& PathFinder.shouldBeReachableSurrounding(left)) {
@@ -70,11 +77,14 @@ public class TaskGroupMining {
 		return false;
 	}
 
+	public boolean isCompleted() {
+		return all.size() == 0 && toRelease.size() == 0 && ended.size() == 0
+				&& sorted == true;
+	}
+
 	public ArrayList<TaskMoveAndMine> getNextTasks() {
 		ArrayList<TaskMoveAndMine> returnList = new ArrayList<TaskMoveAndMine>();
-		for (TaskMoveAndMine t : toRelease) {
-			returnList.add(t);
-		}
+		returnList.addAll(toRelease);
 		toRelease.clear();
 		return returnList;
 	}
@@ -91,68 +101,23 @@ public class TaskGroupMining {
 				}
 			}
 		}
+		sorted = true;
 	}
 
-	// public void exploreFrom(int xReachable, int yReachable) {
-	//
-	// if (yReachable == 0) {
-	// int dividerX = xReachable;
-	// for (int y = 0; y < height; y++) {
-	// for (int x = dividerX; x >= 0; x--) {
-	// sortedList.add(points[x][y]);
-	// }
-	// for (int x = dividerX + 1; x < width; x++) {
-	// sortedList.add(points[x][y]);
-	// }
-	// }
-	// }
-	//
-	// else if (yReachable == height - 1) {
-	// int dividerX = xReachable;
-	// for (int y = height - 1; y >= 0; y--) {
-	// for (int x = dividerX; x >= 0; x--) {
-	// sortedList.add(points[x][y]);
-	// }
-	// for (int x = dividerX + 1; x < width; x++) {
-	// sortedList.add(points[x][y]);
-	// }
-	// }
-	// }
-	//
-	// else if (xReachable == 0) {
-	// int dividerY = yReachable;
-	// for (int x = 0; x < width; x++) {
-	// for (int y = dividerY; y >= 0; y--) {
-	// sortedList.add(points[x][y]);
-	// }
-	// for (int y = dividerY + 1; y < height; y++) {
-	// sortedList.add(points[x][y]);
-	// }
-	// }
-	// }
-	//
-	// else if (xReachable == width - 1) {
-	// int dividerY = yReachable;
-	// for (int x = width - 1; x >= 0; x--) {
-	// if (x == width - 1) {
-	// for (int y = dividerY; y >= 0; y--) {
-	// sortedList.add(points[x][y]);
-	// }
-	// for (int y = dividerY + 1; y < height; y++) {
-	// sortedList.add(points[x][y]);
-	// }
-	// }
-	// }
-	// }
-	//
-	// ArrayList<TaskMoveAndMine> toDel = new ArrayList<TaskMoveAndMine>();
-	// for (TaskMoveAndMine a : sortedList) {
-	// if (!a.getMiningTarget().getTile().collides()) {
-	// toDel.add(a);
-	// }
-	// }
-	// sortedList.removeAll(toDel);
-	//
-	// }
+	@Override
+	public void run() {
+		sort();
+		while (!isCompleted()) {
+			for (TaskMoveAndMine t : ended) {
+				processEndedTask(t);
+			}
+			ended.clear();
 
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

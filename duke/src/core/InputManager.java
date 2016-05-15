@@ -3,7 +3,7 @@ package core;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public class InputManager {
+public class InputManager implements Runnable {
 
 	private Core core;
 	private InputControllerMain mainInputController;
@@ -60,6 +60,19 @@ public class InputManager {
 
 	public Cursor getCursor() {
 		return cursor;
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			update();
+			try {
+				Thread.sleep(Settings.TICK_TIME);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

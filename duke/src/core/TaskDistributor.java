@@ -35,11 +35,11 @@ public class TaskDistributor {
 		ArrayList<TaskGroupMining> toDelete = new ArrayList<TaskGroupMining>();
 		for (TaskGroupMining taskGroup : taskGroups) {
 			ArrayList<TaskMoveAndMine> nextTasks = taskGroup.getNextTasks();
-			if (nextTasks.size() == 0) {
-				// toDelete.add(taskGroup);
-			} else {
-				taskList.addAll(nextTasks);
+			if (taskGroup.isCompleted()) {
+				toDelete.add(taskGroup);
 			}
+			taskList.addAll(nextTasks);
+
 		}
 		taskGroups.removeAll(toDelete);
 	}
@@ -81,8 +81,9 @@ public class TaskDistributor {
 	public ArrayList<String> getTasksInfoList() {
 		ArrayList<String> taskInfo = new ArrayList<String>();
 		for (Task t : taskList) {
-			taskInfo.add(String.valueOf(t.getType()).toLowerCase() + ", " + String.valueOf(t.getStatus()).toLowerCase()
-					+ ", " + t.getTaskID());
+			taskInfo.add(String.valueOf(t.getType()).toLowerCase() + ", "
+					+ String.valueOf(t.getStatus()).toLowerCase() + ", "
+					+ t.getTaskID());
 		}
 
 		return taskInfo;
