@@ -3,24 +3,35 @@ package core;
 public class TaskHaul extends TaskChain {
 
 	private Item itemToHaul;
-	private Stockpile stockpile;
 
 	public TaskHaul(Item i, Stockpile stockpile) {
 		super(TaskType.HAUL);
 		itemToHaul = i;
-		this.stockpile = stockpile;
+
+		if (stockpile == null) {
+			setStatus(TaskStatus.DONE);
+			return;
+		}
 
 		TaskMove move1 = new TaskMove(Core.getWorld().getItemPos(itemToHaul));
-		queueTask(move1);
 
 		TaskActionPickupItem pickUp = new TaskActionPickupItem(itemToHaul);
-		queueTask(pickUp);
 
-		TaskMove move2 = new TaskMove(stockpile.getZone().getCoords());
-		queueTask(move2);
+		Coords3D dropLocation = stockpile.getNextFreeSlot();
+		if (dropLocation == null) {
+			setStatus(TaskStatus.DONE);
+			return;
+		}
+		stockpile.markAsUsed(dropLocation);
+		TaskMove move2 = new TaskMove(dropLocation);
 
 		TaskActionDropItem drop = new TaskActionDropItem(itemToHaul);
+
+		queueTask(move1);
+		queueTask(pickUp);
+		queueTask(move2);
 		queueTask(drop);
+
 	}
 
 }

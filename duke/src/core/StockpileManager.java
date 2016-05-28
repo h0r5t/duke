@@ -40,7 +40,7 @@ public class StockpileManager {
 
 	public Stockpile getStockpileForItem(Item item) {
 		for (Stockpile s : getStockpiles()) {
-			if (s.allowsItem(item))
+			if (s.allowsItem(item) && s.getNextFreeSlot() != null)
 				return s;
 		}
 		return null;

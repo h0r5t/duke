@@ -6,9 +6,9 @@ public class MenuZones extends Menu {
 
 	public MenuZones(MenuManager menuMgr) {
 		super(menuMgr);
-		addLine("p: stockpiles");
-		menuMgr.getCore().getLogisticsManager().getStockPileManager()
-				.setStockpileMarkers(true);
+		addLine("esc", new MenuText("ESC", "back"));
+		addLine("p", new MenuText("p", "stockpiles"));
+		menuMgr.getCore().getLogisticsManager().getStockPileManager().setStockpileMarkers(true);
 	}
 
 	@Override
@@ -18,8 +18,7 @@ public class MenuZones extends Menu {
 		}
 
 		else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			menuMgr.getCore().getLogisticsManager().getStockPileManager()
-					.setStockpileMarkers(false);
+			menuMgr.getCore().getLogisticsManager().getStockPileManager().setStockpileMarkers(false);
 			menuMgr.goToParentMenu();
 		}
 	}

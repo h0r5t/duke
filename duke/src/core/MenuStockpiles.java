@@ -14,30 +14,27 @@ public class MenuStockpiles extends Menu {
 
 	public MenuStockpiles(MenuManager menuMgr) {
 		super(menuMgr);
-		addLine("n: new stockpile");
-		addLine("r: remove stockpile");
+		addLine("esc", new MenuText("ESC", "back"));
+		addLine("n", new MenuText("n", "new stockpile"));
+		addLine("r", new MenuText("r", "remove stockpile"));
 	}
 
 	private void onEnter() {
 		if (currentMode == Mode.MODE_NEW) {
 			if (selArea == null) {
 				Cursor cursor = menuMgr.getCursor();
-				selArea = new Zone2D(cursor.getXpos(), cursor.getYpos(),
-						cursor.getZpos(), SelectionType.TYPE_ZONE);
+				selArea = new Zone2D(cursor.getXpos(), cursor.getYpos(), cursor.getZpos(), SelectionType.TYPE_ZONE);
 			} else {
 				Stockpile s = new Stockpile(selArea);
-				menuMgr.getCore().getLogisticsManager().getStockPileManager()
-						.addStockpile(s);
+				menuMgr.getCore().getLogisticsManager().getStockPileManager().addStockpile(s);
 				selArea = null;
 				currentMode = Mode.MODE_NONE;
 			}
 		} else if (currentMode == Mode.MODE_REMOVE) {
-			Stockpile s = menuMgr.getCore().getLogisticsManager()
-					.getStockPileManager()
+			Stockpile s = menuMgr.getCore().getLogisticsManager().getStockPileManager()
 					.getStockpileForPos(menuMgr.getCursor().getCoords3D());
 			if (s != null)
-				menuMgr.getCore().getLogisticsManager().getStockPileManager()
-						.removeStockpile(s);
+				menuMgr.getCore().getLogisticsManager().getStockPileManager().removeStockpile(s);
 		}
 	}
 
@@ -80,8 +77,7 @@ public class MenuStockpiles extends Menu {
 	public void mouseMoved(MouseEvent e) {
 		if (currentMode == Mode.MODE_NEW) {
 			if (selArea != null)
-				selArea.setEnd(menuMgr.getCursor().getXpos(),
-						menuMgr.getCursor().getYpos());
+				selArea.setEnd(menuMgr.getCursor().getXpos(), menuMgr.getCursor().getYpos());
 		} else if (currentMode == Mode.MODE_REMOVE) {
 
 		}
@@ -90,12 +86,11 @@ public class MenuStockpiles extends Menu {
 	@Override
 	public void update() {
 		if (currentMode == Mode.MODE_NEW) {
-			menuText.set(0, "> n: new stockpile");
+			selectThisLineOnly("n");
 		} else if (currentMode == Mode.MODE_REMOVE) {
-			menuText.set(1, "> r: remove stockpile");
+			selectThisLineOnly("r");
 		} else if (currentMode == Mode.MODE_NONE) {
-			menuText.set(0, "n: new stockpile");
-			menuText.set(1, "r: remove stockpile");
+			deselectAllLines();
 		}
 
 	}

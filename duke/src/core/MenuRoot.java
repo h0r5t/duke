@@ -6,10 +6,10 @@ public class MenuRoot extends Menu {
 
 	public MenuRoot(MenuManager menuMgr) {
 		super(menuMgr);
-		addLine("m: move");
-		addLine("r: mine/remove trees");
-		addLine("t: tasks");
-		addLine("z: zones");
+		addLine("m", new MenuText("m", "move"));
+		addLine("r", new MenuText("r", "mine/remove trees"));
+		addLine("t", new MenuText("t", "view tasks"));
+		addLine("z", new MenuText("z", "zones"));
 	}
 
 	@Override

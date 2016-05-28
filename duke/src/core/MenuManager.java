@@ -38,8 +38,7 @@ public class MenuManager {
 
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLACK);
-		g.fillRect(Settings.MENU_STARTX(), 0, Settings.MENU_WIDTH,
-				Settings.GAME_FRAME_HEIGHT);
+		g.fillRect(Settings.MENU_STARTX(), 0, Settings.MENU_WIDTH, Settings.GAME_FRAME_HEIGHT);
 
 		g.setColor(Color.YELLOW);
 		Font font = new Font("Arial", Font.PLAIN, 16);
@@ -49,14 +48,13 @@ public class MenuManager {
 		int y = 20;
 		g.drawString(currentLoopTime + " ms", x, y);
 
-		g.setColor(Color.LIGHT_GRAY);
 		font = new Font("Arial", Font.PLAIN, 20);
 		g.setFont(font);
 
 		x = Settings.MENU_STARTX() + 20;
 		y = 100;
-		for (String s : currentMenu.getMenuText()) {
-			g.drawString(s, x, y);
+		for (MenuText s : currentMenu.getMenuTexts()) {
+			s.draw(g, x, y);
 			y += 25;
 		}
 	}
