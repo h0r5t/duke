@@ -29,14 +29,15 @@ public abstract class Item implements Visual {
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
-		g.setColor(Colors.COLOR_BG);
-		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
+		// g.setColor(Colors.COLOR_BG);
+		// g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
 
 		Font font = new Font("Arial", Font.BOLD, myChar.getFontSize());
 		g.setColor(myChar.getColor());
 
 		FontMetrics metrics = g.getFontMetrics(font);
-		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
+		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE,
+				Settings.TILE_SIZE);
 		String text = myChar.getChar() + "";
 		int x = (rect.width - metrics.stringWidth(text)) / 2;
 		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();

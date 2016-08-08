@@ -7,10 +7,24 @@ public class ItemStorage {
 
 	private HashMap<Integer, ArrayList<Item>> tileItemsMap;
 	private HashMap<Item, Coords3D> itemsCoordsMap;
+	private ArrayList<Item> unclaimedItems;
 
 	public ItemStorage() {
 		tileItemsMap = new HashMap<>();
 		itemsCoordsMap = new HashMap<>();
+		unclaimedItems = new ArrayList<Item>();
+	}
+
+	public void addUnclaimedItem(Item i) {
+		unclaimedItems.add(i);
+	}
+
+	private ArrayList<Item> getUnclaimedItems() {
+		return (ArrayList<Item>) unclaimedItems.clone();
+	}
+
+	private void removeUnclaimedItem(Item i) {
+		unclaimedItems.remove(i);
 	}
 
 	public void addItem(Item i, Coords3D c) {
@@ -43,5 +57,24 @@ public class ItemStorage {
 
 	public ArrayList<Item> getItems() {
 		return new ArrayList<Item>(itemsCoordsMap.keySet());
+	}
+
+	public void update(Core core) {
+		checkIfThereIsSpaceForItemsNow(core);
+	}
+
+	private void checkIfThereIsSpaceForItemsNow(Core core) {
+		for (Item i : getUnclaimedItems()) {
+			Stockpile p = core.getLogisticsManager().getStockPileManager()
+					.getStockpileForItem(i);
+			if (p != null) {
+				Coords3D slot = p.getNextFreeSlot();
+				if (slot != null) {
+					TaskHaul haulTask = new TaskHaul(i, p);
+					core.getTaskDistributor().addTask(haulTask);
+					removeUnclaimedItem(i);
+				}
+			}
+		}
 	}
 }

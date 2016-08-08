@@ -27,6 +27,7 @@ public class InputControllerMain extends InputAdapter {
 
 		if (keysPressed.getDefault(KeyEvent.VK_RIGHT, false))
 			core.getInputManager().getCursor().moveX(1);
+
 		if (keysPressed.getDefault(KeyEvent.VK_LEFT, false))
 			core.getInputManager().getCursor().moveX(-1);
 		if (keysPressed.getDefault(KeyEvent.VK_UP, false))

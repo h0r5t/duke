@@ -14,6 +14,7 @@ public class Stockpile {
 		this.forbiddenItemIDs = new ArrayList<>();
 		this.slotUsedMap = new HashMap<>();
 		scanForUsedSlots();
+		setMarkers(true);
 	}
 
 	public Stockpile(Zone2D zone, ArrayList<Integer> forbiddenItemIDs) {
@@ -61,11 +62,11 @@ public class Stockpile {
 	public void setMarkers(boolean b) {
 		if (b) {
 			for (Coords3D c : zone.getCoords()) {
-				c.getTile().select(zone);
+				c.getTile().setGroundColor(Colors.COLOR_BROWN);
 			}
 		} else {
 			for (Coords3D c : zone.getCoords()) {
-				c.getTile().deselect(zone);
+				c.getTile().resetGroundColor();
 			}
 		}
 

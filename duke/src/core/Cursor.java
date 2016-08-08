@@ -34,6 +34,7 @@ public class Cursor implements Visual {
 		else if (xpos >= Settings.WORLD_WIDTH) {
 			xpos = Settings.WORLD_WIDTH - 1;
 		}
+		core.getInputManager().cursorMoved();
 	}
 
 	public void moveY(int y) {
@@ -43,6 +44,7 @@ public class Cursor implements Visual {
 		else if (ypos >= Settings.WORLD_HEIGHT) {
 			ypos = Settings.WORLD_HEIGHT - 1;
 		}
+		core.getInputManager().cursorMoved();
 	}
 
 	@Override

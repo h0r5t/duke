@@ -23,18 +23,23 @@ public class MenuStockpiles extends Menu {
 		if (currentMode == Mode.MODE_NEW) {
 			if (selArea == null) {
 				Cursor cursor = menuMgr.getCursor();
-				selArea = new Zone2D(cursor.getXpos(), cursor.getYpos(), cursor.getZpos(), SelectionType.TYPE_ZONE);
+				selArea = new Zone2D(cursor.getXpos(), cursor.getYpos(),
+						cursor.getZpos(), SelectionType.TYPE_ZONE);
 			} else {
+				selArea.reset();
 				Stockpile s = new Stockpile(selArea);
-				menuMgr.getCore().getLogisticsManager().getStockPileManager().addStockpile(s);
+				menuMgr.getCore().getLogisticsManager().getStockPileManager()
+						.addStockpile(s);
 				selArea = null;
 				currentMode = Mode.MODE_NONE;
 			}
 		} else if (currentMode == Mode.MODE_REMOVE) {
-			Stockpile s = menuMgr.getCore().getLogisticsManager().getStockPileManager()
+			Stockpile s = menuMgr.getCore().getLogisticsManager()
+					.getStockPileManager()
 					.getStockpileForPos(menuMgr.getCursor().getCoords3D());
 			if (s != null)
-				menuMgr.getCore().getLogisticsManager().getStockPileManager().removeStockpile(s);
+				menuMgr.getCore().getLogisticsManager().getStockPileManager()
+						.removeStockpile(s);
 		}
 	}
 
@@ -77,7 +82,19 @@ public class MenuStockpiles extends Menu {
 	public void mouseMoved(MouseEvent e) {
 		if (currentMode == Mode.MODE_NEW) {
 			if (selArea != null)
-				selArea.setEnd(menuMgr.getCursor().getXpos(), menuMgr.getCursor().getYpos());
+				selArea.setEnd(menuMgr.getCursor().getXpos(),
+						menuMgr.getCursor().getYpos());
+		} else if (currentMode == Mode.MODE_REMOVE) {
+
+		}
+	}
+
+	@Override
+	public void cursorMoved(Cursor c) {
+		if (currentMode == Mode.MODE_NEW) {
+			if (selArea != null)
+				selArea.setEnd(menuMgr.getCursor().getXpos(),
+						menuMgr.getCursor().getYpos());
 		} else if (currentMode == Mode.MODE_REMOVE) {
 
 		}

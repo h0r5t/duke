@@ -13,17 +13,27 @@ public abstract class Tile extends GraphNode implements Visual {
 
 	protected Character myChar;
 	protected int tileID;
+	private Color groundColor;
 	private boolean isVisible;
 	private ArrayList<Zone2D> selections;
 
 	public Tile(int tileID, int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
+		this.groundColor = Colors.COLOR_BG;
 		this.tileID = tileID;
 		this.selections = new ArrayList<Zone2D>();
 		getChar();
 		if (z == 0) {
 			setVisible(true);
 		}
+	}
+
+	public void setGroundColor(Color groundColor) {
+		this.groundColor = groundColor;
+	}
+
+	public void resetGroundColor() {
+		this.groundColor = Colors.COLOR_BG;
 	}
 
 	public Item getItemDroppedOnMining() {
@@ -94,7 +104,7 @@ public abstract class Tile extends GraphNode implements Visual {
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
-		g.setColor(Colors.COLOR_BG);
+		g.setColor(groundColor);
 		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
 
 		if (isVisible()) {
@@ -125,8 +135,8 @@ public abstract class Tile extends GraphNode implements Visual {
 						Settings.TILE_SIZE - 1);
 			} else if (selections.get(0)
 					.getSelectionType() == SelectionType.TYPE_ZONE) {
-				g.setColor(Color.MAGENTA);
-				g.fillRect(posX, posY, Settings.TILE_SIZE - 1,
+				g.setColor(Color.CYAN);
+				g.drawRect(posX, posY, Settings.TILE_SIZE - 1,
 						Settings.TILE_SIZE - 1);
 			}
 

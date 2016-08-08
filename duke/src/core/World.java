@@ -17,6 +17,10 @@ public class World extends Graph {
 		itemStorage = new ItemStorage();
 	}
 
+	public void update(Core core) {
+		itemStorage.update(core);
+	}
+
 	public Unit getUnitAt(Tile tile) {
 		return core.getUnitManager().getUnitAt(tile);
 	}
@@ -176,10 +180,14 @@ public class World extends Graph {
 		}
 		if (droppedItem != null) {
 			addItem(droppedItem, targetToMine);
-			TaskHaul haulTest = new TaskHaul(droppedItem,
-					core.getLogisticsManager().getStockPileManager()
-							.getStockpileForItem(droppedItem));
-			core.getTaskDistributor().addTask(haulTest);
+			Stockpile stockpile = core.getLogisticsManager()
+					.getStockPileManager().getStockpileForItem(droppedItem);
+			if (stockpile != null && stockpile.getNextFreeSlot() != null) {
+				TaskHaul haulTask = new TaskHaul(droppedItem, stockpile);
+				core.getTaskDistributor().addTask(haulTask);
+			} else {
+				itemStorage.addUnclaimedItem(droppedItem);
+			}
 		}
 	}
 

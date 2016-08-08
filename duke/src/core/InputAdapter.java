@@ -32,4 +32,8 @@ public abstract class InputAdapter {
 	public void mouseMoved(MouseEvent e) {
 
 	}
+
+	public void cursorMoved(Cursor c) {
+
+	}
 }

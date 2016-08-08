@@ -8,11 +8,6 @@ public class TaskHaul extends TaskChain {
 		super(TaskType.HAUL);
 		itemToHaul = i;
 
-		if (stockpile == null) {
-			setStatus(TaskStatus.DONE);
-			return;
-		}
-
 		TaskMove move1 = new TaskMove(Core.getWorld().getItemPos(itemToHaul));
 
 		TaskActionPickupItem pickUp = new TaskActionPickupItem(itemToHaul);

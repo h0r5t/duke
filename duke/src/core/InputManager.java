@@ -58,6 +58,10 @@ public class InputManager implements Runnable {
 		core.getMenuManager().getCurrentMenu().mouseMoved(e);
 	}
 
+	public void cursorMoved() {
+		core.getMenuManager().getCurrentMenu().cursorMoved(cursor);
+	}
+
 	public Cursor getCursor() {
 		return cursor;
 	}

@@ -53,6 +53,7 @@ public class Core implements Runnable {
 	}
 
 	private void loop() {
+		world.update(this);
 		menuManager.update();
 		taskDistributor.update();
 		gamePanel.repaint();
