@@ -62,11 +62,11 @@ public class Stockpile {
 	public void setMarkers(boolean b) {
 		if (b) {
 			for (Coords3D c : zone.getCoords()) {
-				c.getTile().setGroundColor(Colors.COLOR_BROWN);
+				c.getTile().setGround(new GroundStockpile());
 			}
 		} else {
 			for (Coords3D c : zone.getCoords()) {
-				c.getTile().resetGroundColor();
+				c.getTile().resetGround();
 			}
 		}
 

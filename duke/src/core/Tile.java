@@ -13,14 +13,14 @@ public abstract class Tile extends GraphNode implements Visual {
 
 	protected Character myChar;
 	protected int tileID;
-	private Color groundColor;
+	protected Ground ground;
 	private boolean isVisible;
 	private ArrayList<Zone2D> selections;
 
 	public Tile(int tileID, int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
-		this.groundColor = Colors.COLOR_BG;
 		this.tileID = tileID;
+		resetGround();
 		this.selections = new ArrayList<Zone2D>();
 		getChar();
 		if (z == 0) {
@@ -28,12 +28,8 @@ public abstract class Tile extends GraphNode implements Visual {
 		}
 	}
 
-	public void setGroundColor(Color groundColor) {
-		this.groundColor = groundColor;
-	}
-
-	public void resetGroundColor() {
-		this.groundColor = Colors.COLOR_BG;
+	public void setGround(Ground ground) {
+		this.ground = ground;
 	}
 
 	public Item getItemDroppedOnMining() {
@@ -104,7 +100,7 @@ public abstract class Tile extends GraphNode implements Visual {
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
-		g.setColor(groundColor);
+		g.setColor(ground.getGroundColor());
 		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
 
 		if (isVisible()) {
@@ -142,6 +138,16 @@ public abstract class Tile extends GraphNode implements Visual {
 
 		}
 
+	}
+
+	public void resetGround() {
+		if (tileID == GameData.getTileID("tile_water")) {
+			this.ground = new GroundWater();
+		} else if (this.getZ() == 0) {
+			this.ground = new GroundGrass();
+		} else {
+			this.ground = new GroundRock();
+		}
 	}
 
 }

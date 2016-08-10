@@ -38,7 +38,8 @@ public class MenuManager {
 
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLACK);
-		g.fillRect(Settings.MENU_STARTX(), 0, Settings.MENU_WIDTH, Settings.GAME_FRAME_HEIGHT);
+		g.fillRect(Settings.MENU_STARTX(), 0, Settings.MENU_WIDTH,
+				Settings.GAME_FRAME_HEIGHT);
 
 		g.setColor(Color.YELLOW);
 		Font font = new Font("Arial", Font.PLAIN, 16);
