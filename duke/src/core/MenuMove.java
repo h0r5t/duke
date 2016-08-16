@@ -7,7 +7,6 @@ public class MenuMove extends Menu {
 
 	public MenuMove(MenuManager menuMgr) {
 		super(menuMgr);
-		addLine("esc", new MenuText("ESC", "back"));
 	}
 
 	private void onEnter() {

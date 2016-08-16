@@ -12,8 +12,7 @@ public class TaskActionDropItem extends TaskAction {
 
 	@Override
 	public void callback(int context) {
-		unit.getInventory().removeItem(item);
-		Core.getWorld().addItem(item, unit.getCoords());
+		unit.removeItemFromHands();
 		setStatus(TaskStatus.DONE);
 	}
 

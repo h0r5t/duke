@@ -1,19 +1,45 @@
 package core;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
-public class MenuManager {
+public class MenuManager extends InputAdapter {
 
 	private Core core;
 	private Menu currentMenu;
-	private int currentLoopTime;
+	private ArrayList<MenuGroup> menuGroups;
+	private MenuManager self = this;
 
 	public MenuManager(Core core) {
 		this.core = core;
 		currentMenu = new MenuRoot(this);
-		currentLoopTime = 0;
+		this.menuGroups = new ArrayList<MenuGroup>();
+		createMenus();
+	}
+
+	private void createMenus() {
+		MenuGroup generalGroup = new MenuGroup("General");
+		MenuElement elementMove = new MenuElement("Move",
+				new ElementClickHandler());
+		generalGroup.addElement(elementMove);
+		menuGroups.add(generalGroup);
+
+		MenuGroup designateGroup = new MenuGroup("Designate");
+		MenuElement elementMining = new MenuElement("Mining",
+				new ElementClickHandler());
+		designateGroup.addElement(elementMining);
+		menuGroups.add(designateGroup);
+
+		MenuGroup zonesGroup = new MenuGroup("Zones");
+		MenuElement elementNewStockpile = new MenuElement("New Stockpile",
+				new ElementClickHandler());
+		zonesGroup.addElement(elementNewStockpile);
+		MenuElement elementRemoveStockpile = new MenuElement("Remove Stockpile",
+				new ElementClickHandler());
+		zonesGroup.addElement(elementRemoveStockpile);
+		menuGroups.add(zonesGroup);
 	}
 
 	public Menu getCurrentMenu() {
@@ -37,35 +63,67 @@ public class MenuManager {
 	}
 
 	public void draw(Graphics2D g) {
-		g.setColor(Color.BLACK);
-		g.fillRect(Settings.MENU_STARTX(), 0, Settings.MENU_WIDTH,
-				Settings.GAME_FRAME_HEIGHT);
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(0, Settings.MENU_STARTY(), Settings.GAME_FRAME_WIDTH,
+				Settings.MENU_HEIGHT);
 
-		g.setColor(Color.YELLOW);
-		Font font = new Font("Arial", Font.PLAIN, 16);
-		g.setFont(font);
-
-		int x = Settings.MENU_STARTX() + 100;
-		int y = 20;
-		g.drawString(currentLoopTime + " ms", x, y);
-
-		font = new Font("Arial", Font.PLAIN, 20);
-		g.setFont(font);
-
-		x = Settings.MENU_STARTX() + 20;
-		y = 100;
-		for (MenuText s : currentMenu.getMenuTexts()) {
-			s.draw(g, x, y);
-			y += 25;
+		int posX = 0;
+		for (MenuGroup mg : menuGroups) {
+			mg.draw(g, posX, Settings.MENU_STARTY());
+			posX += Settings.MENU_GROUP_WIDTH;
 		}
 	}
 
 	public void update() {
 		currentMenu.update();
+		for (MenuGroup mg : menuGroups) {
+			mg.update();
+		}
 	}
 
-	public void setLoopTime(int time) {
-		currentLoopTime = time;
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		currentMenu.mouseMoved(e);
+		for (MenuGroup mg : menuGroups) {
+			mg.setMouseIsOn(false);
+		}
+		MenuGroup g;
+		int x = e.getX() / Settings.MENU_GROUP_WIDTH;
+		if (x >= menuGroups.size()) {
+			return;
+		}
+		g = menuGroups.get(x);
+		if (e.getY() > g.getAreaStart()) {
+			g.setMouseIsOn(true);
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		currentMenu.mouseClicked(e);
+		MenuGroup g;
+		int x = e.getX() / Settings.MENU_GROUP_WIDTH;
+		if (x >= menuGroups.size()) {
+			return;
+		}
+		g = menuGroups.get(x);
+		if (e.getY() > g.getAreaStart()) {
+			g.handleClick(e.getX(), e.getY());
+		}
+	}
+
+	private class ElementClickHandler implements OnClickListener {
+
+		@Override
+		public void eventFired(String id) {
+			if (id.equals("Move")) {
+				goToMenu(new MenuMove(self));
+			}
+			if (id.equals("Mining")) {
+				goToMenu(new MenuMine(self));
+			}
+		}
+
 	}
 
 }

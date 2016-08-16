@@ -36,7 +36,7 @@ public class InputManager implements Runnable {
 	public void mouseClicked(MouseEvent e) {
 		try {
 			mainInputController.mouseClicked(e);
-			core.getMenuManager().getCurrentMenu().mouseClicked(e);
+			core.getMenuManager().mouseClicked(e);
 		} catch (Exception a) {
 		}
 	}
@@ -55,7 +55,7 @@ public class InputManager implements Runnable {
 
 	public void mouseMoved(MouseEvent e) {
 		mainInputController.mouseMoved(e);
-		core.getMenuManager().getCurrentMenu().mouseMoved(e);
+		core.getMenuManager().mouseMoved(e);
 	}
 
 	public void cursorMoved() {

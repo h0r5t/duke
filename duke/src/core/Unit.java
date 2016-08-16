@@ -1,5 +1,6 @@
 package core;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -15,16 +16,31 @@ public abstract class Unit implements Visual {
 	protected Character myChar;
 	protected Task currentTask;
 	protected TaskChain activeTaskChain;
+	private Item itemInHands;
 	private Inventory inventory;
+	private double health;
 
 	public Unit(int id, int x, int y, int z, int moveSpeed) {
 		this.unitID = id;
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.health = 100;
 		this.moveSpeed = moveSpeed;
 		inventory = new Inventory();
 		getChar();
+	}
+
+	public Item getItemInHands() {
+		return itemInHands;
+	}
+
+	public void setItemInHands(Item itemInHands) {
+		this.itemInHands = itemInHands;
+	}
+
+	public void removeItemFromHands() {
+		this.itemInHands = null;
 	}
 
 	public Inventory getInventory() {
@@ -87,6 +103,10 @@ public abstract class Unit implements Visual {
 		this.x = xpos;
 		this.y = ypos;
 		this.z = zpos;
+
+		if (itemInHands != null) {
+			itemInHands.moveTo(new Coords3D(xpos, ypos, zpos));
+		}
 	}
 
 	@Override
@@ -102,6 +122,14 @@ public abstract class Unit implements Visual {
 		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
 		g.setFont(font);
 		g.drawString(text, posX + x, posY + y);
+
+		// draw health bar
+
+		g.setColor(Color.GREEN);
+		g.fillRect(posX + 3, posY - 1,
+				(int) ((health / 100) * (Settings.TILE_SIZE - 6)), 3);
+		g.setColor(Color.BLACK);
+		g.drawRect(posX + 3, posY - 1, Settings.TILE_SIZE - 6, 3);
 	}
 
 	public Tile getTile() {

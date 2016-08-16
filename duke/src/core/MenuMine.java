@@ -10,14 +10,13 @@ public class MenuMine extends Menu {
 
 	public MenuMine(MenuManager menuMgr) {
 		super(menuMgr);
-		addLine("esc", new MenuText("ESC", "back"));
 	}
 
 	private void onEnter() {
 		if (areaSelection == null) {
 			Cursor cursor = menuMgr.getCursor();
-			areaSelection = new Zone2D(cursor.getXpos(), cursor.getYpos(), cursor.getZpos(),
-					SelectionType.TYPE_DESIGNATION);
+			areaSelection = new Zone2D(cursor.getXpos(), cursor.getYpos(),
+					cursor.getZpos(), SelectionType.TYPE_DESIGNATION);
 		} else {
 			createMiningTaskGroup();
 			areaSelection = null;
@@ -34,7 +33,8 @@ public class MenuMine extends Menu {
 
 	private void selectorMoved() {
 		if (areaSelection != null) {
-			areaSelection.setEnd(menuMgr.getCursor().getXpos(), menuMgr.getCursor().getYpos());
+			areaSelection.setEnd(menuMgr.getCursor().getXpos(),
+					menuMgr.getCursor().getYpos());
 		}
 	}
 

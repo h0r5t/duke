@@ -12,8 +12,7 @@ public class TaskActionPickupItem extends TaskAction {
 
 	@Override
 	public void callback(int context) {
-		unit.getInventory().addItem(item);
-		Core.getWorld().removeItem(item);
+		unit.setItemInHands(item);
 		setStatus(TaskStatus.DONE);
 	}
 

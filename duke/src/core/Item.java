@@ -19,6 +19,11 @@ public abstract class Item implements Visual {
 		return Core.getWorld().getItemPos(this);
 	}
 
+	public void moveTo(Coords3D c) {
+		Core.getWorld().removeItem(this);
+		Core.getWorld().addItem(this, c);
+	}
+
 	protected void getChar() {
 		myChar = GameData.getRandomItemCharacter(getItemID());
 	}

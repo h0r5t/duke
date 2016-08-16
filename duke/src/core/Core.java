@@ -69,7 +69,6 @@ public class Core implements Runnable {
 			loop();
 
 			long time2 = System.currentTimeMillis() - time1;
-			menuManager.setLoopTime((int) time2);
 
 			int sleepTime = (int) (Settings.TICK_TIME - time2);
 			if (sleepTime < 0) {
