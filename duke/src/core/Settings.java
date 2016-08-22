@@ -13,13 +13,10 @@ public class Settings {
 	public static int TILE_SIZE = 25;
 	public static int CHAR_FONT_SIZE = 30;
 
-	public static int WORLD_DEPTH = 30;
+	public static int WORLD_DEPTH = 50;
 	public static int WORLD_WIDTH = 100;
 	public static int WORLD_HEIGHT = 50;
 
-	public static int TEXTURE_COLOR_VARIATION = 5;
-	public static int TEXTURE_ALPHA_VARIATION = 0;
-	public static int TEXTURE_SECTION_SIZE = 5;
 	public static boolean DRAW_TILE_BORDERS = false;
 
 	public static int MENU_HEIGHT = 75;
@@ -31,11 +28,12 @@ public class Settings {
 	}
 
 	public static int SCREEN_WIDTH_IN_TILES() {
-		return (Settings.GAME_FRAME_WIDTH) / Settings.TILE_SIZE;
+		return (Settings.GAME_FRAME_WIDTH) / Settings.TILE_SIZE + 1;
 	}
 
 	public static int SCREEN_HEIGHT_IN_TILES() {
-		return (Settings.GAME_FRAME_HEIGHT - MENU_HEIGHT) / Settings.TILE_SIZE;
+		return (Settings.GAME_FRAME_HEIGHT - MENU_HEIGHT) / Settings.TILE_SIZE
+				+ 2;
 	}
 
 	public static int SHIFT_SPEED = 20;

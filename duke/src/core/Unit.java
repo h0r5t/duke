@@ -111,7 +111,7 @@ public abstract class Unit implements Visual {
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
-		Font font = new Font("Arial", Font.BOLD, Settings.CHAR_FONT_SIZE);
+		Font font = new Font("Arial", Font.BOLD, 24);
 		g.setColor(myChar.getColor());
 
 		FontMetrics metrics = g.getFontMetrics(font);

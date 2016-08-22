@@ -127,13 +127,13 @@ public abstract class Tile extends GraphNode implements Visual {
 			if (selections.get(0)
 					.getSelectionType() == SelectionType.TYPE_DESIGNATION) {
 				g.setColor(Color.CYAN);
-				g.drawRect(posX, posY, Settings.TILE_SIZE - 1,
-						Settings.TILE_SIZE - 1);
+				g.drawRect(posX - 1, posY - 1, Settings.TILE_SIZE,
+						Settings.TILE_SIZE);
 			} else if (selections.get(0)
 					.getSelectionType() == SelectionType.TYPE_ZONE) {
 				g.setColor(Color.CYAN);
-				g.drawRect(posX, posY, Settings.TILE_SIZE - 1,
-						Settings.TILE_SIZE - 1);
+				g.drawRect(posX - 1, posY - 1, Settings.TILE_SIZE,
+						Settings.TILE_SIZE);
 			}
 
 		}

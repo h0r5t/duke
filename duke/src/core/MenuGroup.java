@@ -74,6 +74,8 @@ public class MenuGroup implements Visual {
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(posX, posY, Settings.MENU_GROUP_WIDTH, Settings.MENU_HEIGHT);
 		g.setColor(Color.BLACK);
+		g.drawRect(posX, posY, Settings.MENU_GROUP_WIDTH, Settings.MENU_HEIGHT);
+		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, Settings.MENU_STARTY(), Settings.GAME_FRAME_WIDTH, 3);
 
 		Font font = new Font("Arial", Font.PLAIN, 20);
@@ -85,9 +87,6 @@ public class MenuGroup implements Visual {
 		int y = ((rect.height - metrics.getHeight()) / 2);
 		g.setFont(font);
 		g.drawString(id, posX + x, posY + y + 5);
-
-		g.setColor(Color.BLACK);
-		g.drawRect(posX, posY, Settings.MENU_GROUP_WIDTH, Settings.MENU_HEIGHT);
 	}
 
 	public void update() {
