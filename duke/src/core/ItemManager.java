@@ -3,13 +3,13 @@ package core;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ItemStorage {
+public class ItemManager {
 
 	private HashMap<Integer, ArrayList<Item>> tileItemsMap;
 	private HashMap<Item, Coords3D> itemsCoordsMap;
 	private ArrayList<Item> unclaimedItems;
 
-	public ItemStorage() {
+	public ItemManager() {
 		tileItemsMap = new HashMap<>();
 		itemsCoordsMap = new HashMap<>();
 		unclaimedItems = new ArrayList<Item>();
@@ -60,10 +60,10 @@ public class ItemStorage {
 	}
 
 	public void update(Core core) {
-		checkIfThereIsSpaceForItemsNow(core);
+		checkForItemsToBeHauled(core);
 	}
 
-	private void checkIfThereIsSpaceForItemsNow(Core core) {
+	private void checkForItemsToBeHauled(Core core) {
 		for (Item i : getUnclaimedItems()) {
 			Stockpile p = core.getLogisticsManager().getStockPileManager()
 					.getStockpileForItem(i);

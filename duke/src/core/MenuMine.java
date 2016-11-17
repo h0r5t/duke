@@ -15,10 +15,11 @@ public class MenuMine extends Menu {
 	private void onEnter() {
 		if (areaSelection == null) {
 			Cursor cursor = menuMgr.getCursor();
-			areaSelection = new Zone2D(cursor.getXpos(), cursor.getYpos(),
-					cursor.getZpos(), SelectionType.TYPE_DESIGNATION);
+			areaSelection = new Zone2D(cursor.getXpos(), cursor.getYpos(), cursor.getZpos(),
+					SelectionType.TYPE_DESIGNATION);
 		} else {
 			createMiningTaskGroup();
+			areaSelection.removeNonMineables();
 			areaSelection = null;
 			menuMgr.goToParentMenu();
 		}
@@ -26,15 +27,13 @@ public class MenuMine extends Menu {
 
 	private void createMiningTaskGroup() {
 		TaskGroupMining taskGroup = new TaskGroupMining(areaSelection);
-		areaSelection.removeNonMineables();
 		menuMgr.getCore().getTaskDistributor().addTaskGroup(taskGroup);
 		new Thread(taskGroup).start();
 	}
 
 	private void selectorMoved() {
 		if (areaSelection != null) {
-			areaSelection.setEnd(menuMgr.getCursor().getXpos(),
-					menuMgr.getCursor().getYpos());
+			areaSelection.setEnd(menuMgr.getCursor().getXpos(), menuMgr.getCursor().getYpos());
 		}
 	}
 

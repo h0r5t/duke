@@ -97,12 +97,17 @@ public class GameData {
 	private static void loadItems() {
 		itemIDs = new HashMap<String, Integer>();
 		itemIDs.put("item_stone", 0);
+		itemIDs.put("item_wood", 1);
 
 		itemIDCharMap = new HashMap<Integer, ArrayList<Character>>();
-		ArrayList<Character> list = new ArrayList<Character>();
 
+		ArrayList<Character> list = new ArrayList<Character>();
 		list.add(new Character("•", Colors.COLOR_STONE, 26));
 		itemIDCharMap.put(0, list);
+
+		list = new ArrayList<Character>();
+		list.add(new Character("/", Colors.COLOR_ITEM_WOOD, 26));
+		itemIDCharMap.put(1, list);
 	}
 
 	public static Integer getTileID(String s) {

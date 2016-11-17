@@ -17,7 +17,7 @@ public class TileRock extends Tile {
 	}
 
 	@Override
-	public Item getItemDroppedOnMining() {
+	public Item getDrop() {
 		return new ItemStone();
 	}
 

@@ -29,7 +29,7 @@ public class InputManager implements Runnable {
 
 	public void keyReleased(KeyEvent e) {
 		mainInputController.keyReleased(e);
-		core.getMenuManager().getCurrentMenu().keyReleased(e);
+		core.getMenuManager().keyReleased(e);
 		keysPressed.put(e.getKeyCode(), false);
 	}
 

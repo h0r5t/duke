@@ -8,17 +8,17 @@ public class World extends Graph {
 
 	private Core core;
 	private int[][][] world;
-	private ItemStorage itemStorage;
+	private ItemManager itemManager;
 
 	public World(Core core) {
 		super();
 		this.core = core;
 		world = new int[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT][Settings.WORLD_DEPTH];
-		itemStorage = new ItemStorage();
+		itemManager = new ItemManager();
 	}
 
 	public void update(Core core) {
-		itemStorage.update(core);
+		itemManager.update(core);
 	}
 
 	public Unit getUnitAt(Tile tile) {
@@ -30,23 +30,23 @@ public class World extends Graph {
 	}
 
 	public void addItem(Item item, Coords3D c) {
-		itemStorage.addItem(item, c);
+		itemManager.addItem(item, c);
 	}
 
 	public void removeItem(Item item) {
-		itemStorage.removeItem(item);
+		itemManager.removeItem(item);
 	}
 
 	public ArrayList<Item> getItemsAt(Coords3D c) {
-		return itemStorage.getItemsAt(c);
+		return itemManager.getItemsAt(c);
 	}
 
 	public Coords3D getItemPos(Item item) {
-		return itemStorage.getItemPos(item);
+		return itemManager.getItemPos(item);
 	}
 
 	public ArrayList<Item> getItems() {
-		return itemStorage.getItems();
+		return itemManager.getItems();
 	}
 
 	public void setTile(Tile tile) {
@@ -168,7 +168,7 @@ public class World extends Graph {
 	}
 
 	public void wasMined(Coords3D targetToMine) {
-		Item droppedItem = targetToMine.getTile().getItemDroppedOnMining();
+		Item droppedItem = targetToMine.getTile().getDrop();
 		if (targetToMine.getZ() == 0)
 			setTile(new TileLand(targetToMine.getX(), targetToMine.getY(),
 					targetToMine.getZ()));
@@ -186,7 +186,7 @@ public class World extends Graph {
 				TaskHaul haulTask = new TaskHaul(droppedItem, stockpile);
 				core.getTaskDistributor().addTask(haulTask);
 			} else {
-				itemStorage.addUnclaimedItem(droppedItem);
+				itemManager.addUnclaimedItem(droppedItem);
 			}
 		}
 	}

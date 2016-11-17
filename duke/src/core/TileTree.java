@@ -12,6 +12,11 @@ public class TileTree extends Tile {
 	}
 
 	@Override
+	public Item getDrop() {
+		return new ItemWood();
+	}
+
+	@Override
 	public boolean canBeMined() {
 		return true;
 	}

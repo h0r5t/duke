@@ -32,7 +32,7 @@ public abstract class Tile extends GraphNode implements Visual {
 		this.ground = ground;
 	}
 
-	public Item getItemDroppedOnMining() {
+	public Item getDrop() {
 		return null;
 	}
 
