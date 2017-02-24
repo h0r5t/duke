@@ -85,14 +85,4 @@ public class TaskDistributor {
 		}
 	}
 
-	public ArrayList<MenuText> getTasksInfoList() {
-		ArrayList<MenuText> taskInfo = new ArrayList<MenuText>();
-		for (Task t : taskList) {
-			taskInfo.add(new MenuText(String.valueOf(t.getType()).toLowerCase() + ", "
-					+ String.valueOf(t.getStatus()).toLowerCase() + ", " + t.getTaskID()));
-		}
-
-		return taskInfo;
-	}
-
 }
