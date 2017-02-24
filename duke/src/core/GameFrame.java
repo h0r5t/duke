@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+@SuppressWarnings("serial")
 public class GameFrame extends JFrame {
 
 	private static String title = "duke";

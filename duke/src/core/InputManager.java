@@ -20,7 +20,7 @@ public class InputManager implements Runnable {
 
 	public void update() {
 		mainInputController.keysPressed(keysPressed);
-		core.getMenuManager().getCurrentMenu().keysPressed(keysPressed);
+		core.getMenuManager().keysPressed(keysPressed);
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -59,7 +59,7 @@ public class InputManager implements Runnable {
 	}
 
 	public void cursorMoved() {
-		core.getMenuManager().getCurrentMenu().cursorMoved(cursor);
+		core.getMenuManager().cursorMoved(cursor);
 	}
 
 	public Cursor getCursor() {

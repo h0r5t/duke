@@ -1,15 +1,10 @@
 package core;
 
-public abstract class Menu extends InputAdapter {
+public abstract class Menu {
 
-	protected MenuManager menuMgr;
-
-	protected
-
-	public Menu(MenuManager menuMgr) {
-		this.menuMgr = menuMgr;
+	public Menu() {
+		
 	}
-
-	public abstract void update();
-
+	
+	public abstract void keysPressed(DefaultHashMap<Integer, Boolean> keysPressed);
 }
