@@ -19,7 +19,7 @@ public class TaskActionPickupItem extends TaskAction {
 	@Override
 	protected void doAction(Unit unit) {
 		this.unit = unit;
-		startTimer(500, 0);
+		startTimer(250, 0);
 	}
 
 	@Override

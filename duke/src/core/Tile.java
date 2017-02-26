@@ -49,7 +49,9 @@ public abstract class Tile extends GraphNode implements Visual {
 	}
 
 	public boolean isSelected() {
-		return selections.size() > 0;
+		if (selections.size() > 0)
+			return true;
+		return false;
 	}
 
 	public void select(Zone2D selection) {
@@ -108,12 +110,10 @@ public abstract class Tile extends GraphNode implements Visual {
 			g.setColor(myChar.getColor());
 
 			FontMetrics metrics = g.getFontMetrics(font);
-			Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE,
-					Settings.TILE_SIZE);
+			Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
 			String text = myChar.getChar() + "";
 			int x = (rect.width - metrics.stringWidth(text)) / 2;
-			int y = ((rect.height - metrics.getHeight()) / 2)
-					+ metrics.getAscent();
+			int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
 			g.setFont(font);
 			g.drawString(text, posX + x, posY + y);
 		}
@@ -124,16 +124,12 @@ public abstract class Tile extends GraphNode implements Visual {
 		}
 
 		if (isSelected()) {
-			if (selections.get(0)
-					.getSelectionType() == SelectionType.TYPE_DESIGNATION) {
+			if (selections.get(0).getSelectionType() == SelectionType.TYPE_DESIGNATION) {
 				g.setColor(Color.CYAN);
-				g.drawRect(posX - 1, posY - 1, Settings.TILE_SIZE,
-						Settings.TILE_SIZE);
-			} else if (selections.get(0)
-					.getSelectionType() == SelectionType.TYPE_ZONE) {
+				g.drawRect(posX - 1, posY - 1, Settings.TILE_SIZE, Settings.TILE_SIZE);
+			} else if (selections.get(0).getSelectionType() == SelectionType.TYPE_ZONE) {
 				g.setColor(Color.CYAN);
-				g.drawRect(posX - 1, posY - 1, Settings.TILE_SIZE,
-						Settings.TILE_SIZE);
+				g.drawRect(posX - 1, posY - 1, Settings.TILE_SIZE, Settings.TILE_SIZE);
 			}
 
 		}

@@ -30,14 +30,13 @@ public class TaskMove extends Task {
 	@Override
 	public void update(Unit unit) {
 		if (coordsFuture == null) {
-			coordsFuture = PathFinderASync.findTargetTileWithShortestPath(
-					unit.getTile().getCoords3D(), possibleTargets);
+			coordsFuture = PathFinderASync.findTargetTileWithShortestPath(unit.getTile().getCoords3D(),
+					possibleTargets);
 		} else {
 			if (coordsFuture.isReady()) {
 				if (!pathFindingStarted) {
 
-					pathFuture = PathFinderASync.findPath(unit.getCoords(),
-							coordsFuture.getContained());
+					pathFuture = PathFinderASync.findPath(unit.getCoords(), coordsFuture.getContained());
 					pathFindingStarted = true;
 					moveCooldown = unit.getMoveSpeed();
 				}
@@ -56,8 +55,7 @@ public class TaskMove extends Task {
 								return;
 							}
 							Tile nextTile = c.getTile();
-							unit.moveTo(nextTile.getX(), nextTile.getY(),
-									nextTile.getZ());
+							unit.moveTo(nextTile.getX(), nextTile.getY(), nextTile.getZ());
 							moveCooldown = unit.getMoveSpeed();
 						}
 					}

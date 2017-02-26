@@ -1,42 +1,28 @@
 package core;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import java.awt.Graphics2D;
 
 public class MenuMove extends Menu {
 
-	public MenuMove(MenuManager menuMgr) {
-		super(menuMgr);
-	}
-
-	private void onEnter() {
-		TaskMove task = new TaskMove(menuMgr.getCursor().getCoords3D());
-		menuMgr.getCore().getTaskDistributor().addTask(task);
+	public MenuMove(MenuManager menuManager) {
+		super(menuManager);
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			onEnter();
-		}
-
-		else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			menuMgr.goToParentMenu();
-		}
+	public String getName() {
+		return "move";
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		onEnter();
+	public void start() {
+		Coords3D targetCoords = (Coords3D) getSelectionResult(new SelectorCursor(menuManager));
+		TaskMove moveTask = new TaskMove(targetCoords);
+		menuManager.getCore().getTaskDistributor().addTask(moveTask);
 	}
 
 	@Override
-	public void update() {
+	public void draw(Graphics2D g) {
 
 	}
 
-	@Override
-	public Menu getParentMenu() {
-		return new MenuRoot(menuMgr);
-	}
 }

@@ -8,8 +8,9 @@ public class TaskPriorities {
 
 	public TaskPriorities() {
 		prios = new HashMap<>();
-		prios.put(TaskType.MINE, 2);
-		prios.put(TaskType.HAUL, 1);
+		prios.put(TaskType.MINE, 3);
+		prios.put(TaskType.HAUL, 2);
+		prios.put(TaskType.MOVE, 1);
 	}
 
 	public int getPriorityForTask(Task t) {

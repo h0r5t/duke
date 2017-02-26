@@ -17,4 +17,6 @@ public class Colors {
 	public static final Color COLOR_GROUND_GRASS = Color.decode("#001a00");
 	public static final Color COLOR_GROUND_ROCK = Color.decode("#1a1a1a");
 	public static final Color COLOR_GROUND_WATER = Color.decode("#000033");
+
+	public static final Color COLOR_TOOLTIP = Color.decode("#cfd895");
 }

@@ -71,6 +71,13 @@ public class Zone2D {
 		}
 	}
 
+	public void markAllMineables() {
+		for (Coords3D c : locations) {
+			if (c.getTile().canBeMined())
+				c.getTile().select(this);
+		}
+	}
+
 	public SelectionType getSelectionType() {
 		return zoneType;
 	}

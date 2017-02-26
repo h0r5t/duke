@@ -26,7 +26,6 @@ public class TaskHaul extends TaskChain {
 		queueTask(pickUp);
 		queueTask(move2);
 		queueTask(drop);
-
 	}
 
 }

@@ -1,5 +1,6 @@
 package core;
 
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -16,13 +17,15 @@ public abstract class Menu extends InputAdapter implements Runnable {
 		return currentSelector;
 	}
 
-	protected Object[] getSelectionResults(MenuSelector menuSelector) {
+	public abstract String getName();
+
+	protected Object getSelectionResult(MenuSelector menuSelector) {
 		currentSelector = menuSelector;
-		Object[] results = null;
+		Object result = null;
 		while (true) {
 
 			if (currentSelector.isDone()) {
-				results = menuSelector.getResults();
+				result = menuSelector.getResult();
 				currentSelector = null;
 				break;
 			}
@@ -33,12 +36,13 @@ public abstract class Menu extends InputAdapter implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		return results;
+		return result;
 	}
 
 	@Override
 	public void run() {
 		start();
+		menuManager.resetMenu();
 	}
 
 	public abstract void start();
@@ -81,5 +85,15 @@ public abstract class Menu extends InputAdapter implements Runnable {
 		if (currentSelector != null)
 			currentSelector.cursorMoved(c);
 	}
+
+	public void drawMenu(Graphics2D g) {
+		if (currentSelector != null) {
+			if (currentSelector instanceof MenuSelectorDrawable)
+				((MenuSelectorDrawable) currentSelector).draw(g);
+		}
+		draw(g);
+	}
+
+	public abstract void draw(Graphics2D g);
 
 }

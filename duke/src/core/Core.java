@@ -1,6 +1,5 @@
 package core;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
@@ -19,7 +18,7 @@ public class Core implements Runnable {
 	private static World world;
 
 	public Core() {
-		System.setOut(new PrintStream(new NullOutputStream()));
+		modifySysOut();
 		GameData.load();
 		world = WorldGenerator.generateWorld(this);
 		initMgrs();
@@ -110,18 +109,25 @@ public class Core implements Runnable {
 		return logisticsManager;
 	}
 
+	private void modifySysOut() {
+		String className = "pathfinder.GraphSearch_Astar";
+		final PrintStream originalOut = System.out;
+		PrintStream filterStream = new PrintStream(new OutputStream() {
+			public void write(int b) {
+				StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+				if (!stackTraceElements[11].getClassName().equals(className)) {
+					originalOut.write(b);
+				}
+			}
+		});
+		System.setOut(filterStream);
+
+	}
+
 	public static void main(String[] args) {
 		Core core = new Core();
 		Thread t = new Thread(core);
 		t.start();
-	}
-
-	private static class NullOutputStream extends OutputStream {
-		@Override
-		public void write(int b) throws IOException {
-
-		}
-
 	}
 
 }

@@ -1,5 +1,7 @@
 package core;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -27,13 +29,19 @@ public class MenuManager extends InputAdapter {
 		}
 	}
 
+	public void draw(Graphics2D g) {
+		if (currentMenu != null) {
+			g.setColor(Color.WHITE);
+			Font font = new Font("Arial", Font.BOLD, 14);
+			g.drawString(currentMenu.getName(), 10, Settings.GAME_FRAME_HEIGHT - 50);
+
+			currentMenu.drawMenu(g);
+		}
+	}
+
 	//
 	// INPUT GOES THROUGH FROM INPUTMANAGER
 	//
-
-	public void draw(Graphics2D g) {
-
-	}
 
 	@Override
 	public void keysPressed(DefaultHashMap<Integer, Boolean> keysPressed) {
@@ -45,12 +53,20 @@ public class MenuManager extends InputAdapter {
 	public void keyReleased(KeyEvent e) {
 		if (currentMenu == null) {
 			if (e.getKeyCode() == KeyEvent.VK_R) {
-				currentMenu = new MenuMine(this);
-				new Thread(currentMenu).start();
+				setMenu(new MenuMine(this));
+			} else if (e.getKeyCode() == KeyEvent.VK_M) {
+				setMenu(new MenuMove(this));
+			} else if (e.getKeyCode() == KeyEvent.VK_Z) {
+				setMenu(new MenuZones(this));
 			}
 
 		} else
 			currentMenu.keyReleased(e);
+	}
+
+	private void setMenu(Menu m) {
+		currentMenu = m;
+		new Thread(currentMenu).start();
 	}
 
 	@Override
@@ -69,6 +85,10 @@ public class MenuManager extends InputAdapter {
 	public void cursorMoved(Cursor c) {
 		if (currentMenu != null)
 			currentMenu.cursorMoved(c);
+	}
+
+	public void resetMenu() {
+		currentMenu = null;
 	}
 
 }
