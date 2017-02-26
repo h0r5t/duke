@@ -56,6 +56,7 @@ public class Cursor implements Visual {
 	public void setToTile(Tile tile) {
 		xpos = tile.getX();
 		ypos = tile.getY();
+		core.getInputManager().cursorMoved();
 	}
 
 	public Coords3D getCoords3D() {

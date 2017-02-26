@@ -58,6 +58,8 @@ public class MenuManager extends InputAdapter {
 				setMenu(new MenuMove(this));
 			} else if (e.getKeyCode() == KeyEvent.VK_Z) {
 				setMenu(new MenuZones(this));
+			} else if (e.getKeyCode() == KeyEvent.VK_Q) {
+				setMenu(new MenuInfo(this));
 			}
 
 		} else

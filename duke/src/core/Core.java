@@ -28,6 +28,9 @@ public class Core implements Runnable {
 			world.setTile(new TileLand(2 + i, 7, 0));
 			UnitWorker worker = new UnitWorker(2 + i, 7, 0);
 			unitManager.addUnit(worker);
+			if (i > 0)
+				worker.getInventory().addItem(new ItemWood());
+			worker.getInventory().addItem(new ItemStone());
 		}
 
 		PathFinder.setReachablePoint(new Coords3D(7, 5, 0));

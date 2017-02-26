@@ -140,9 +140,9 @@ public abstract class Tile extends GraphNode implements Visual {
 		if (tileID == GameData.getTileID("tile_water")) {
 			this.ground = new GroundWater();
 		} else if (this.getZ() == 0) {
-			this.ground = new GroundGrass();
+			this.ground = new GroundBlack();
 		} else {
-			this.ground = new GroundRock();
+			this.ground = new GroundBlack();
 		}
 	}
 

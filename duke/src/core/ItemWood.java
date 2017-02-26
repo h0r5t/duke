@@ -6,4 +6,8 @@ public class ItemWood extends Item {
 		super(GameData.getItemID("item_wood"));
 	}
 
+	@Override
+	public String getName() {
+		return "wood";
+	}
 }

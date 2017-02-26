@@ -18,4 +18,8 @@ public class Inventory {
 		items.remove(i);
 	}
 
+	public ArrayList<Item> getItems() {
+		return items;
+	}
+
 }

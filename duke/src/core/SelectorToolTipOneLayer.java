@@ -17,6 +17,17 @@ public class SelectorToolTipOneLayer extends MenuSelectorDrawable {
 		this.selectedOption = 0;
 	}
 
+	public SelectorToolTipOneLayer(MenuManager menuManager, Inventory inventory) {
+		super(menuManager);
+		this.options = new String[inventory.getItems().size()];
+		int c = 0;
+		for (Item i : inventory.getItems()) {
+			options[c] = i.getName();
+			c++;
+		}
+		this.selectedOption = 0;
+	}
+
 	@Override
 	public void onEscape() {
 		result = null;
@@ -51,6 +62,9 @@ public class SelectorToolTipOneLayer extends MenuSelectorDrawable {
 
 	@Override
 	public void draw(Graphics g) {
+		if (options == null)
+			return;
+
 		int xpos = 120;
 		int width = 200;
 

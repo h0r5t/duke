@@ -33,7 +33,8 @@ public class SelectorZone2D extends MenuSelector {
 
 	@Override
 	public void onEscape() {
-		zone.reset();
+		if (zone != null)
+			zone.reset();
 		zone = null;
 		finish();
 	}

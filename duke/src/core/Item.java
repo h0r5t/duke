@@ -15,6 +15,8 @@ public abstract class Item implements Visual {
 		getChar();
 	}
 
+	public abstract String getName();
+
 	public Coords3D getCoords3D() {
 		return Core.getWorld().getItemPos(this);
 	}
@@ -41,8 +43,7 @@ public abstract class Item implements Visual {
 		g.setColor(myChar.getColor());
 
 		FontMetrics metrics = g.getFontMetrics(font);
-		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE,
-				Settings.TILE_SIZE);
+		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
 		String text = myChar.getChar() + "";
 		int x = (rect.width - metrics.stringWidth(text)) / 2;
 		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();

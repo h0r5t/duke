@@ -6,4 +6,9 @@ public class ItemStone extends Item {
 		super(GameData.getItemID("item_stone"));
 	}
 
+	@Override
+	public String getName() {
+		return "stone";
+	}
+
 }
