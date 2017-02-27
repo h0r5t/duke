@@ -9,24 +9,42 @@ public class World extends Graph {
 	private Core core;
 	private int[][][] world;
 	private ItemManager itemManager;
+	private ArrayList<Projectile> projectiles;
+	private ArrayList<Projectile> projectilesToRemove;
 
 	public World(Core core) {
 		super();
 		this.core = core;
 		world = new int[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT][Settings.WORLD_DEPTH];
 		itemManager = new ItemManager();
+		projectiles = new ArrayList<>();
+		projectilesToRemove = new ArrayList<>();
 	}
 
 	public void update(Core core) {
 		itemManager.update(core);
+		for (Projectile p : projectiles) {
+			if (p != null)
+				p.update();
+		}
+		projectiles.removeAll(projectilesToRemove);
 	}
 
-	public Unit getUnitAt(Tile tile) {
-		return core.getUnitManager().getUnitAt(tile);
+	public ArrayList<Unit> getUnitsAt(Tile tile) {
+		return core.getUnitManager().getUnitsAt(tile);
 	}
 
-	public Unit getUnitAt(int x, int y, int z) {
-		return core.getUnitManager().getUnitAt(x, y, z);
+	public ArrayList<Unit> getUnitsAt(int x, int y, int z) {
+		return core.getUnitManager().getUnitsAt(x, y, z);
+	}
+
+	public void addProjectileAt(Projectile p, Coords3D c) {
+		p.attachToTile(c.getTile());
+		projectiles.add(p);
+	}
+
+	public void removeProjectile(Projectile p) {
+		projectilesToRemove.add(p);
 	}
 
 	public void addItem(Item item, Coords3D c) {
@@ -170,18 +188,15 @@ public class World extends Graph {
 	public void wasMined(Coords3D targetToMine) {
 		Item droppedItem = targetToMine.getTile().getDrop();
 		if (targetToMine.getZ() == 0)
-			setTile(new TileLand(targetToMine.getX(), targetToMine.getY(),
-					targetToMine.getZ()));
+			setTile(new TileLand(targetToMine.getX(), targetToMine.getY(), targetToMine.getZ()));
 		else {
-			Tile t = new TileGround(targetToMine.getX(), targetToMine.getY(),
-					targetToMine.getZ());
+			Tile t = new TileGround(targetToMine.getX(), targetToMine.getY(), targetToMine.getZ());
 			t.setVisible(true);
 			setTile(t);
 		}
 		if (droppedItem != null) {
 			addItem(droppedItem, targetToMine);
-			Stockpile stockpile = core.getLogisticsManager()
-					.getStockPileManager().getStockpileForItem(droppedItem);
+			Stockpile stockpile = core.getLogisticsManager().getStockPileManager().getStockpileForItem(droppedItem);
 			if (stockpile != null && stockpile.getNextFreeSlot() != null) {
 				TaskHaul haulTask = new TaskHaul(droppedItem, stockpile);
 				core.getTaskDistributor().addTask(haulTask);
@@ -280,8 +295,7 @@ public class World extends Graph {
 			for (int y = 0; y < Settings.WORLD_HEIGHT; y++) {
 				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {
 					updateXYEdgesForTile(x, y, z);
-					if (getTile(x, y, z).isLadderDown()
-							|| getTile(x, y, z).isLadderUp())
+					if (getTile(x, y, z).isLadderDown() || getTile(x, y, z).isLadderUp())
 						addZEdgesForTile(x, y, z);
 					if (getTile(x, y, z).isVisible()) {
 						getTile(x + 1, y, z).setVisible(true);
@@ -302,9 +316,8 @@ public class World extends Graph {
 	}
 
 	public void setTileINITIAL(Tile tile) {
-		if (tile.getX() < 0 || tile.getX() > Settings.WORLD_WIDTH - 1
-				|| tile.getY() < 0 || tile.getY() > Settings.WORLD_HEIGHT - 1
-				|| tile.getZ() < 0 || tile.getZ() > Settings.WORLD_DEPTH - 1)
+		if (tile.getX() < 0 || tile.getX() > Settings.WORLD_WIDTH - 1 || tile.getY() < 0
+				|| tile.getY() > Settings.WORLD_HEIGHT - 1 || tile.getZ() < 0 || tile.getZ() > Settings.WORLD_DEPTH - 1)
 			return;
 		removeNode(world[tile.getX()][tile.getY()][tile.getZ()]);
 		world[tile.getX()][tile.getY()][tile.getZ()] = tile.id();

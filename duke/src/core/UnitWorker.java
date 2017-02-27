@@ -5,7 +5,7 @@ public class UnitWorker extends Unit {
 	private TaskPriorities taskPriorities;
 
 	public UnitWorker(int x, int y, int z) {
-		super(GameData.getUnitID("unit_worker"), x, y, z, 3);
+		super(GameData.getUnitID("unit_worker"), x, y, z, 16);
 		taskPriorities = new TaskPriorities();
 	}
 

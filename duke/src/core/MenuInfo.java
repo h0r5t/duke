@@ -1,6 +1,7 @@
 package core;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 public class MenuInfo extends Menu {
 
@@ -19,11 +20,11 @@ public class MenuInfo extends Menu {
 		if (coords == null)
 			return;
 
-		Unit u = menuManager.getCore().getWorld().getUnitAt(coords.getTile());
-		if (u == null)
+		ArrayList<Unit> units = menuManager.getCore().getWorld().getUnitsAt(coords.getTile());
+		if (units == null)
 			return;
-
-		getSelectionResult(new SelectorToolTipOneLayer(menuManager, u.getInventory()));
+		if (units.size() == 1)
+			getSelectionResult(new SelectorToolTipOneLayer(menuManager, units.get(0).getInventory()));
 	}
 
 	@Override

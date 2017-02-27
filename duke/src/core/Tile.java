@@ -16,12 +16,14 @@ public abstract class Tile extends GraphNode implements Visual {
 	protected Ground ground;
 	private boolean isVisible;
 	private ArrayList<Zone2D> selections;
+	private ArrayList<Projectile> projectiles;
 
 	public Tile(int tileID, int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
 		this.tileID = tileID;
 		resetGround();
 		this.selections = new ArrayList<Zone2D>();
+		this.projectiles = new ArrayList<Projectile>();
 		getChar();
 		if (z == 0) {
 			setVisible(true);
@@ -72,6 +74,18 @@ public abstract class Tile extends GraphNode implements Visual {
 
 	public int getTileID() {
 		return tileID;
+	}
+
+	public void addProjectile(Projectile p) {
+		projectiles.add(p);
+	}
+
+	public void removeProjectile(Projectile p) {
+		projectiles.remove(p);
+	}
+
+	public ArrayList<Projectile> getProjectiles() {
+		return projectiles;
 	}
 
 	public abstract boolean collides();
@@ -133,7 +147,6 @@ public abstract class Tile extends GraphNode implements Visual {
 			}
 
 		}
-
 	}
 
 	public void resetGround() {

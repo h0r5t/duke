@@ -15,20 +15,23 @@ public class UnitManager {
 		workerUnits = new ArrayList<UnitWorker>();
 	}
 
-	public Unit getUnitAt(Tile tile) {
-		return getUnitAt(tile.getX(), tile.getY(), tile.getZ());
+	public ArrayList<Unit> getUnitsAt(Tile tile) {
+		return getUnitsAt(tile.getX(), tile.getY(), tile.getZ());
 	}
 
-	public Unit getUnitAt(int x, int y, int z) {
+	public ArrayList<Unit> getUnitsAt(int x, int y, int z) {
+		ArrayList<Unit> un = new ArrayList<>();
 		for (int i = 0; i < units.size(); i++) {
 			Unit u = units.get(i);
 			if (u == null) {
 				continue;
 			}
 			if (u.getX() == x && u.getY() == y && u.getZ() == z)
-				return u;
+				un.add(u);
 		}
-		return null;
+		if (un.size() == 0)
+			return null;
+		return un;
 	}
 
 	public void addUnit(Unit u) {

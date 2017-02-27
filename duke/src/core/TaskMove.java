@@ -7,7 +7,6 @@ public class TaskMove extends Task {
 	private Path path;
 	private FutureContainer<Path> pathFuture;
 	private FutureContainer<Coords3D> coordsFuture;
-	private int moveCooldown;
 	private ArrayList<Coords3D> possibleTargets;
 	private boolean pathFindingStarted = false;
 
@@ -38,7 +37,6 @@ public class TaskMove extends Task {
 
 					pathFuture = PathFinderASync.findPath(unit.getCoords(), coordsFuture.getContained());
 					pathFindingStarted = true;
-					moveCooldown = unit.getMoveSpeed();
 				}
 				if (pathFindingStarted && pathFuture.isReady()) {
 					path = pathFuture.getContained();
@@ -46,8 +44,7 @@ public class TaskMove extends Task {
 						setStatus(TaskStatus.DONE);
 						return;
 					} else {
-						moveCooldown--;
-						if (moveCooldown == 0) {
+						if (!unit.isMoving()) {
 							Coords3D c = path.popNext();
 							if (c == null) {
 								path = null;
@@ -56,7 +53,6 @@ public class TaskMove extends Task {
 							}
 							Tile nextTile = c.getTile();
 							unit.moveTo(nextTile.getX(), nextTile.getY(), nextTile.getZ());
-							moveCooldown = unit.getMoveSpeed();
 						}
 					}
 				}

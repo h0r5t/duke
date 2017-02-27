@@ -12,13 +12,14 @@ public abstract class Unit implements Visual {
 	protected int y;
 	protected int z;
 	protected int unitID;
-	protected int moveSpeed;
+	protected int moveCooldown;
 	protected Character myChar;
 	protected Task currentTask;
 	protected TaskChain activeTaskChain;
 	private Item itemInHands;
 	private Inventory inventory;
 	private double health;
+	private UnitMovement unitMovement;
 
 	public Unit(int id, int x, int y, int z, int moveSpeed) {
 		this.unitID = id;
@@ -26,8 +27,9 @@ public abstract class Unit implements Visual {
 		this.y = y;
 		this.z = z;
 		this.health = 100;
-		this.moveSpeed = moveSpeed;
+		this.moveCooldown = 20 - moveSpeed;
 		inventory = new Inventory();
+		this.unitMovement = new UnitMovement(this);
 		getChar();
 	}
 
@@ -45,6 +47,10 @@ public abstract class Unit implements Visual {
 
 	public Inventory getInventory() {
 		return inventory;
+	}
+
+	public boolean isMoving() {
+		return unitMovement.isMoving();
 	}
 
 	public void update() {
@@ -80,7 +86,7 @@ public abstract class Unit implements Visual {
 	}
 
 	public int getMoveSpeed() {
-		return moveSpeed;
+		return moveCooldown;
 	}
 
 	public Task getCurrentTask() {
@@ -100,6 +106,9 @@ public abstract class Unit implements Visual {
 	}
 
 	public void moveTo(int xpos, int ypos, int zpos) {
+		Coords3D source = new Coords3D(x, y, z);
+		Coords3D target = new Coords3D(xpos, ypos, zpos);
+
 		this.x = xpos;
 		this.y = ypos;
 		this.z = zpos;
@@ -107,16 +116,21 @@ public abstract class Unit implements Visual {
 		if (itemInHands != null) {
 			itemInHands.moveTo(new Coords3D(xpos, ypos, zpos));
 		}
+
+		unitMovement.startMove(source, target);
 	}
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
+		int[] movementDeltas = unitMovement.getPositionDeltas();
+		posX += movementDeltas[0];
+		posY += movementDeltas[1];
+
 		Font font = new Font("Arial", Font.BOLD, 24);
 		g.setColor(myChar.getColor());
 
 		FontMetrics metrics = g.getFontMetrics(font);
-		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE,
-				Settings.TILE_SIZE);
+		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
 		String text = myChar.getChar() + "";
 		int x = (rect.width - metrics.stringWidth(text)) / 2;
 		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
@@ -126,8 +140,7 @@ public abstract class Unit implements Visual {
 		// draw health bar
 
 		g.setColor(Color.GREEN);
-		g.fillRect(posX + 3, posY - 1,
-				(int) ((health / 100) * (Settings.TILE_SIZE - 6)), 3);
+		g.fillRect(posX + 3, posY - 1, (int) ((health / 100) * (Settings.TILE_SIZE - 6)), 3);
 		g.setColor(Color.BLACK);
 		g.drawRect(posX + 3, posY - 1, Settings.TILE_SIZE - 6, 3);
 	}
