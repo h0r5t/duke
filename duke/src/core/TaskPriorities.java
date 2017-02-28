@@ -8,7 +8,8 @@ public class TaskPriorities {
 
 	public TaskPriorities() {
 		prios = new HashMap<>();
-		prios.put(TaskType.MINE, 3);
+		prios.put(TaskType.MINE, 4);
+		prios.put(TaskType.BUILD, 3);
 		prios.put(TaskType.HAUL, 2);
 		prios.put(TaskType.MOVE, 1);
 	}

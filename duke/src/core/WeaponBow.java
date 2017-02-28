@@ -13,12 +13,17 @@ public class WeaponBow extends EquipmentWeapon {
 
 	@Override
 	public int getRange() {
-		return 10;
+		return 30;
 	}
 
 	@Override
 	public void useWeapon(Coords3D source, Coords3D target) {
 
+	}
+
+	@Override
+	public boolean collides() {
+		return false;
 	}
 
 }

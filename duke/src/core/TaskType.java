@@ -10,6 +10,8 @@ public enum TaskType {
 
 	PICK_UP_ITEM,
 
-	DROP_ITEM;
+	DROP_ITEM,
+
+	BUILD;
 
 }

@@ -14,4 +14,8 @@ public class LogisticsManager {
 		return stockPileManager;
 	}
 
+	public Stockpile getStockpileToGetItem(int itemID) {
+		return stockPileManager.getStockpileWithItem(itemID);
+	}
+
 }

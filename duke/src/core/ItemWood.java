@@ -10,4 +10,10 @@ public class ItemWood extends Item {
 	public String getName() {
 		return "wood";
 	}
+
+	@Override
+	public boolean collides() {
+		return true;
+	}
+
 }

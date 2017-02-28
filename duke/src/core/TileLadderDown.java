@@ -6,7 +6,7 @@ public class TileLadderDown extends Tile {
 	}
 
 	@Override
-	public boolean collides() {
+	public boolean tileCollides() {
 		return false;
 	}
 

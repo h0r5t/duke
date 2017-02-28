@@ -37,6 +37,7 @@ public class ItemManager {
 			tileItemsMap.put(id, newList);
 		}
 		itemsCoordsMap.put(i, c);
+
 	}
 
 	public void removeItem(Item i) {
@@ -65,8 +66,7 @@ public class ItemManager {
 
 	private void checkForItemsToBeHauled(Core core) {
 		for (Item i : getUnclaimedItems()) {
-			Stockpile p = core.getLogisticsManager().getStockPileManager()
-					.getStockpileForItem(i);
+			Stockpile p = core.getLogisticsManager().getStockPileManager().getStockpileForItem(i);
 			if (p != null) {
 				Coords3D slot = p.getNextFreeSlot();
 				if (slot != null) {

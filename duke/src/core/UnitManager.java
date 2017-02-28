@@ -8,11 +8,13 @@ public class UnitManager {
 	private Core core;
 	private ArrayList<Unit> units;
 	private ArrayList<UnitWorker> workerUnits;
+	private ArrayList<Unit> unitsToRemove;
 
 	public UnitManager(Core core) {
 		this.core = core;
 		units = new ArrayList<Unit>();
 		workerUnits = new ArrayList<UnitWorker>();
+		unitsToRemove = new ArrayList<>();
 	}
 
 	public ArrayList<Unit> getUnitsAt(Tile tile) {
@@ -40,6 +42,12 @@ public class UnitManager {
 			workerUnits.add((UnitWorker) u);
 	}
 
+	public void removeUnit(Unit unit) {
+		unitsToRemove.add(unit);
+		if (unit instanceof UnitWorker)
+			workerUnits.remove(unit);
+	}
+
 	public ArrayList<UnitWorker> getAvailableWorkerUnits() {
 		ArrayList<UnitWorker> available = new ArrayList<UnitWorker>();
 		for (UnitWorker u : workerUnits) {
@@ -62,13 +70,13 @@ public class UnitManager {
 
 	public void update() {
 		for (Unit u : units) {
-			u.update();
+			u.updateUnit();
 		}
+		units.removeAll(unitsToRemove);
 	}
 
 	public void lowerPrio(UnitWorker u) {
 		// moves unit to bottom of list (handle locked-in units.)
 		Collections.rotate(workerUnits, -1);
 	}
-
 }

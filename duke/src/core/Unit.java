@@ -33,6 +33,10 @@ public abstract class Unit implements Visual {
 		getChar();
 	}
 
+	public void damage(int damage) {
+		this.health -= damage;
+	}
+
 	public Item getItemInHands() {
 		return itemInHands;
 	}
@@ -53,7 +57,7 @@ public abstract class Unit implements Visual {
 		return unitMovement.isMoving();
 	}
 
-	public void update() {
+	public void updateUnit() {
 		if (currentTask != null) {
 			currentTask.update(this);
 			if (currentTask.status == TaskStatus.DONE) {
@@ -62,8 +66,15 @@ public abstract class Unit implements Visual {
 					activeTaskChain.update(this);
 			}
 		}
-
+		if (this.health <= 0) {
+			Core.getWorld().removeUnit(this);
+		}
+		update();
 	}
+
+	public abstract void onDeath();
+
+	public abstract void update();
 
 	protected void getChar() {
 		myChar = GameData.getRandomUnitCharacter(unitID);
@@ -97,6 +108,10 @@ public abstract class Unit implements Visual {
 		return currentTask != null;
 	}
 
+	public boolean hasTaskChain() {
+		return activeTaskChain != null;
+	}
+
 	public void setCurrentTask(Task currentTask) {
 		this.currentTask = currentTask;
 	}
@@ -126,7 +141,7 @@ public abstract class Unit implements Visual {
 		posX += movementDeltas[0];
 		posY += movementDeltas[1];
 
-		Font font = new Font("Arial", Font.BOLD, 24);
+		Font font = new Font("Arial", Font.BOLD, myChar.getFontSize());
 		g.setColor(myChar.getColor());
 
 		FontMetrics metrics = g.getFontMetrics(font);

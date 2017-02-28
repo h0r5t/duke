@@ -24,14 +24,7 @@ public class Core implements Runnable {
 		initMgrs();
 		setupGUI();
 
-		for (int i = 0; i < 3; i++) {
-			world.setTile(new TileLand(2 + i, 7, 0));
-			UnitWorker worker = new UnitWorker(2 + i, 7, 0);
-			unitManager.addUnit(worker);
-			if (i > 0)
-				worker.getInventory().addItem(new ItemWood());
-			worker.getInventory().addItem(new ItemStone());
-		}
+		spawnUnits();
 
 		PathFinder.setReachablePoint(new Coords3D(7, 5, 0));
 		world.setTile(new TileLadderDown(7, 5, 0));
@@ -52,6 +45,21 @@ public class Core implements Runnable {
 		gamePanel = new GamePanel(inputManager, viewManager);
 		gameFrame.add(gamePanel);
 		gameFrame.setVisible(true);
+	}
+
+	private void spawnUnits() {
+		for (int i = 0; i < 3; i++) {
+			world.setTile(new TileLand(2 + i, 7, 0));
+			UnitWorker worker = new UnitWorker(2 + i, 7, 0);
+			unitManager.addUnit(worker);
+			if (i > 0)
+				worker.getInventory().addItem(new ItemWood());
+			worker.getInventory().addItem(new ItemStone());
+		}
+
+		world.setTile(new TileLand(10, 10, 0));
+		MobGoblin goblin = new MobGoblin(10, 10, 0);
+		unitManager.addUnit(goblin);
 	}
 
 	private void loop() {

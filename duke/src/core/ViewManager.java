@@ -88,8 +88,10 @@ public class ViewManager {
 							u.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
 					}
 					ArrayList<Projectile> projectiles = tile.getProjectiles();
-					for (Projectile p : projectiles)
+					for (Projectile p : projectiles) {
 						p.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
+					}
+
 				}
 
 				if (cursor.getXpos() == x && cursor.getYpos() == y) {

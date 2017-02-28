@@ -45,4 +45,21 @@ public class StockpileManager {
 		}
 		return null;
 	}
+
+	public Stockpile getStockpileForItem(int itemID) {
+		for (Stockpile s : getStockpiles()) {
+			if (s.allowsItem(itemID) && s.getNextFreeSlot() != null)
+				return s;
+		}
+		return null;
+	}
+
+	public Stockpile getStockpileWithItem(int itemID) {
+		for (Stockpile s : getStockpiles()) {
+			if (s.hasItemOfType(itemID))
+				return s;
+		}
+
+		return null;
+	}
 }

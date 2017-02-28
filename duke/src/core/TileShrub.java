@@ -7,7 +7,7 @@ public class TileShrub extends Tile {
 	}
 
 	@Override
-	public boolean collides() {
+	public boolean tileCollides() {
 		return false;
 	}
 

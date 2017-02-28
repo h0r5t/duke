@@ -37,6 +37,12 @@ public class Coords3D {
 		return new Coords3D(x, y - 1, z);
 	}
 
+	public double getDistance2D(Coords3D other) {
+		int a = other.x - x;
+		int b = other.y - y;
+		return Math.sqrt(a * a + b * b);
+	}
+
 	public int getX() {
 		return x;
 	}

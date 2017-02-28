@@ -38,6 +38,10 @@ public class World extends Graph {
 		return core.getUnitManager().getUnitsAt(x, y, z);
 	}
 
+	public void removeUnit(Unit unit) {
+		core.getUnitManager().removeUnit(unit);
+	}
+
 	public void addProjectileAt(Projectile p, Coords3D c) {
 		p.attachToTile(c.getTile());
 		projectiles.add(p);

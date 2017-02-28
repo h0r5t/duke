@@ -30,6 +30,8 @@ public abstract class Item implements Visual {
 		myChar = GameData.getRandomItemCharacter(getItemID());
 	}
 
+	public abstract boolean collides();
+
 	public int getItemID() {
 		return itemID;
 	}

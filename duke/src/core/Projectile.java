@@ -17,8 +17,8 @@ public abstract class Projectile implements Visual {
 	public Projectile(World world) {
 		this.world = world;
 		myChar = new Character("+", Color.RED, 12);
-		microPositionX = 0;
-		microPositionY = 0;
+		microPositionX = Settings.TILE_SIZE / 2;
+		microPositionY = Settings.TILE_SIZE / 2;
 	}
 
 	protected void attachToTile(Tile newTile) {
@@ -30,8 +30,8 @@ public abstract class Projectile implements Visual {
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
-		posX += microPositionX;
-		posY += microPositionY;
+		posX += (int) (microPositionX + 0.5);
+		posY += (int) (microPositionY + 0.5);
 
 		Font font = new Font("Arial", Font.BOLD, myChar.getFontSize());
 		g.setColor(myChar.getColor());
@@ -39,10 +39,10 @@ public abstract class Projectile implements Visual {
 		FontMetrics metrics = g.getFontMetrics(font);
 		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
 		String text = myChar.getChar() + "";
-		int x = (rect.width - metrics.stringWidth(text)) / 2;
-		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+		int width = metrics.stringWidth(text);
+		int height = metrics.getHeight();
 		g.setFont(font);
-		g.drawString(text, posX + x, posY + y);
+		g.drawString(text, posX - width, posY + metrics.getHeight() / 2);
 	}
 
 	public abstract void update();

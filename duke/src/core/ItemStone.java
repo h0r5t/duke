@@ -11,4 +11,9 @@ public class ItemStone extends Item {
 		return "stone";
 	}
 
+	@Override
+	public boolean collides() {
+		return false;
+	}
+
 }

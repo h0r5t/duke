@@ -88,7 +88,21 @@ public abstract class Tile extends GraphNode implements Visual {
 		return projectiles;
 	}
 
-	public abstract boolean collides();
+	public boolean collides() {
+		if (tileCollides())
+			return true;
+		if (Core.getWorld() == null)
+			return false;
+		// if (Core.getWorld().getUnitsAt(this) != null)
+		// return true;
+		for (Item i : Core.getWorld().getItemsAt(this.getCoords3D())) {
+			if (i.collides())
+				return true;
+		}
+		return false;
+	}
+
+	public abstract boolean tileCollides();
 
 	public boolean isLadderDown() {
 		return false;
