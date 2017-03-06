@@ -8,8 +8,9 @@ public class AIStrolling extends AI {
 
 	@Override
 	public void doLogic() {
-		if (unit.hasTask() || unit.hasTaskChain())
+		if (unit.hasTask()) {
 			return;
+		}
 
 		int xr = (int) (Math.random() * 10 - 5);
 		int yr = (int) (Math.random() * 10 - 5);

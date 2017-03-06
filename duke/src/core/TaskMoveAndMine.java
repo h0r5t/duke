@@ -31,23 +31,18 @@ public class TaskMoveAndMine extends TaskChain {
 
 	@Override
 	public void update(Unit unit) {
-		if (pickedUp == false) {
-			pickedUp = true;
-			unit.setCurrentTask(taskChain.get(0));
-			unit.setActiveTaskChain(this);
-		}
-		if (taskChain.get(0).getStatus() == TaskStatus.DONE) {
-			taskChain.remove(0);
-			if (taskChain.size() == 0) {
-				// report to group
-				TaskGroupMining g = getTaskGroup();
-				if (g != null)
-					g.taskEnded(this);
+		if (taskChain.isEmpty()) {
+			// report to group
+			TaskGroupMining g = getTaskGroup();
+			if (g != null)
+				g.taskEnded(this);
 
-				setStatus(TaskStatus.DONE);
-				unit.setActiveTaskChain(null);
-			} else {
-				unit.setCurrentTask(taskChain.get(0));
+			setStatus(TaskStatus.DONE);
+		} else {
+			taskChain.get(0).update(unit);
+
+			if (taskChain.get(0).getStatus() == TaskStatus.DONE) {
+				taskChain.remove(0);
 			}
 		}
 	}

@@ -26,6 +26,10 @@ public abstract class Item implements Visual {
 		Core.getWorld().addItem(this, c);
 	}
 
+	public void destroy() {
+		Core.getWorld().removeItem(this);
+	}
+
 	protected void getChar() {
 		myChar = GameData.getRandomItemCharacter(getItemID());
 	}

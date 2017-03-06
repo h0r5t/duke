@@ -15,7 +15,6 @@ public abstract class Unit implements Visual {
 	protected int moveCooldown;
 	protected Character myChar;
 	protected Task currentTask;
-	protected TaskChain activeTaskChain;
 	private Item itemInHands;
 	private Inventory inventory;
 	private double health;
@@ -28,7 +27,7 @@ public abstract class Unit implements Visual {
 		this.z = z;
 		this.health = 100;
 		this.moveCooldown = 20 - moveSpeed;
-		inventory = new Inventory();
+		this.inventory = new Inventory();
 		this.unitMovement = new UnitMovement(this);
 		getChar();
 	}
@@ -59,13 +58,14 @@ public abstract class Unit implements Visual {
 
 	public void updateUnit() {
 		if (currentTask != null) {
-			currentTask.update(this);
-			if (currentTask.status == TaskStatus.DONE) {
+			if (currentTask.getStatus() == TaskStatus.DONE) {
+				if (currentTask instanceof TaskBuild)
+					System.out.println(currentTask);
 				currentTask = null;
-				if (activeTaskChain != null)
-					activeTaskChain.update(this);
-			}
+			} else
+				currentTask.update(this);
 		}
+
 		if (this.health <= 0) {
 			Core.getWorld().removeUnit(this);
 		}
@@ -100,24 +100,12 @@ public abstract class Unit implements Visual {
 		return moveCooldown;
 	}
 
-	public Task getCurrentTask() {
-		return currentTask;
-	}
-
 	public boolean hasTask() {
 		return currentTask != null;
 	}
 
-	public boolean hasTaskChain() {
-		return activeTaskChain != null;
-	}
-
 	public void setCurrentTask(Task currentTask) {
 		this.currentTask = currentTask;
-	}
-
-	public void setActiveTaskChain(TaskChain chain) {
-		activeTaskChain = chain;
 	}
 
 	public void moveTo(int xpos, int ypos, int zpos) {
@@ -133,6 +121,10 @@ public abstract class Unit implements Visual {
 		}
 
 		unitMovement.startMove(source, target);
+	}
+
+	public int[] getCurrentMovementDeltas() {
+		return unitMovement.getLastPositionDeltas();
 	}
 
 	@Override

@@ -5,12 +5,12 @@ import java.util.HashMap;
 
 public class ItemManager {
 
-	private HashMap<Integer, ArrayList<Item>> tileItemsMap;
+	private HashMap<Coords3D, ArrayList<Item>> coordsItemsMap;
 	private HashMap<Item, Coords3D> itemsCoordsMap;
 	private ArrayList<Item> unclaimedItems;
 
 	public ItemManager() {
-		tileItemsMap = new HashMap<>();
+		coordsItemsMap = new HashMap<>();
 		itemsCoordsMap = new HashMap<>();
 		unclaimedItems = new ArrayList<Item>();
 	}
@@ -28,28 +28,26 @@ public class ItemManager {
 	}
 
 	public void addItem(Item i, Coords3D c) {
-		int id = c.getTile().id();
-		if (tileItemsMap.containsKey(id)) {
-			tileItemsMap.get(id).add(i);
+		if (coordsItemsMap.containsKey(c)) {
+			coordsItemsMap.get(c).add(i);
 		} else {
 			ArrayList<Item> newList = new ArrayList<>();
 			newList.add(i);
-			tileItemsMap.put(id, newList);
+			coordsItemsMap.put(c, newList);
 		}
 		itemsCoordsMap.put(i, c);
-
 	}
 
 	public void removeItem(Item i) {
-		int tileID = itemsCoordsMap.get(i).getTile().id();
+		Coords3D coords = itemsCoordsMap.get(i);
 		itemsCoordsMap.remove(i);
-		tileItemsMap.get(tileID).remove(i);
+		coordsItemsMap.get(coords).remove(i);
 	}
 
 	public ArrayList<Item> getItemsAt(Coords3D c) {
-		if (tileItemsMap.get(c.getTile().id()) == null)
+		if (coordsItemsMap.get(c) == null)
 			return new ArrayList<Item>();
-		return tileItemsMap.get(c.getTile().id());
+		return coordsItemsMap.get(c);
 	}
 
 	public Coords3D getItemPos(Item item) {

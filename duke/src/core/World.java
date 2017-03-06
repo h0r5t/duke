@@ -30,12 +30,8 @@ public class World extends Graph {
 		projectiles.removeAll(projectilesToRemove);
 	}
 
-	public ArrayList<Unit> getUnitsAt(Tile tile) {
-		return core.getUnitManager().getUnitsAt(tile);
-	}
-
-	public ArrayList<Unit> getUnitsAt(int x, int y, int z) {
-		return core.getUnitManager().getUnitsAt(x, y, z);
+	public ArrayList<Unit> getUnitsAt(Coords3D coords) {
+		return core.getUnitManager().getUnitsAt(coords);
 	}
 
 	public void removeUnit(Unit unit) {
@@ -72,6 +68,12 @@ public class World extends Graph {
 	}
 
 	public void setTile(Tile tile) {
+		Tile previousTile = getTile(tile.getCoords3D());
+		if (previousTile instanceof Building)
+			core.getLogisticsManager().getBuildingManager().removeBuilding((Building) previousTile);
+		if (tile instanceof Building)
+			core.getLogisticsManager().getBuildingManager().addBuilding((Building) tile);
+
 		if (tile.isLadderDown() || tile.isLadderUp()) {
 			setLadder(tile);
 			return;

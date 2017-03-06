@@ -13,7 +13,7 @@ public class ItemWood extends Item {
 
 	@Override
 	public boolean collides() {
-		return true;
+		return false;
 	}
 
 }

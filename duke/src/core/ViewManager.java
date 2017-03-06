@@ -78,14 +78,27 @@ public class ViewManager {
 				Tile tile = w.getTile(x, y, z);
 
 				if (tile != null && tile.isVisible()) {
-					ArrayList<Item> items = w.getItemsAt(tile.getCoords3D());
-					for (Item i : items) {
-						i.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
-					}
-					ArrayList<Unit> units = w.getUnitsAt(x, y, z);
+					ArrayList<Unit> units = w.getUnitsAt(tile.getCoords3D());
 					if (units != null) {
 						for (Unit u : units)
 							u.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
+					}
+					ArrayList<Item> items = w.getItemsAt(tile.getCoords3D());
+					for (Item i : items) {
+						int moveDeltaX = 0;
+						int moveDeltaY = 0;
+						if (units != null) {
+							for (Unit u : units) {
+								if (u.getItemInHands() == i) {
+									moveDeltaX = u.getCurrentMovementDeltas()[0];
+									moveDeltaY = u.getCurrentMovementDeltas()[1];
+								}
+							}
+						}
+
+						i.draw(g, (x - xstart) * tileSize - xrest + moveDeltaX,
+								(y - ystart) * tileSize - yrest + moveDeltaY);
+
 					}
 					ArrayList<Projectile> projectiles = tile.getProjectiles();
 					for (Projectile p : projectiles) {

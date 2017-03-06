@@ -20,7 +20,7 @@ public class MenuInfo extends Menu {
 		if (coords == null)
 			return;
 
-		ArrayList<Unit> units = menuManager.getCore().getWorld().getUnitsAt(coords.getTile());
+		ArrayList<Unit> units = menuManager.getCore().getWorld().getUnitsAt(coords);
 		if (units == null)
 			return;
 		if (units.size() == 1)

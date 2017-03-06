@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class TaskChain extends Task {
 
 	protected ArrayList<Task> taskChain;
-	protected boolean pickedUp = false;
 
 	public TaskChain(TaskType taskType) {
 		super(taskType);
@@ -23,18 +22,13 @@ public class TaskChain extends Task {
 
 	@Override
 	public void update(Unit unit) {
-		if (pickedUp == false) {
-			pickedUp = true;
-			unit.setCurrentTask(taskChain.get(0));
-			unit.setActiveTaskChain(this);
-		}
-		if (taskChain.get(0).getStatus() == TaskStatus.DONE) {
-			taskChain.remove(0);
-			if (taskChain.size() == 0) {
-				setStatus(TaskStatus.DONE);
-				unit.setActiveTaskChain(null);
-			} else {
-				unit.setCurrentTask(taskChain.get(0));
+		if (taskChain.isEmpty()) {
+			setStatus(TaskStatus.DONE);
+		} else {
+			taskChain.get(0).update(unit);
+
+			if (taskChain.get(0).getStatus() == TaskStatus.DONE) {
+				taskChain.remove(0);
 			}
 		}
 	}

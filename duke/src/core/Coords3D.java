@@ -21,6 +21,11 @@ public class Coords3D {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		return Integer.parseInt(x + "" + y + "" + z);
+	}
+
 	public Coords3D getRight() {
 		return new Coords3D(x + 1, y, z);
 	}

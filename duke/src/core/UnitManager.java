@@ -17,11 +17,11 @@ public class UnitManager {
 		unitsToRemove = new ArrayList<>();
 	}
 
-	public ArrayList<Unit> getUnitsAt(Tile tile) {
-		return getUnitsAt(tile.getX(), tile.getY(), tile.getZ());
-	}
+	public ArrayList<Unit> getUnitsAt(Coords3D coords) {
+		int x = coords.getX();
+		int y = coords.getY();
+		int z = coords.getZ();
 
-	public ArrayList<Unit> getUnitsAt(int x, int y, int z) {
 		ArrayList<Unit> un = new ArrayList<>();
 		for (int i = 0; i < units.size(); i++) {
 			Unit u = units.get(i);

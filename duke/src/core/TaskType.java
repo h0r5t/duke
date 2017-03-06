@@ -12,6 +12,8 @@ public enum TaskType {
 
 	DROP_ITEM,
 
-	BUILD;
+	BUILD,
+
+	BUSY;
 
 }

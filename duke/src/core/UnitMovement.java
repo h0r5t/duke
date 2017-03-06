@@ -11,10 +11,12 @@ public class UnitMovement {
 	private Coords3D source;
 	private Coords3D target;
 	private boolean moving;
+	private int[] lastDeltas;
 
 	public UnitMovement(Unit u) {
 		this.currentDelta = 0;
 		this.moveDelta = (double) Settings.TILE_SIZE / (double) (u.getMoveSpeed());
+		this.lastDeltas = new int[] { 0, 0 };
 	}
 
 	public void startMove(Coords3D source, Coords3D target) {
@@ -54,6 +56,7 @@ public class UnitMovement {
 			reset();
 		}
 
+		lastDeltas = new int[] { deltaX, deltaY };
 		return new int[] { deltaX, deltaY };
 	}
 
@@ -68,6 +71,10 @@ public class UnitMovement {
 
 	public boolean isMoving() {
 		return moving;
+	}
+
+	public int[] getLastPositionDeltas() {
+		return lastDeltas;
 	}
 
 }

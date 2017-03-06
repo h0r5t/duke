@@ -97,7 +97,7 @@ public abstract class ProjectileLinear extends Projectile {
 				tileDeltaX = 0;
 				tileDeltaY = 0;
 
-				ArrayList<Unit> units = world.getUnitsAt(newTile);
+				ArrayList<Unit> units = world.getUnitsAt(newTile.getCoords3D());
 				if (units != null) {
 					for (Unit u : units) {
 						onUnitHit(u);

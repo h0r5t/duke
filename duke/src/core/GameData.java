@@ -84,7 +84,7 @@ public class GameData {
 		tileIDCharMap.put(9, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("#", Colors.COLOR_BROWN, 24));
+		list.add(new Character("#", Color.WHITE, 24));
 		tileIDCharMap.put(10, list);
 	}
 
