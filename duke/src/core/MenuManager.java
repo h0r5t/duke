@@ -30,6 +30,11 @@ public class MenuManager extends InputAdapter {
 	}
 
 	public void draw(Graphics2D g) {
+
+		g.setFont(new Font("Arial", Font.BOLD, 24));
+		g.setColor(Color.WHITE);
+		g.drawString("" + getCursor().getZpos(), 10, 30);
+
 		if (currentMenu != null) {
 			g.setColor(Color.WHITE);
 			Font font = new Font("Arial", Font.BOLD, 14);

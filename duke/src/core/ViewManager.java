@@ -6,12 +6,14 @@ import java.util.ArrayList;
 public class ViewManager {
 
 	private Core core;
-	private int currentZ = 0;
+	private int currentZ = Settings.CAMERA_START_Z;
 	private int screenShiftX;
 	private int screenShiftY;
+	private Sky sky;
 
 	public ViewManager(Core core) {
 		this.core = core;
+		this.sky = new Sky();
 	}
 
 	public void moveZ(int delta) {
@@ -62,14 +64,26 @@ public class ViewManager {
 
 		Cursor cursor = core.getInputManager().getCursor();
 
+		g.drawImage(sky.getSkyImage(), -screenShiftX, -screenShiftY, null);
+
 		for (int x = xstart; x < xstart + screenWidth; x++) {
 			for (int y = ystart; y < ystart + screenHeight; y++) {
 
-				Tile tile = w.getTile(x, y, z);
-				if (tile != null) {
-					tile.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
-				}
+				// draw tiles
 
+				Tile tile = w.getTile(x, y, z);
+				if (tile != null && !(tile instanceof TileAir)) {
+					tile.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, 0);
+				}
+				if (tile instanceof TileAir) {
+					for (int i = 0; i < Settings.DRAW_DARKER_LEVELS_AMOUNT - 1; i++) {
+						tile = w.getTile(x, y, z + i + 1);
+						if (tile != null && !(tile instanceof TileAir)) {
+							tile.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, i + 1);
+							break;
+						}
+					}
+				}
 			}
 		}
 

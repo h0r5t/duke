@@ -33,7 +33,8 @@ public class GameData {
 		tileIDs.put("tile_stone", 7);
 		tileIDs.put("tile_mushroom", 8);
 		tileIDs.put("tile_ground", 9);
-		tileIDs.put("tile_building_crafting_table", 10);
+		tileIDs.put("tile_air", 10);
+		tileIDs.put("tile_building_crafting_table", 11);
 
 		tileIDCharMap = new HashMap<Integer, ArrayList<Character>>();
 		ArrayList<Character> list = new ArrayList<Character>();
@@ -84,8 +85,12 @@ public class GameData {
 		tileIDCharMap.put(9, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("#", Color.WHITE, 24));
+		list.add(new Character(" ", Color.BLUE, 24));
 		tileIDCharMap.put(10, list);
+
+		list = new ArrayList<Character>();
+		list.add(new Character("#", Color.WHITE, 24));
+		tileIDCharMap.put(11, list);
 	}
 
 	private static void loadUnits() {

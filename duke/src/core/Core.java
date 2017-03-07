@@ -24,7 +24,7 @@ public class Core implements Runnable {
 		initMgrs();
 		setupGUI();
 
-		spawnUnits();
+		// spawnUnits();
 
 		PathFinder.setReachablePoint(new Coords3D(7, 5, 0));
 		world.setTile(new TileLadderDown(7, 5, 0));

@@ -1,15 +1,17 @@
 package core;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.util.ArrayList;
 
 import pathfinder.GraphNode;
 
-public abstract class Tile extends GraphNode implements Visual {
+public abstract class Tile extends GraphNode {
 
 	protected Character myChar;
 	protected int tileID;
@@ -17,6 +19,8 @@ public abstract class Tile extends GraphNode implements Visual {
 	private boolean isVisible;
 	private ArrayList<Zone2D> selections;
 	private ArrayList<Projectile> projectiles;
+	private Color[] groundColorLevels;
+	private Color[] charColorLevels;
 
 	public Tile(int tileID, int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
@@ -25,8 +29,20 @@ public abstract class Tile extends GraphNode implements Visual {
 		this.selections = new ArrayList<Zone2D>();
 		this.projectiles = new ArrayList<Projectile>();
 		getChar();
-		if (z == 0) {
-			setVisible(true);
+		createColors();
+		// if (z == 0) {
+		setVisible(true);
+		// }
+	}
+
+	private void createColors() {
+		groundColorLevels = new Color[Settings.DRAW_DARKER_LEVELS_AMOUNT];
+		charColorLevels = new Color[Settings.DRAW_DARKER_LEVELS_AMOUNT];
+
+		for (int i = 0; i < Settings.DRAW_DARKER_LEVELS_AMOUNT; i++) {
+			groundColorLevels[i] = ColorUtils.makeColorDarker(ground.getGroundColor(), i);
+			if (myChar != null)
+				charColorLevels[i] = ColorUtils.makeColorDarker(myChar.getColor(), i);
 		}
 	}
 
@@ -128,14 +144,15 @@ public abstract class Tile extends GraphNode implements Visual {
 		return new Coords3D(getX(), getY(), getZ());
 	}
 
-	@Override
-	public void draw(Graphics2D g, int posX, int posY) {
-		g.setColor(ground.getGroundColor());
+	public void draw(Graphics2D g, int posX, int posY, int darkerLevel) {
+		g.setColor(groundColorLevels[darkerLevel]);
 		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
+
+		if (this instanceof TileAir)
+			return;
 
 		if (isVisible()) {
 			Font font = new Font("Arial", Font.BOLD, myChar.getFontSize());
-			g.setColor(myChar.getColor());
 
 			FontMetrics metrics = g.getFontMetrics(font);
 			Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
@@ -143,8 +160,30 @@ public abstract class Tile extends GraphNode implements Visual {
 			int x = (rect.width - metrics.stringWidth(text)) / 2;
 			int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
 			g.setFont(font);
+			g.setColor(charColorLevels[darkerLevel]);
 			g.drawString(text, posX + x, posY + y);
 		}
+
+		// draw border
+		Stroke oldStroke = g.getStroke();
+		if (darkerLevel == 0)
+			g.setStroke(new BasicStroke(2));
+		g.setColor(Color.BLACK);
+		int t = Settings.TILE_SIZE;
+		if (getCoords3D().getLeft().getTile() instanceof TileAir) {
+			g.drawLine(posX, posY, posX, posY + t);
+		}
+		if (getCoords3D().getRight().getTile() instanceof TileAir) {
+			g.drawLine(posX + t - 1, posY, posX + t - 1, posY + t);
+		}
+		if (getCoords3D().getTop().getTile() instanceof TileAir) {
+			g.drawLine(posX, posY, posX + t, posY);
+		}
+		if (getCoords3D().getBottom().getTile() instanceof TileAir) {
+			g.drawLine(posX, posY + t - 1, posX + t, posY + t - 1);
+		}
+
+		g.setStroke(oldStroke);
 
 		if (Settings.DRAW_TILE_BORDERS) {
 			g.setColor(Color.DARK_GRAY);
@@ -159,18 +198,18 @@ public abstract class Tile extends GraphNode implements Visual {
 				g.setColor(Color.CYAN);
 				g.drawRect(posX - 1, posY - 1, Settings.TILE_SIZE, Settings.TILE_SIZE);
 			}
-
 		}
 	}
 
 	public void resetGround() {
-		if (tileID == GameData.getTileID("tile_water")) {
+		if (tileID == GameData.getTileID("tile_air")) {
+			this.ground = new GroundAir();
+		} else if (tileID == GameData.getTileID("tile_water")) {
 			this.ground = new GroundWater();
-		} else if (this.getZ() == 0) {
+		} else if (tileID == GameData.getTileID("tile_land")) {
+			this.ground = new GroundGrass();
+		} else
 			this.ground = new GroundBlack();
-		} else {
-			this.ground = new GroundBlack();
-		}
 	}
 
 }

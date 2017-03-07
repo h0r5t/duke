@@ -6,11 +6,45 @@ public class WorldGenerator {
 
 	public static World generateWorld(Core core) {
 		World world = new World(core);
-		world = generateBaseTiles(world);
-		world = generateSurface(world);
+
+		generateWorld(world);
 
 		world.createInitialEdges();
 		return world;
+	}
+
+	private static void generateWorld(World world) {
+		int width = Settings.WORLD_WIDTH;
+		int height = Settings.WORLD_HEIGHT;
+		int[][] heightMap = getHeightMap(width, height);
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {
+					int currentHeight = Settings.WORLD_DEPTH - z;
+					if (currentHeight <= heightMap[x][y]) {
+						world.setTileINITIAL(new TileLand(x, y, z));
+					} else
+						world.setTileINITIAL(new TileAir(x, y, z));
+				}
+			}
+		}
+	}
+
+	private static int[][] getHeightMap(int width, int height) {
+		SimplexNoise noise = new SimplexNoise(80, 0.5, (int) (Math.random() * 5000));
+		int[][] values = new int[width][height];
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				double val = noise.getNoise(x, y);
+
+				val = val * 20;
+
+				int z = (int) val + 30;
+				values[x][y] = z;
+			}
+		}
+
+		return values;
 	}
 
 	private static World generateSurface(World world) {
