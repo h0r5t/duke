@@ -1,12 +1,7 @@
 package core;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.Stroke;
 import java.util.ArrayList;
 
 import pathfinder.GraphNode;
@@ -19,35 +14,29 @@ public abstract class Tile extends GraphNode {
 	private boolean isVisible;
 	private ArrayList<Zone2D> selections;
 	private ArrayList<Projectile> projectiles;
-	private Color[] groundColorLevels;
-	private Color[] charColorLevels;
+	private Fluid fluid;
 
 	public Tile(int tileID, int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
 		this.tileID = tileID;
-		resetGround();
 		this.selections = new ArrayList<Zone2D>();
 		this.projectiles = new ArrayList<Projectile>();
+		this.fluid = null;
 		getChar();
-		createColors();
-		// if (z == 0) {
+
 		setVisible(true);
-		// }
 	}
 
-	private void createColors() {
-		groundColorLevels = new Color[Settings.DRAW_DARKER_LEVELS_AMOUNT];
-		charColorLevels = new Color[Settings.DRAW_DARKER_LEVELS_AMOUNT];
-
-		for (int i = 0; i < Settings.DRAW_DARKER_LEVELS_AMOUNT; i++) {
-			groundColorLevels[i] = ColorUtils.makeColorDarker(ground.getGroundColor(), i);
-			if (myChar != null)
-				charColorLevels[i] = ColorUtils.makeColorDarker(myChar.getColor(), i);
-		}
+	public Ground getDefaultGround() {
+		return new GroundBlack();
 	}
 
 	public void setGround(Ground ground) {
 		this.ground = ground;
+	}
+
+	public Ground getGround() {
+		return ground;
 	}
 
 	public Item getDrop() {
@@ -83,8 +72,6 @@ public abstract class Tile extends GraphNode {
 	}
 
 	protected void getChar() {
-		if (tileID == -1)
-			return;
 		myChar = GameData.getRandomTileCharacter(getTileID());
 	}
 
@@ -102,6 +89,20 @@ public abstract class Tile extends GraphNode {
 
 	public ArrayList<Projectile> getProjectiles() {
 		return projectiles;
+	}
+
+	public void setFluid(Fluid f) {
+		fluid = f;
+		if (fluid != null)
+			fluid.setCoords(getCoords3D());
+	}
+
+	public Fluid getFluid() {
+		return fluid;
+	}
+
+	public boolean hasFluid() {
+		return fluid != null;
 	}
 
 	public boolean collides() {
@@ -144,46 +145,40 @@ public abstract class Tile extends GraphNode {
 		return new Coords3D(getX(), getY(), getZ());
 	}
 
+	public void drawBorders(Graphics2D g, int posX, int posY, int darkerLevel) {
+		if (Settings.DRAW_BORDERS) {
+			int strokeNum = 0;
+			if (darkerLevel == 0 || darkerLevel == Settings.DRAW_DARKER_LEVELS_AMOUNT - 1)
+				strokeNum = 1;
+
+			if (getCoords3D().getLeft().getTile() instanceof TileAir) {
+				TextureStore.getBorderTexture(BorderLocation.LEFT, strokeNum).draw(g, posX, posY, 0);
+			}
+			if (getCoords3D().getRight().getTile() instanceof TileAir) {
+				TextureStore.getBorderTexture(BorderLocation.RIGHT, strokeNum).draw(g, posX, posY, 0);
+			}
+			if (getCoords3D().getTop().getTile() instanceof TileAir) {
+				TextureStore.getBorderTexture(BorderLocation.TOP, strokeNum).draw(g, posX, posY, 0);
+			}
+			if (getCoords3D().getBottom().getTile() instanceof TileAir) {
+				TextureStore.getBorderTexture(BorderLocation.BOTTOM, strokeNum).draw(g, posX, posY, 0);
+			}
+		}
+	}
+
 	public void draw(Graphics2D g, int posX, int posY, int darkerLevel) {
-		g.setColor(groundColorLevels[darkerLevel]);
-		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
+		ground.draw(g, posX, posY, darkerLevel);
 
 		if (this instanceof TileAir)
 			return;
 
 		if (isVisible()) {
-			Font font = new Font("Arial", Font.BOLD, myChar.getFontSize());
-
-			FontMetrics metrics = g.getFontMetrics(font);
-			Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
-			String text = myChar.getChar() + "";
-			int x = (rect.width - metrics.stringWidth(text)) / 2;
-			int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
-			g.setFont(font);
-			g.setColor(charColorLevels[darkerLevel]);
-			g.drawString(text, posX + x, posY + y);
+			TextureStore.getTileTexture(tileID, myChar).draw(g, posX, posY, darkerLevel);
 		}
 
-		// draw border
-		Stroke oldStroke = g.getStroke();
-		if (darkerLevel == 0)
-			g.setStroke(new BasicStroke(2));
-		g.setColor(Color.BLACK);
-		int t = Settings.TILE_SIZE;
-		if (getCoords3D().getLeft().getTile() instanceof TileAir) {
-			g.drawLine(posX, posY, posX, posY + t);
-		}
-		if (getCoords3D().getRight().getTile() instanceof TileAir) {
-			g.drawLine(posX + t - 1, posY, posX + t - 1, posY + t);
-		}
-		if (getCoords3D().getTop().getTile() instanceof TileAir) {
-			g.drawLine(posX, posY, posX + t, posY);
-		}
-		if (getCoords3D().getBottom().getTile() instanceof TileAir) {
-			g.drawLine(posX, posY + t - 1, posX + t, posY + t - 1);
-		}
-
-		g.setStroke(oldStroke);
+		// draw fluid
+		if (fluid != null)
+			fluid.draw(g, posX, posY, darkerLevel);
 
 		if (Settings.DRAW_TILE_BORDERS) {
 			g.setColor(Color.DARK_GRAY);
@@ -199,17 +194,6 @@ public abstract class Tile extends GraphNode {
 				g.drawRect(posX - 1, posY - 1, Settings.TILE_SIZE, Settings.TILE_SIZE);
 			}
 		}
-	}
-
-	public void resetGround() {
-		if (tileID == GameData.getTileID("tile_air")) {
-			this.ground = new GroundAir();
-		} else if (tileID == GameData.getTileID("tile_water")) {
-			this.ground = new GroundWater();
-		} else if (tileID == GameData.getTileID("tile_land")) {
-			this.ground = new GroundGrass();
-		} else
-			this.ground = new GroundBlack();
 	}
 
 }

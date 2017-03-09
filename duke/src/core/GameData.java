@@ -8,21 +8,45 @@ import java.util.Random;
 public class GameData {
 
 	private static HashMap<String, Integer> tileIDs;
+	private static HashMap<String, Integer> groundIDs;
 	private static HashMap<String, Integer> unitIDs;
 	private static HashMap<String, Integer> itemIDs;
 
 	private static HashMap<Integer, ArrayList<Character>> tileIDCharMap;
+	private static HashMap<Integer, Color> groundIDColorMap;
 	private static HashMap<Integer, ArrayList<Character>> unitIDCharMap;
 	private static HashMap<Integer, ArrayList<Character>> itemIDCharMap;
 
 	public static void load() {
 		loadTiles();
+		loadGrounds();
 		loadUnits();
 		loadItems();
 	}
 
+	private static void loadGrounds() {
+		groundIDs = new HashMap<String, Integer>();
+		groundIDs.put("ground_black", -1);
+		groundIDs.put("ground_air", 0);
+		groundIDs.put("ground_rock", 1);
+		groundIDs.put("ground_grass", 2);
+		groundIDs.put("ground_water", 3);
+		groundIDs.put("ground_stockpile", 4);
+		groundIDs.put("ground_snow", 5);
+
+		groundIDColorMap = new HashMap<>();
+		groundIDColorMap.put(-1, Color.BLACK);
+		groundIDColorMap.put(0, Colors.COLOR_AIR);
+		groundIDColorMap.put(1, Colors.COLOR_GROUND_ROCK);
+		groundIDColorMap.put(2, Colors.COLOR_GROUND_GRASS);
+		groundIDColorMap.put(3, Colors.COLOR_GROUND_WATER);
+		groundIDColorMap.put(4, Colors.COLOR_GROUND_STOCKPILE);
+		groundIDColorMap.put(5, Color.WHITE);
+	}
+
 	public static void loadTiles() {
 		tileIDs = new HashMap<String, Integer>();
+		tileIDs.put("tile_oob", -1);
 		tileIDs.put("tile_land", 0);
 		tileIDs.put("tile_woods", 1);
 		tileIDs.put("tile_water", 2);
@@ -32,12 +56,16 @@ public class GameData {
 		tileIDs.put("tile_bush", 6);
 		tileIDs.put("tile_stone", 7);
 		tileIDs.put("tile_mushroom", 8);
-		tileIDs.put("tile_ground", 9);
-		tileIDs.put("tile_air", 10);
+		tileIDs.put("tile_air", 9);
+		tileIDs.put("tile_ground", 10);
 		tileIDs.put("tile_building_crafting_table", 11);
 
 		tileIDCharMap = new HashMap<Integer, ArrayList<Character>>();
 		ArrayList<Character> list = new ArrayList<Character>();
+
+		list = new ArrayList<Character>();
+		list.add(new Character(" ", Color.BLACK, 20));
+		tileIDCharMap.put(-1, list);
 
 		list.add(new Character(".", Colors.COLOR_LAND, 18));
 		list.add(new Character(",", Colors.COLOR_LAND, 18));
@@ -64,7 +92,8 @@ public class GameData {
 		tileIDCharMap.put(4, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("■", Color.DARK_GRAY, 35));
+		// "■""■""■""■""■""■"
+		list.add(new Character("FILL", Color.DARK_GRAY, 35));
 		tileIDCharMap.put(5, list);
 
 		list = new ArrayList<Character>();
@@ -81,11 +110,11 @@ public class GameData {
 		tileIDCharMap.put(8, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character(" ", Colors.COLOR_MUSHROOM, 14));
+		list.add(new Character(" ", Color.BLUE, 24));
 		tileIDCharMap.put(9, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character(" ", Color.BLUE, 24));
+		list.add(new Character(" ", Color.WHITE, 24));
 		tileIDCharMap.put(10, list);
 
 		list = new ArrayList<Character>();
@@ -134,6 +163,10 @@ public class GameData {
 		return tileIDs.get(s);
 	}
 
+	public static Integer getGroundID(String s) {
+		return groundIDs.get(s);
+	}
+
 	public static Integer getUnitID(String s) {
 		return unitIDs.get(s);
 	}
@@ -147,14 +180,49 @@ public class GameData {
 		return list.get(new Random().nextInt(list.size()));
 	}
 
+	public static ArrayList<Character> getAllTileCharacters(int tileID) {
+		ArrayList<Character> list = tileIDCharMap.get(tileID);
+		return list;
+	}
+
 	public static Character getRandomUnitCharacter(int unitID) {
 		ArrayList<Character> list = unitIDCharMap.get(unitID);
 		return list.get(new Random().nextInt(list.size()));
 	}
 
+	public static ArrayList<Character> getAllUnitCharacters(int unitID) {
+		ArrayList<Character> list = unitIDCharMap.get(unitID);
+		return list;
+	}
+
 	public static Character getRandomItemCharacter(int itemID) {
 		ArrayList<Character> list = itemIDCharMap.get(itemID);
 		return list.get(new Random().nextInt(list.size()));
+	}
+
+	public static ArrayList<Character> getAllItemCharacters(int itemID) {
+		ArrayList<Character> list = itemIDCharMap.get(itemID);
+		return list;
+	}
+
+	public static HashMap<String, Integer> getTileIDs() {
+		return tileIDs;
+	}
+
+	public static HashMap<String, Integer> getGroundIDs() {
+		return groundIDs;
+	}
+
+	public static HashMap<String, Integer> getUnitIDs() {
+		return unitIDs;
+	}
+
+	public static HashMap<String, Integer> getItemIDs() {
+		return itemIDs;
+	}
+
+	public static Color getGroundColor(int groundID) {
+		return groundIDColorMap.get(groundID);
 	}
 
 }

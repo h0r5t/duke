@@ -21,4 +21,9 @@ public class TileRock extends Tile {
 		return new ItemStone();
 	}
 
+	@Override
+	public Ground getDefaultGround() {
+		return new GroundRock();
+	}
+
 }

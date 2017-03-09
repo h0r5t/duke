@@ -1,12 +1,9 @@
 package core;
 
-import java.awt.Color;
-
 public class GroundBlack extends Ground {
 
-	@Override
-	public Color getGroundColor() {
-		return Color.BLACK;
+	public GroundBlack() {
+		super(GameData.getGroundID("ground_black"));
 	}
 
 }

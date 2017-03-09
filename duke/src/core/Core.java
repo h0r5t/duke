@@ -14,12 +14,14 @@ public class Core implements Runnable {
 	private UnitManager unitManager;
 	private MenuManager menuManager;
 	private LogisticsManager logisticsManager;
+	private FluidManager fluidManager;
 
 	private static World world;
 
 	public Core() {
 		modifySysOut();
 		GameData.load();
+		TextureStore.load();
 		world = WorldGenerator.generateWorld(this);
 		initMgrs();
 		setupGUI();
@@ -36,6 +38,7 @@ public class Core implements Runnable {
 		unitManager = new UnitManager(this);
 		menuManager = new MenuManager(this);
 		logisticsManager = new LogisticsManager(this);
+		fluidManager = new FluidManager(this);
 		inputManager = new InputManager(this);
 		new Thread(inputManager).start();
 	}
@@ -68,6 +71,7 @@ public class Core implements Runnable {
 		taskDistributor.update();
 		gamePanel.repaint();
 		unitManager.update();
+		fluidManager.udpate();
 	}
 
 	@Override
@@ -80,10 +84,11 @@ public class Core implements Runnable {
 
 			long time2 = System.currentTimeMillis() - time1;
 
-			int sleepTime = (int) (Settings.TICK_TIME - time2);
+			long sleepTime = Settings.TICK_TIME - time2;
 			if (sleepTime < 0) {
 				sleepTime = 0;
 			}
+
 			try {
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException e) {
@@ -118,6 +123,10 @@ public class Core implements Runnable {
 
 	public LogisticsManager getLogisticsManager() {
 		return logisticsManager;
+	}
+
+	public FluidManager getFluidManager() {
+		return fluidManager;
 	}
 
 	private void modifySysOut() {

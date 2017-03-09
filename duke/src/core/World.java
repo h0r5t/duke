@@ -7,7 +7,7 @@ import pathfinder.Graph;
 public class World extends Graph {
 
 	private Core core;
-	private int[][][] world;
+	private int[][][] tiles;
 	private ItemManager itemManager;
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<Projectile> projectilesToRemove;
@@ -15,7 +15,7 @@ public class World extends Graph {
 	public World(Core core) {
 		super();
 		this.core = core;
-		world = new int[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT][Settings.WORLD_DEPTH];
+		tiles = new int[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT][Settings.WORLD_DEPTH];
 		itemManager = new ItemManager();
 		projectiles = new ArrayList<>();
 		projectilesToRemove = new ArrayList<>();
@@ -67,13 +67,35 @@ public class World extends Graph {
 		return itemManager.getItems();
 	}
 
+	public void addFluid(Fluid f, Coords3D coords) {
+		f.setCoords(coords);
+		if (!f.getCoords().getTile().hasFluid())
+			core.getFluidManager().addFluid(f);
+		f.activate();
+	}
+
 	public void setTile(Tile tile) {
 		Tile previousTile = getTile(tile.getCoords3D());
+		tile.setGround(previousTile.getGround());
+
+		// check for near fluids
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				for (int z = -1; z <= 1; z++) {
+					Tile t = getTile(tile.getX() + x, tile.getY() + y, tile.getZ() + z);
+					if (t.hasFluid())
+						t.getFluid().setStatic(false);
+				}
+			}
+		}
+
+		// check if building
 		if (previousTile instanceof Building)
 			core.getLogisticsManager().getBuildingManager().removeBuilding((Building) previousTile);
 		if (tile instanceof Building)
 			core.getLogisticsManager().getBuildingManager().addBuilding((Building) tile);
 
+		// check if ladder
 		if (tile.isLadderDown() || tile.isLadderUp()) {
 			setLadder(tile);
 			return;
@@ -83,8 +105,8 @@ public class World extends Graph {
 		int y = tile.getY();
 		int z = tile.getZ();
 
-		removeNode(world[x][y][z]);
-		world[x][y][z] = tile.id();
+		removeNode(tiles[x][y][z]);
+		tiles[x][y][z] = tile.id();
 		addNode(tile);
 
 		updateXYEdgesForTile(x, y, z);
@@ -117,10 +139,10 @@ public class World extends Graph {
 		if (tile.isLadderDown()) {
 
 			TileLadderUp l = new TileLadderUp(x, y, z + 1);
-			removeNode(world[x][y][z]);
-			removeNode(world[x][y][z + 1]);
-			world[x][y][z] = tile.id();
-			world[x][y][z + 1] = l.id();
+			removeNode(tiles[x][y][z]);
+			removeNode(tiles[x][y][z + 1]);
+			tiles[x][y][z] = tile.id();
+			tiles[x][y][z + 1] = l.id();
 			addNode(tile);
 			addNode(l);
 
@@ -155,10 +177,10 @@ public class World extends Graph {
 		if (tile.isLadderUp()) {
 
 			TileLadderDown l = new TileLadderDown(x, y, z - 1);
-			removeNode(world[x][y][z]);
-			removeNode(world[x][y][z - 1]);
-			world[x][y][z] = tile.id();
-			world[x][y][z - 1] = l.id();
+			removeNode(tiles[x][y][z]);
+			removeNode(tiles[x][y][z - 1]);
+			tiles[x][y][z] = tile.id();
+			tiles[x][y][z - 1] = l.id();
 			addNode(tile);
 			addNode(l);
 
@@ -213,9 +235,12 @@ public class World extends Graph {
 	}
 
 	public Tile getTile(int x, int y, int z) {
-		if (x < 0 || x >= world.length || y < 0 || y >= world[0].length)
+		if (x < 0 || x >= tiles.length || y < 0 || y >= tiles[0].length || z < 0 || z > tiles[0][0].length)
 			return new TileOOB(x, y, z);
-		return (Tile) getNode(world[x][y][z]);
+		Tile t = (Tile) getNode(tiles[x][y][z]);
+		if (t == null)
+			return new TileOOB(x, y, z);
+		return (Tile) getNode(tiles[x][y][z]);
 	}
 
 	public Tile getTile(Coords3D coords) {
@@ -223,15 +248,15 @@ public class World extends Graph {
 	}
 
 	public int getWidth() {
-		return world.length;
+		return tiles.length;
 	}
 
 	public int getHeight() {
-		return world[0].length;
+		return tiles[0].length;
 	}
 
 	public void updateXYEdgesForTile(int x, int y, int z) {
-		if (x < 0 || x >= world.length || y < 0 || y >= world[0].length)
+		if (x < 0 || x >= tiles.length || y < 0 || y >= tiles[0].length)
 			return;
 
 		if (getTile(x, y, z).collides()) {
@@ -240,40 +265,40 @@ public class World extends Graph {
 
 		if (x > 0) {
 			if (!getTile(x - 1, y, z).collides()) {
-				addEdge(world[x][y][z], world[x - 1][y][z], 0);
+				addEdge(tiles[x][y][z], tiles[x - 1][y][z], 0);
 			} else {
 				try {
-					removeEdge(world[x][y][z], world[x - 1][y][z]);
+					removeEdge(tiles[x][y][z], tiles[x - 1][y][z]);
 				} catch (Exception e) {
 				}
 			}
 		}
 		if (x < Settings.WORLD_WIDTH - 1) {
 			if (!getTile(x + 1, y, z).collides()) {
-				addEdge(world[x][y][z], world[x + 1][y][z], 0);
+				addEdge(tiles[x][y][z], tiles[x + 1][y][z], 0);
 			} else {
 				try {
-					removeEdge(world[x][y][z], world[x + 1][y][z]);
+					removeEdge(tiles[x][y][z], tiles[x + 1][y][z]);
 				} catch (Exception e) {
 				}
 			}
 		}
 		if (y > 0) {
 			if (!getTile(x, y - 1, z).collides()) {
-				addEdge(world[x][y][z], world[x][y - 1][z], 0);
+				addEdge(tiles[x][y][z], tiles[x][y - 1][z], 0);
 			} else {
 				try {
-					removeEdge(world[x][y][z], world[x][y - 1][z]);
+					removeEdge(tiles[x][y][z], tiles[x][y - 1][z]);
 				} catch (Exception e) {
 				}
 			}
 		}
 		if (y < Settings.WORLD_HEIGHT - 1) {
 			if (!getTile(x, y + 1, z).collides()) {
-				addEdge(world[x][y][z], world[x][y + 1][z], 0);
+				addEdge(tiles[x][y][z], tiles[x][y + 1][z], 0);
 			} else {
 				try {
-					removeEdge(world[x][y][z], world[x][y + 1][z]);
+					removeEdge(tiles[x][y][z], tiles[x][y + 1][z]);
 				} catch (Exception e) {
 				}
 			}
@@ -285,13 +310,13 @@ public class World extends Graph {
 
 		if (tile.isLadderDown()) {
 			if (z < Settings.WORLD_DEPTH - 1) {
-				addEdge(world[x][y][z], world[x][y][z + 1], 0);
+				addEdge(tiles[x][y][z], tiles[x][y][z + 1], 0);
 			}
 		}
 
 		if (tile.isLadderUp()) {
 			if (z > 0) {
-				addEdge(world[x][y][z], world[x][y][z - 1], 0);
+				addEdge(tiles[x][y][z], tiles[x][y][z - 1], 0);
 			}
 		}
 	}
@@ -325,8 +350,8 @@ public class World extends Graph {
 		if (tile.getX() < 0 || tile.getX() > Settings.WORLD_WIDTH - 1 || tile.getY() < 0
 				|| tile.getY() > Settings.WORLD_HEIGHT - 1 || tile.getZ() < 0 || tile.getZ() > Settings.WORLD_DEPTH - 1)
 			return;
-		removeNode(world[tile.getX()][tile.getY()][tile.getZ()]);
-		world[tile.getX()][tile.getY()][tile.getZ()] = tile.id();
+		removeNode(tiles[tile.getX()][tile.getY()][tile.getZ()]);
+		tiles[tile.getX()][tile.getY()][tile.getZ()] = tile.id();
 		addNode(tile);
 	}
 

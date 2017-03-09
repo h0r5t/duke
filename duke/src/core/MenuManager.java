@@ -31,9 +31,10 @@ public class MenuManager extends InputAdapter {
 
 	public void draw(Graphics2D g) {
 
-		g.setFont(new Font("Arial", Font.BOLD, 24));
+		g.setFont(new Font("Arial", Font.BOLD, 14));
 		g.setColor(Color.WHITE);
-		g.drawString("" + getCursor().getZpos(), 10, 30);
+		g.drawString("z:" + getCursor().getZpos(), 10, 30);
+		g.drawString("fluid:" + getCore().getFluidManager().getCalculations(), 10, 45);
 
 		if (currentMenu != null) {
 			g.setColor(Color.WHITE);
@@ -69,6 +70,12 @@ public class MenuManager extends InputAdapter {
 				setMenu(new MenuProjectileTest(this));
 			} else if (e.getKeyCode() == KeyEvent.VK_B) {
 				setMenu(new MenuBuildingTest(this));
+			} else if (e.getKeyCode() == KeyEvent.VK_F) {
+				setMenu(new MenuFluidTest(this));
+			} else if (e.getKeyCode() == KeyEvent.VK_E) {
+				setMenu(new MenuTest(this));
+			} else if (e.getKeyCode() == KeyEvent.VK_T) {
+				setMenu(new MenuTest2(this));
 			}
 
 		} else

@@ -4,8 +4,11 @@ import java.util.Random;
 
 public class WorldGenerator {
 
+	private static Biome[][][] biomes;
+
 	public static World generateWorld(Core core) {
 		World world = new World(core);
+		biomes = new Biome[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT][Settings.WORLD_DEPTH];
 
 		generateWorld(world);
 
@@ -14,15 +17,21 @@ public class WorldGenerator {
 	}
 
 	private static void generateWorld(World world) {
+		generateTerrain(world);
+		generateBiomes(world);
+	}
+
+	private static void generateTerrain(World world) {
 		int width = Settings.WORLD_WIDTH;
 		int height = Settings.WORLD_HEIGHT;
 		int[][] heightMap = getHeightMap(width, height);
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {
+					int h = heightMap[x][y];
 					int currentHeight = Settings.WORLD_DEPTH - z;
-					if (currentHeight <= heightMap[x][y]) {
-						world.setTileINITIAL(new TileLand(x, y, z));
+					if (currentHeight <= h) {
+						world.setTileINITIAL(new TileRock(x, y, z));
 					} else
 						world.setTileINITIAL(new TileAir(x, y, z));
 				}
@@ -30,17 +39,53 @@ public class WorldGenerator {
 		}
 	}
 
+	private static void generateBiomes(World world) {
+		for (int x = 0; x < Settings.WORLD_WIDTH; x++) {
+			for (int y = 0; y < Settings.WORLD_HEIGHT; y++) {
+				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {
+					if (world.getTile(x, y, z) instanceof TileAir)
+						continue;
+					biomes[x][y][z] = Biome.getBiome(Settings.WORLD_DEPTH - z, 0);
+				}
+			}
+		}
+
+		for (int x = 0; x < Settings.WORLD_WIDTH; x++) {
+			for (int y = 0; y < Settings.WORLD_HEIGHT; y++) {
+				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {
+					if (world.getTile(x, y, z) instanceof TileAir)
+						continue;
+					world.getTile(x, y, z).setGround(biomes[x][y][z].getGround());
+				}
+			}
+		}
+	}
+
 	private static int[][] getHeightMap(int width, int height) {
-		SimplexNoise noise = new SimplexNoise(80, 0.5, (int) (Math.random() * 5000));
+		SimplexNoise noise = new SimplexNoise(100, 0.4, (int) (Math.random() * 5000));
 		int[][] values = new int[width][height];
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				double val = noise.getNoise(x, y);
 
-				val = val * 20;
+				val = val * 20 + 30;
 
-				int z = (int) val + 30;
+				int z = (int) val;
 				values[x][y] = z;
+			}
+		}
+
+		return values;
+	}
+
+	private static int[][] getMoistureMap(int width, int height) {
+		SimplexNoise noise = new SimplexNoise(30, 0.7, (int) (Math.random() * 5000));
+		int[][] values = new int[width][height];
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				double val = noise.getNoise(x, y);
+				val = (val + 1.0) / 2.0;
+				values[x][y] = (int) val;
 			}
 		}
 
@@ -75,26 +120,6 @@ public class WorldGenerator {
 			int x = r.nextInt(Settings.WORLD_WIDTH);
 			int y = r.nextInt(Settings.WORLD_HEIGHT);
 			world.setTileINITIAL(new TileMushroom(x, y, 0));
-		}
-
-		int lakes = r.nextInt(3) + 1;
-		for (int i = 0; i < lakes; i++) {
-			int x = r.nextInt(Settings.WORLD_WIDTH);
-			int y = r.nextInt(Settings.WORLD_HEIGHT);
-
-			int width = r.nextInt(10) + 5;
-			int height = r.nextInt(10) + 5;
-			for (int a = 0; a < width; a++) {
-				for (int b = 0; b < height; b++) {
-					if (a == 0 || a == width - 1 || b == 0 || b == height - 1) {
-						int c = r.nextInt(5);
-						if (c > 2)
-							world.setTileINITIAL(new TileWater(x + a, y + b, 0));
-					} else
-						world.setTileINITIAL(new TileWater(x + a, y + b, 0));
-				}
-			}
-
 		}
 
 		return world;

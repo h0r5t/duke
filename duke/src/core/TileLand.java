@@ -16,4 +16,9 @@ public class TileLand extends Tile {
 		return true;
 	}
 
+	@Override
+	public Ground getDefaultGround() {
+		return new GroundGrass();
+	}
+
 }

@@ -42,6 +42,26 @@ public class Coords3D {
 		return new Coords3D(x, y - 1, z);
 	}
 
+	public Coords3D getTopLeft() {
+		return new Coords3D(x - 1, y - 1, z);
+	}
+
+	public Coords3D getTopRight() {
+		return new Coords3D(x + 1, y - 1, z);
+	}
+
+	public Coords3D getBottomLeft() {
+		return new Coords3D(x - 1, y + 1, z);
+	}
+
+	public Coords3D getBottomRight() {
+		return new Coords3D(x + 1, y + 1, z);
+	}
+
+	public Coords3D getBelow() {
+		return new Coords3D(x, y, z + 1);
+	}
+
 	public double getDistance2D(Coords3D other) {
 		int a = other.x - x;
 		int b = other.y - y;

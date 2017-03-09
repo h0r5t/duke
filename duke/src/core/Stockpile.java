@@ -130,12 +130,7 @@ public class Stockpile {
 			for (Coords3D c : zone.getCoords()) {
 				c.getTile().setGround(new GroundStockpile());
 			}
-		} else {
-			for (Coords3D c : zone.getCoords()) {
-				c.getTile().resetGround();
-			}
 		}
-
 	}
 
 }

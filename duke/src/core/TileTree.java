@@ -21,4 +21,9 @@ public class TileTree extends Tile {
 		return true;
 	}
 
+	@Override
+	public Ground getDefaultGround() {
+		return new GroundGrass();
+	}
+
 }

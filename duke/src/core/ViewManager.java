@@ -68,18 +68,57 @@ public class ViewManager {
 
 		for (int x = xstart; x < xstart + screenWidth; x++) {
 			for (int y = ystart; y < ystart + screenHeight; y++) {
-
 				// draw tiles
-
 				Tile tile = w.getTile(x, y, z);
 				if (tile != null && !(tile instanceof TileAir)) {
 					tile.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, 0);
 				}
-				if (tile instanceof TileAir) {
+
+				else if (tile instanceof TileAir) {
+					boolean fluidFound = false;
 					for (int i = 0; i < Settings.DRAW_DARKER_LEVELS_AMOUNT - 1; i++) {
-						tile = w.getTile(x, y, z + i + 1);
-						if (tile != null && !(tile instanceof TileAir)) {
-							tile.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, i + 1);
+						Tile tile2 = w.getTile(x, y, z + i + 1);
+						if (tile2 != null && !(tile2 instanceof TileAir)) {
+							tile2.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, i + 1);
+							break;
+						}
+						if (tile2 != null && (tile2 instanceof TileAir)) {
+							if (tile2.hasFluid())
+								fluidFound = true;
+
+						}
+					}
+					if (fluidFound) {
+						for (int i = 0; i < Settings.DRAW_DARKER_LEVELS_AMOUNT - 1; i++) {
+							Tile tile2 = w.getTile(x, y, z + i + 1);
+							if (tile2 != null && (tile2 instanceof TileAir) && tile2.hasFluid()) {
+								tile2.getFluid().draw(g, (x - xstart) * tileSize - xrest,
+										(y - ystart) * tileSize - yrest, i + 1);
+								break;
+							}
+						}
+					}
+
+					if (tile.hasFluid()) {
+						tile.getFluid().draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, 0);
+					}
+				}
+			}
+		}
+
+		for (int x = xstart; x < xstart + screenWidth; x++) {
+			for (int y = ystart; y < ystart + screenHeight; y++) {
+				Tile tile = w.getTile(x, y, z);
+				if (tile != null && !(tile instanceof TileAir)) {
+					tile.drawBorders(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, 0);
+				}
+
+				else if (tile instanceof TileAir) {
+					for (int i = 0; i < Settings.DRAW_DARKER_LEVELS_AMOUNT - 1; i++) {
+						Tile tile2 = w.getTile(x, y, z + i + 1);
+						if (tile2 != null && !(tile2 instanceof TileAir)) {
+							tile2.drawBorders(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest,
+									i + 1);
 							break;
 						}
 					}

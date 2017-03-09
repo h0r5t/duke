@@ -11,4 +11,9 @@ public class TileShrub extends Tile {
 		return false;
 	}
 
+	@Override
+	public Ground getDefaultGround() {
+		return new GroundGrass();
+	}
+
 }
