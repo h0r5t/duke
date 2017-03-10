@@ -48,7 +48,7 @@ public class FluidManager {
 			Coords3D coord1 = f.getCoords();
 			Tile tileBelow = coord1.getBelow().getTile();
 
-			if (coord1.getTile() instanceof TileAir && !tileBelow.collides()) {
+			if (coord1.getTile() instanceof TileAir && !tileBelow.isSolid()) {
 				if (tileBelow.hasFluid()) {
 					if (!(tileBelow.getFluid().getFluidDensity() >= Fluid.DEFAULT_DENSITY)) {
 						f.fallDown();
@@ -65,13 +65,13 @@ public class FluidManager {
 
 				ArrayList<Coords3D> availableNeighbours = new ArrayList<Coords3D>();
 
-				if (!coord1.getTop().getTile().collides())
+				if (!coord1.getTop().getTile().isSolid())
 					availableNeighbours.add(coord1.getTop());
-				if (!coord1.getRight().getTile().collides())
+				if (!coord1.getRight().getTile().isSolid())
 					availableNeighbours.add(coord1.getRight());
-				if (!coord1.getBottom().getTile().collides())
+				if (!coord1.getBottom().getTile().isSolid())
 					availableNeighbours.add(coord1.getBottom());
-				if (!coord1.getLeft().getTile().collides())
+				if (!coord1.getLeft().getTile().isSolid())
 					availableNeighbours.add(coord1.getLeft());
 
 				while (availableNeighbours.size() > 0) {

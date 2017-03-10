@@ -1,6 +1,6 @@
 package core;
 
-public enum BorderLocation {
+public enum Direction {
 
 	LEFT, RIGHT, TOP, BOTTOM;
 }

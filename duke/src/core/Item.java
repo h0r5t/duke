@@ -2,7 +2,7 @@ package core;
 
 import java.awt.Graphics2D;
 
-public abstract class Item implements Visual {
+public abstract class Item {
 
 	private int itemID;
 	private Character myChar;
@@ -31,15 +31,14 @@ public abstract class Item implements Visual {
 		myChar = GameData.getRandomItemCharacter(getItemID());
 	}
 
-	public abstract boolean collides();
+	public abstract boolean blocksPath();
 
 	public int getItemID() {
 		return itemID;
 	}
 
-	@Override
-	public void draw(Graphics2D g, int posX, int posY) {
-		TextureStore.getItemTexture(itemID, myChar).draw(g, posX, posY, 0);
+	public void draw(Graphics2D g, int posX, int posY, int darkerLevel) {
+		TextureStore.getItemTexture(itemID, myChar).draw(g, posX, posY, darkerLevel);
 	}
 
 }

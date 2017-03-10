@@ -32,11 +32,15 @@ public class UnitMovement {
 	}
 
 	public int[] getPositionDeltas() {
+		return lastDeltas;
+	}
+
+	public void updatePositionDeltas() {
 		// position needs to be relative to target (target coords is already the
 		// new pos of unit)
 
 		if (!moving)
-			return new int[] { 0, 0 };
+			lastDeltas = new int[] { 0, 0 };
 
 		int deltaX = 0;
 		int deltaY = 0;
@@ -57,7 +61,6 @@ public class UnitMovement {
 		}
 
 		lastDeltas = new int[] { deltaX, deltaY };
-		return new int[] { deltaX, deltaY };
 	}
 
 	private void reset() {
@@ -71,10 +74,6 @@ public class UnitMovement {
 
 	public boolean isMoving() {
 		return moving;
-	}
-
-	public int[] getLastPositionDeltas() {
-		return lastDeltas;
 	}
 
 }

@@ -23,7 +23,7 @@ public class Coords3D {
 
 	@Override
 	public int hashCode() {
-		return Integer.parseInt(x + "" + y + "" + z);
+		return new String(x + "," + y + "," + z).hashCode();
 	}
 
 	public Coords3D getRight() {
@@ -60,6 +60,10 @@ public class Coords3D {
 
 	public Coords3D getBelow() {
 		return new Coords3D(x, y, z + 1);
+	}
+
+	public Coords3D getAbove() {
+		return new Coords3D(x, y, z - 1);
 	}
 
 	public double getDistance2D(Coords3D other) {

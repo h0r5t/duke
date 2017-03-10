@@ -3,7 +3,7 @@ package core;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public abstract class Unit implements Visual {
+public abstract class Unit {
 
 	protected int x;
 	protected int y;
@@ -23,7 +23,7 @@ public abstract class Unit implements Visual {
 		this.y = y;
 		this.z = z;
 		this.health = 100;
-		this.moveCooldown = 20 - moveSpeed;
+		this.moveCooldown = 50 - moveSpeed;
 		this.inventory = new Inventory();
 		this.unitMovement = new UnitMovement(this);
 		getChar();
@@ -66,6 +66,7 @@ public abstract class Unit implements Visual {
 		if (this.health <= 0) {
 			Core.getWorld().removeUnit(this);
 		}
+		unitMovement.updatePositionDeltas();
 		update();
 	}
 
@@ -121,16 +122,15 @@ public abstract class Unit implements Visual {
 	}
 
 	public int[] getCurrentMovementDeltas() {
-		return unitMovement.getLastPositionDeltas();
+		return unitMovement.getPositionDeltas();
 	}
 
-	@Override
-	public void draw(Graphics2D g, int posX, int posY) {
+	public void draw(Graphics2D g, int posX, int posY, int darkerLevel) {
 		int[] movementDeltas = unitMovement.getPositionDeltas();
 		posX += movementDeltas[0];
 		posY += movementDeltas[1];
 
-		TextureStore.getUnitTexture(unitID, myChar).draw(g, posX, posY, 0);
+		TextureStore.getUnitTexture(unitID, myChar).draw(g, posX, posY, darkerLevel);
 
 		// draw health bar
 

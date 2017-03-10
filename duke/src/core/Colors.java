@@ -20,4 +20,6 @@ public class Colors {
 	public static final Color COLOR_GROUND_WATER = Color.decode("#000033");
 
 	public static final Color COLOR_TOOLTIP = Color.decode("#cfd895");
+
+	public static final Color COLOR_DARKNESS = Color.decode("#0c0c0c");
 }

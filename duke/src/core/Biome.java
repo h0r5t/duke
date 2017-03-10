@@ -10,15 +10,24 @@ public abstract class Biome {
 		return new GroundBlack();
 	}
 
+	public Tile getSurfaceTile(int x, int y, int z) {
+		return new TileRock(x, y, z);
+	}
+
 	public static Biome getBiome(int terrainHeight, int moistureLevel) {
 
-		int terrainHeightInPercent = (int) ((double) terrainHeight / (double) Settings.WORLD_DEPTH * 100);
+		int groundHeight = Settings.WORLD_DEPTH - Settings.OVERWORLD_DEPTH;
+		int heightOverGroundPercent = (int) (((double) (terrainHeight - groundHeight)
+				/ (double) Settings.OVERWORLD_DEPTH) * 100);
 
-		if (terrainHeightInPercent < 50)
-			return new BiomeUnderground();
-		else if (terrainHeightInPercent < 60)
+		if (heightOverGroundPercent < 0)
+			heightOverGroundPercent = 0;
+
+		// System.out.println(heightOvergGroundPercent);
+
+		if (heightOverGroundPercent < 40)
 			return new BiomeForest();
-		else if (terrainHeightInPercent < 70)
+		else if (heightOverGroundPercent < 60)
 			return new BiomeMountains();
 		else
 			return new BiomeSnowyMountains();

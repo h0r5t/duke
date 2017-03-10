@@ -46,7 +46,7 @@ public class Stockpile {
 
 	public Coords3D getNextFreeSlot() {
 		for (Coords3D c : zone.getCoords()) {
-			if (slotUsedMap.get(c) == false && !c.getTile().collides())
+			if (slotUsedMap.get(c) == false && !c.getTile().blocksPath())
 				return c;
 		}
 		return null;

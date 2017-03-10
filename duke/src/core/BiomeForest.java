@@ -7,4 +7,9 @@ public class BiomeForest extends Biome {
 		return new GroundGrass();
 	}
 
+	@Override
+	public Tile getSurfaceTile(int x, int y, int z) {
+		return new TileLand(x, y, z);
+	}
+
 }

@@ -17,13 +17,14 @@ public class Settings {
 
 	public static int WORLD_DEPTH = 50;
 	public static int WORLD_WIDTH = 100;
-	public static int WORLD_HEIGHT = 50;
+	public static int WORLD_HEIGHT = 100;
 
-	public static int CAMERA_START_Z = 25;
+	public static int OVERWORLD_DEPTH = 40;
+	public static int CAMERA_START_Z = 1;
 
 	public static boolean DRAW_TILE_BORDERS = false;
 
-	public static int DRAW_DARKER_LEVELS_AMOUNT = 5;
+	public static int DRAW_DARKER_LEVELS_AMOUNT = 4;
 
 	public static int MENU_HEIGHT = 75;
 	public static int MENU_GROUP_WIDTH = 150;
@@ -41,5 +42,5 @@ public class Settings {
 		return (Settings.GAME_FRAME_HEIGHT) / Settings.TILE_SIZE;
 	}
 
-	public static int SHIFT_SPEED = 4;
+	public static int SHIFT_SPEED = 10;
 }

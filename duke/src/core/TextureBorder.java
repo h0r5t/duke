@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 
 public class TextureBorder extends Texture {
 
-	public TextureBorder(float stroke, BorderLocation location) {
+	public TextureBorder(float stroke, Direction location) {
 		images = new BufferedImage[1];
 		BufferedImage img = new BufferedImage(Settings.TILE_SIZE + 4, Settings.TILE_SIZE + 4,
 				BufferedImage.TYPE_INT_ARGB);
@@ -16,13 +16,13 @@ public class TextureBorder extends Texture {
 		g.setStroke(new BasicStroke(stroke));
 
 		int t = img.getWidth();
-		if (location == BorderLocation.LEFT) {
+		if (location == Direction.LEFT) {
 			g.drawLine(2, 2, 2, t - 2);
-		} else if (location == BorderLocation.RIGHT) {
+		} else if (location == Direction.RIGHT) {
 			g.drawLine(t - 2, 2, t - 2, t - 2);
-		} else if (location == BorderLocation.TOP) {
+		} else if (location == Direction.TOP) {
 			g.drawLine(2, 2, t + 2, 2);
-		} else if (location == BorderLocation.BOTTOM) {
+		} else if (location == Direction.BOTTOM) {
 			g.drawLine(2, t - 2, t - 2, t - 2);
 		}
 

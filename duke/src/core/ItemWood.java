@@ -12,7 +12,7 @@ public class ItemWood extends Item {
 	}
 
 	@Override
-	public boolean collides() {
+	public boolean blocksPath() {
 		return false;
 	}
 

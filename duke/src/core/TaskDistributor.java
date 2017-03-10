@@ -47,7 +47,6 @@ public class TaskDistributor {
 				toDelete.add(taskGroup);
 			}
 			taskList.addAll(nextTasks);
-
 		}
 		taskGroups.removeAll(toDelete);
 	}

@@ -116,7 +116,7 @@ public abstract class ProjectileLinear extends Projectile {
 					return;
 				}
 
-				if (newTile.collides()) {
+				if (newTile.isSolid()) {
 					tilePosition.removeProjectile(this);
 					Core.getWorld().removeProjectile(this);
 					tilePosition = null;

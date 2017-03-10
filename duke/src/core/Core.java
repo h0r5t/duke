@@ -2,6 +2,7 @@ package core;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 public class Core implements Runnable {
 
@@ -22,14 +23,14 @@ public class Core implements Runnable {
 		modifySysOut();
 		GameData.load();
 		TextureStore.load();
-		world = WorldGenerator.generateWorld(this);
+
+		WorldGenerator worldGen = new WorldGenerator();
+		world = worldGen.generateWorld(this);
+
 		initMgrs();
 		setupGUI();
 
-		// spawnUnits();
-
-		PathFinder.setReachablePoint(new Coords3D(7, 5, 0));
-		world.setTile(new TileLadderDown(7, 5, 0));
+		spawnUnits(worldGen.getEmbarkArea());
 	}
 
 	private void initMgrs() {
@@ -50,19 +51,23 @@ public class Core implements Runnable {
 		gameFrame.setVisible(true);
 	}
 
-	private void spawnUnits() {
+	private void spawnUnits(ArrayList<Coords3D> embarkArea) {
 		for (int i = 0; i < 3; i++) {
-			world.setTile(new TileLand(2 + i, 7, 0));
-			UnitWorker worker = new UnitWorker(2 + i, 7, 0);
+			Coords3D c = embarkArea.get(i);
+			UnitWorker worker = new UnitWorker(c.getX(), c.getY(), c.getZ());
 			unitManager.addUnit(worker);
 			if (i > 0)
 				worker.getInventory().addItem(new ItemWood());
 			worker.getInventory().addItem(new ItemStone());
+
+			if (i == 2) {
+				Coords3D c2 = embarkArea.get(4);
+				MobGoblin goblin = new MobGoblin(c2.getX(), c2.getY(), c2.getZ());
+				unitManager.addUnit(goblin);
+			}
+
 		}
 
-		world.setTile(new TileLand(10, 10, 0));
-		MobGoblin goblin = new MobGoblin(10, 10, 0);
-		unitManager.addUnit(goblin);
 	}
 
 	private void loop() {

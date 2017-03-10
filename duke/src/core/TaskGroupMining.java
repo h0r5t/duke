@@ -30,8 +30,7 @@ public class TaskGroupMining implements Runnable {
 				c.getTile().deselect(area);
 				continue;
 			}
-			points[c.getX() - xstart][c.getY() - ystart] = new TaskMoveAndMine(
-					c);
+			points[c.getX() - xstart][c.getY() - ystart] = new TaskMoveAndMine(c);
 			points[c.getX() - xstart][c.getY() - ystart].setTaskGroup(this);
 			all.add(points[c.getX() - xstart][c.getY() - ystart]);
 		}
@@ -43,15 +42,13 @@ public class TaskGroupMining implements Runnable {
 
 	private void processEndedTask(TaskMoveAndMine t) {
 		Coords3D left = t.getMiningTarget().getLeft();
-		if (allContains(left)
-				&& PathFinder.shouldBeReachableSurrounding(left)) {
+		if (allContains(left) && PathFinder.shouldBeReachableSurrounding(left)) {
 			toRelease.add(points[left.getX() - xstart][left.getY() - ystart]);
 			all.remove(points[left.getX() - xstart][left.getY() - ystart]);
 		}
 
 		Coords3D right = t.getMiningTarget().getRight();
-		if (allContains(right)
-				&& PathFinder.shouldBeReachableSurrounding(right)) {
+		if (allContains(right) && PathFinder.shouldBeReachableSurrounding(right)) {
 			toRelease.add(points[right.getX() - xstart][right.getY() - ystart]);
 			all.remove(points[right.getX() - xstart][right.getY() - ystart]);
 		}
@@ -78,8 +75,7 @@ public class TaskGroupMining implements Runnable {
 	}
 
 	public boolean isCompleted() {
-		return all.size() == 0 && toRelease.size() == 0 && ended.size() == 0
-				&& sorted == true;
+		return all.size() == 0 && toRelease.size() == 0 && ended.size() == 0 && sorted == true;
 	}
 
 	public ArrayList<TaskMoveAndMine> getNextTasks() {

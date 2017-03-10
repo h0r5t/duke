@@ -10,7 +10,7 @@ public abstract class Mob extends Unit {
 		if (aiType == AIType.TYPE_STROLLING)
 			myAI = new AIStrolling(this);
 
-		new Thread(myAI).start();
+		// new Thread(myAI).start();
 	}
 
 	@Override

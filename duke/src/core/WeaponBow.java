@@ -22,7 +22,7 @@ public class WeaponBow extends EquipmentWeapon {
 	}
 
 	@Override
-	public boolean collides() {
+	public boolean blocksPath() {
 		return false;
 	}
 

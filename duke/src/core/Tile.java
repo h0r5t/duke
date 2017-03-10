@@ -12,6 +12,7 @@ public abstract class Tile extends GraphNode {
 	protected int tileID;
 	protected Ground ground;
 	private boolean isVisible;
+	private boolean isExposed;
 	private ArrayList<Zone2D> selections;
 	private ArrayList<Projectile> projectiles;
 	private Fluid fluid;
@@ -22,9 +23,13 @@ public abstract class Tile extends GraphNode {
 		this.selections = new ArrayList<Zone2D>();
 		this.projectiles = new ArrayList<Projectile>();
 		this.fluid = null;
+		this.isVisible = false;
 		getChar();
+		setGround(getDefaultGround());
+	}
 
-		setVisible(true);
+	public boolean isAir() {
+		return this instanceof TileAir;
 	}
 
 	public Ground getDefaultGround() {
@@ -45,6 +50,14 @@ public abstract class Tile extends GraphNode {
 
 	public boolean canBeMined() {
 		return false;
+	}
+
+	public boolean isExposed() {
+		return isExposed;
+	}
+
+	public void setExposed(boolean isExposed) {
+		this.isExposed = isExposed;
 	}
 
 	public boolean isVisible() {
@@ -105,21 +118,21 @@ public abstract class Tile extends GraphNode {
 		return fluid != null;
 	}
 
-	public boolean collides() {
-		if (tileCollides())
+	public boolean blocksPath() {
+		if (isSolid())
 			return true;
 		if (Core.getWorld() == null)
 			return false;
 		// if (Core.getWorld().getUnitsAt(this) != null)
 		// return true;
 		for (Item i : Core.getWorld().getItemsAt(this.getCoords3D())) {
-			if (i.collides())
+			if (i.blocksPath())
 				return true;
 		}
 		return false;
 	}
 
-	public abstract boolean tileCollides();
+	public abstract boolean isSolid();
 
 	public boolean isLadderDown() {
 		return false;
@@ -152,29 +165,31 @@ public abstract class Tile extends GraphNode {
 				strokeNum = 1;
 
 			if (getCoords3D().getLeft().getTile() instanceof TileAir) {
-				TextureStore.getBorderTexture(BorderLocation.LEFT, strokeNum).draw(g, posX, posY, 0);
+				TextureStore.getBorderTexture(Direction.LEFT, strokeNum).draw(g, posX, posY, 0);
 			}
 			if (getCoords3D().getRight().getTile() instanceof TileAir) {
-				TextureStore.getBorderTexture(BorderLocation.RIGHT, strokeNum).draw(g, posX, posY, 0);
+				TextureStore.getBorderTexture(Direction.RIGHT, strokeNum).draw(g, posX, posY, 0);
 			}
 			if (getCoords3D().getTop().getTile() instanceof TileAir) {
-				TextureStore.getBorderTexture(BorderLocation.TOP, strokeNum).draw(g, posX, posY, 0);
+				TextureStore.getBorderTexture(Direction.TOP, strokeNum).draw(g, posX, posY, 0);
 			}
 			if (getCoords3D().getBottom().getTile() instanceof TileAir) {
-				TextureStore.getBorderTexture(BorderLocation.BOTTOM, strokeNum).draw(g, posX, posY, 0);
+				TextureStore.getBorderTexture(Direction.BOTTOM, strokeNum).draw(g, posX, posY, 0);
 			}
 		}
 	}
 
 	public void draw(Graphics2D g, int posX, int posY, int darkerLevel) {
-		ground.draw(g, posX, posY, darkerLevel);
+		if (ground != null)
+			ground.draw(g, posX, posY, darkerLevel);
 
 		if (this instanceof TileAir)
 			return;
 
-		if (isVisible()) {
+		if (isExposed) {
 			TextureStore.getTileTexture(tileID, myChar).draw(g, posX, posY, darkerLevel);
-		}
+		} else
+			TextureStore.getDarknessTexture().draw(g, posX, posY, darkerLevel);
 
 		// draw fluid
 		if (fluid != null)

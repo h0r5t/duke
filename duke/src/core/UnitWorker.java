@@ -10,7 +10,7 @@ public class UnitWorker extends Unit {
 		taskPriorities = new TaskPriorities();
 
 		myAI = new AIStrolling(this);
-		new Thread(myAI).start();
+		// new Thread(myAI).start();
 	}
 
 	public TaskPriorities getTaskPriorities() {

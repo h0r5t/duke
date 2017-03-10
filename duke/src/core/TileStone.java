@@ -7,7 +7,7 @@ public class TileStone extends Tile {
 	}
 
 	@Override
-	public boolean tileCollides() {
+	public boolean isSolid() {
 		return true;
 	}
 

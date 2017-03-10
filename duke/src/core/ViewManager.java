@@ -2,6 +2,7 @@ package core;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ViewManager {
 
@@ -10,10 +11,12 @@ public class ViewManager {
 	private int screenShiftX;
 	private int screenShiftY;
 	private Sky sky;
+	private HashMap<Position2D, Tile> darkerLevelsMap;
 
 	public ViewManager(Core core) {
 		this.core = core;
 		this.sky = new Sky();
+		this.darkerLevelsMap = new HashMap<>();
 	}
 
 	public void moveZ(int delta) {
@@ -68,6 +71,7 @@ public class ViewManager {
 
 		for (int x = xstart; x < xstart + screenWidth; x++) {
 			for (int y = ystart; y < ystart + screenHeight; y++) {
+
 				// draw tiles
 				Tile tile = w.getTile(x, y, z);
 				if (tile != null && !(tile instanceof TileAir)) {
@@ -78,8 +82,9 @@ public class ViewManager {
 					boolean fluidFound = false;
 					for (int i = 0; i < Settings.DRAW_DARKER_LEVELS_AMOUNT - 1; i++) {
 						Tile tile2 = w.getTile(x, y, z + i + 1);
-						if (tile2 != null && !(tile2 instanceof TileAir)) {
+						if (tile2 != null && !(tile2.isAir()) && !(tile2 instanceof TileOOB)) {
 							tile2.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, i + 1);
+							darkerLevelsMap.put(new Position2D(x, y), tile2);
 							break;
 						}
 						if (tile2 != null && (tile2 instanceof TileAir)) {
@@ -130,11 +135,11 @@ public class ViewManager {
 			for (int y = ystart; y < ystart + screenHeight; y++) {
 				Tile tile = w.getTile(x, y, z);
 
-				if (tile != null && tile.isVisible()) {
+				if (tile != null) {
 					ArrayList<Unit> units = w.getUnitsAt(tile.getCoords3D());
 					if (units != null) {
 						for (Unit u : units)
-							u.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
+							u.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, 0);
 					}
 					ArrayList<Item> items = w.getItemsAt(tile.getCoords3D());
 					for (Item i : items) {
@@ -150,12 +155,12 @@ public class ViewManager {
 						}
 
 						i.draw(g, (x - xstart) * tileSize - xrest + moveDeltaX,
-								(y - ystart) * tileSize - yrest + moveDeltaY);
+								(y - ystart) * tileSize - yrest + moveDeltaY, 0);
 
 					}
 					ArrayList<Projectile> projectiles = tile.getProjectiles();
 					for (Projectile p : projectiles) {
-						p.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest);
+						p.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, 0);
 					}
 
 				}
@@ -165,6 +170,8 @@ public class ViewManager {
 				}
 			}
 		}
+
+		darkerLevelsMap.clear();
 
 	}
 
@@ -180,4 +187,19 @@ public class ViewManager {
 		return Core.getWorld().getTile(translateScreenPosToTilePosX(x), translateScreenPosToTilePosY(y), currentZ);
 	}
 
+	private class Position2D {
+
+		public int x;
+		public int y;
+
+		public Position2D(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		@Override
+		public int hashCode() {
+			return new String(x + "," + y).hashCode();
+		}
+	}
 }

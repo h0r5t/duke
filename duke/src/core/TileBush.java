@@ -7,7 +7,7 @@ public class TileBush extends Tile {
 	}
 
 	@Override
-	public boolean tileCollides() {
+	public boolean isSolid() {
 		return false;
 	}
 

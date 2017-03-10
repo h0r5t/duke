@@ -9,7 +9,8 @@ public class TextureStore {
 	private static HashMap<Integer, TextureFill> groundTextures;
 	private static HashMap<Integer, ArrayList<TextureCharacter>> unitTextures;
 	private static HashMap<Integer, ArrayList<TextureCharacter>> itemTextures;
-	private static HashMap<BorderLocation, TextureBorder[]> borderTextures;
+	private static HashMap<Direction, TextureBorder[]> borderTextures;
+	private static TextureFill darknessTexture;
 
 	public static void load() {
 		tileTextures = new HashMap<>();
@@ -18,6 +19,8 @@ public class TextureStore {
 		itemTextures = new HashMap<>();
 		borderTextures = new HashMap<>();
 
+		darknessTexture = new TextureFill(Colors.COLOR_DARKNESS);
+
 		loadTileTextures();
 		loadGroundTextures();
 		loadUnitTextures();
@@ -25,8 +28,12 @@ public class TextureStore {
 		loadBorderTextures();
 	}
 
+	public static TextureFill getDarknessTexture() {
+		return darknessTexture;
+	}
+
 	private static void loadBorderTextures() {
-		for (BorderLocation loc : BorderLocation.values()) {
+		for (Direction loc : Direction.values()) {
 			TextureBorder[] texArray = new TextureBorder[2];
 			texArray[0] = new TextureBorder(0.01f, loc);
 			texArray[1] = new TextureBorder(4f, loc);
@@ -114,7 +121,7 @@ public class TextureStore {
 		return null;
 	}
 
-	public static TextureBorder getBorderTexture(BorderLocation location, int strokeNum) {
+	public static TextureBorder getBorderTexture(Direction location, int strokeNum) {
 		return borderTextures.get(location)[strokeNum];
 	}
 }

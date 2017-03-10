@@ -1,6 +1,5 @@
 package core;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -24,10 +23,10 @@ public class TextureCharacter extends Texture {
 			g.setColor(ColorUtils.makeColorDarker(c.getColor(), i, c.getColor().getAlpha()));
 
 			if (c.isFill()) {
-				g.fillRect(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
 				g.setColor(Color.BLACK);
-				g.setStroke(new BasicStroke(0.01f));
-				g.drawRect(1, 1, Settings.TILE_SIZE - 2, Settings.TILE_SIZE - 2);
+				g.fillRect(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
+				g.setColor(ColorUtils.makeColorDarker(c.getColor(), i, c.getColor().getAlpha()));
+				g.fillRect(1, 1, Settings.TILE_SIZE - 2, Settings.TILE_SIZE - 2);
 
 			} else {
 				FontMetrics metrics = g.getFontMetrics(font);
