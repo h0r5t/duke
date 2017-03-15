@@ -1,86 +1,86 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class TaskDistributor {
 
 	private Core core;
-	private ArrayList<Task> taskList;
-	private ArrayList<TaskGroupMining> taskGroups;
+	private ArrayList<Task> toAdd;
+	private ArrayList<Coords3D> designatedCoords;
+	private MultiMap<TaskType, Task> taskTypeMap;
 
 	public TaskDistributor(Core core) {
 		this.core = core;
-		taskList = new ArrayList<Task>();
-		taskGroups = new ArrayList<TaskGroupMining>();
+		toAdd = new ArrayList<>();
+		designatedCoords = new ArrayList<>();
+		taskTypeMap = new MultiMap<>();
+	}
+
+	public void addDesignatedCoords(Coords3D c) {
+		designatedCoords.add(c);
+	}
+
+	public ArrayList<Coords3D> getDesignatedCoords() {
+		return designatedCoords;
+	}
+
+	public boolean isDesignated(Coords3D c) {
+		return designatedCoords.contains(c);
 	}
 
 	public void addTask(Task t) {
-		taskList.add(t);
+		toAdd.add(t);
 	}
 
-	public void addTaskGroup(TaskGroupMining t) {
-		taskGroups.add(t);
-	}
-
-	private Task getNextOpenTask(UnitWorker u) {
-		int highestPrio = 0;
-		Task highestTask = null;
-
-		for (Task t : taskList) {
-			if (t.status == TaskStatus.OPEN) {
-				int taskPrio = u.getTaskPriorities().getPriorityForTask(t);
-				if (taskPrio > highestPrio) {
-					highestPrio = taskPrio;
-					highestTask = t;
+	private void assignTasksToUnits() {
+		for (UnitWorker u : core.getUnitManager().getAvailableWorkerUnits()) {
+			for (TaskType type : u.getTaskPriorities().getPrios()) {
+				ArrayList<Task> openTasks = (ArrayList<Task>) taskTypeMap.get(type);
+				if (openTasks != null && openTasks.size() > 0) {
+					Task t = openTasks.get(0);
+					if (t.getStatus() == TaskStatus.OPEN)
+						if (t.isReachableFor(u)) {
+							assignTaskToUnit(t, u);
+							break;
+						}
 				}
 			}
 		}
-		return highestTask;
 	}
 
-	private void manageTaskGroups() {
-		ArrayList<TaskGroupMining> toDelete = new ArrayList<TaskGroupMining>();
-		for (TaskGroupMining taskGroup : taskGroups) {
-			ArrayList<TaskMoveAndMine> nextTasks = taskGroup.getNextTasks();
-			if (taskGroup.isCompleted()) {
-				toDelete.add(taskGroup);
-			}
-			taskList.addAll(nextTasks);
-		}
-		taskGroups.removeAll(toDelete);
+	private void assignTaskToUnit(Task t, Unit u) {
+		u.setCurrentTask(t);
+		removeTaskFromHashMap(t);
 	}
 
 	public void update() {
-		manageTaskGroups();
+		addTasks();
 		distributeOpenTasks();
-		deleteSomeTasks();
+	}
+
+	private void removeTaskFromHashMap(Task t) {
+		taskTypeMap.removeOne(t.getType(), t);
+	}
+
+	private void addTaskToHashMap(Task t) {
+		taskTypeMap.putOne(t.getType(), t);
+	}
+
+	private void addTasks() {
+		for (Task t : toAdd) {
+			addTaskToHashMap(t);
+		}
+		toAdd.clear();
 	}
 
 	private void distributeOpenTasks() {
-		ArrayList<UnitWorker> availableUnits;
-		Task t;
-		UnitWorker u;
-
-		availableUnits = core.getUnitManager().getAvailableWorkerUnits();
-		if (availableUnits.size() == 0)
-			return;
-		u = availableUnits.get(0);
-		t = getNextOpenTask(u);
-		if (t == null)
-			return;
-
-		u.setCurrentTask(t);
-		t.setStatus(TaskStatus.ASSIGNED);
+		assignTasksToUnits();
 	}
 
-	private void deleteSomeTasks() {
-		if (taskList.size() == 0)
-			return;
-		int i = new Random().nextInt(taskList.size());
-		Task t = taskList.get(i);
-		if (t.status == TaskStatus.DONE) {
-			taskList.remove(i);
+	public void wasMined(Coords3D c) {
+		for (Task t : taskTypeMap.get(TaskType.MINING)) {
+			TaskMiningWhole tm = (TaskMiningWhole) t;
+			tm.wasMined(c);
 		}
 	}
 

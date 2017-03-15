@@ -5,7 +5,7 @@ public class TaskHaul extends TaskChain {
 	private Item itemToHaul;
 
 	public TaskHaul(Item i, Stockpile stockpile) {
-		super(TaskType.HAUL);
+		super(TaskType.HAULING);
 		itemToHaul = i;
 
 		TaskMove move1 = new TaskMove(Core.getWorld().getItemPos(itemToHaul));

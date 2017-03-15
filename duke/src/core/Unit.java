@@ -56,8 +56,6 @@ public abstract class Unit {
 	public void updateUnit() {
 		if (currentTask != null) {
 			if (currentTask.getStatus() == TaskStatus.DONE) {
-				if (currentTask instanceof TaskBuild)
-					System.out.println(currentTask);
 				currentTask = null;
 			} else
 				currentTask.update(this);
@@ -100,6 +98,19 @@ public abstract class Unit {
 
 	public boolean hasTask() {
 		return currentTask != null;
+	}
+
+	public int getEstimatedDurationToDoTask(TaskMining t) {
+		int duration = 0;
+		if (currentTask instanceof TaskMining) {
+			duration = ((TaskMining) currentTask).estimateTimeLeft(this);
+		}
+		duration += t.estimateTimeNeededForUnit(this);
+		return duration;
+	}
+
+	public Task getTask() {
+		return currentTask;
 	}
 
 	public void setCurrentTask(Task currentTask) {

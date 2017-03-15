@@ -3,7 +3,7 @@ package core;
 public class TaskMoveItem extends TaskChain {
 
 	public TaskMoveItem(Item i, Coords3D dropLocation) {
-		super(TaskType.MOVE);
+		super(TaskType.MOVING);
 
 		TaskMove t1 = new TaskMove(i.getCoords3D());
 

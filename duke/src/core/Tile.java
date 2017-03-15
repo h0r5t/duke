@@ -16,6 +16,7 @@ public abstract class Tile extends GraphNode {
 	private ArrayList<Zone2D> selections;
 	private ArrayList<Projectile> projectiles;
 	private Fluid fluid;
+	private int darknessTextureID;
 
 	public Tile(int tileID, int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
@@ -26,10 +27,15 @@ public abstract class Tile extends GraphNode {
 		this.isVisible = false;
 		getChar();
 		setGround(getDefaultGround());
+		darknessTextureID = TextureStore.getDarknessTextureID();
 	}
 
 	public boolean isAir() {
 		return this instanceof TileAir;
+	}
+
+	public boolean needsRamp() {
+		return false;
 	}
 
 	public Ground getDefaultGround() {
@@ -188,8 +194,10 @@ public abstract class Tile extends GraphNode {
 
 		if (isExposed) {
 			TextureStore.getTileTexture(tileID, myChar).draw(g, posX, posY, darkerLevel);
-		} else
-			TextureStore.getDarknessTexture().draw(g, posX, posY, darkerLevel);
+		} else {
+			TextureStore.getDarknessBackgroundTexture().draw(g, posX, posY, darkerLevel);
+			TextureStore.getDarknessForeGroundTexture(darknessTextureID).draw(g, posX, posY, darkerLevel);
+		}
 
 		// draw fluid
 		if (fluid != null)

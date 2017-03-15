@@ -1,7 +1,6 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class WorldGenerator {
 
@@ -9,16 +8,17 @@ public class WorldGenerator {
 	private World world;
 	private Region region;
 	private ArrayList<Coords3D> embarkArea;
+	private int[][] surfaceLevel;
 
 	public WorldGenerator() {
-
 	}
 
 	public World generateWorld(Core core) {
 		world = new World(core);
 		biomes = new Biome[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT][Settings.WORLD_DEPTH];
-		region = new RegionPlain();
+		region = new RegionHills();
 		embarkArea = new ArrayList<>();
+		surfaceLevel = new int[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT];
 
 		generateWorld(world);
 
@@ -100,7 +100,7 @@ public class WorldGenerator {
 				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {
 					if (world.getTile(x, y, z) instanceof TileAir)
 						continue;
-					biomes[x][y][z] = Biome.getBiome(Settings.WORLD_DEPTH - z, 0);
+					biomes[x][y][z] = Biome.getBiome(this, Settings.WORLD_DEPTH - z, 0);
 				}
 			}
 		}
@@ -113,7 +113,7 @@ public class WorldGenerator {
 						continue;
 					if (isSurface(tile)) {
 						Biome b = biomes[x][y][z];
-						tile = b.getSurfaceTile(x, y, z);
+						surfaceLevel[x][y] = z;
 						tile.setGround(b.getGround());
 						world.setTile(tile);
 					} else {
@@ -121,6 +121,16 @@ public class WorldGenerator {
 						world.setTile(tile);
 					}
 				}
+			}
+		}
+
+		for (int x = 0; x < Settings.WORLD_WIDTH; x++) {
+			for (int y = 0; y < Settings.WORLD_HEIGHT; y++) {
+				int z = surfaceLevel[x][y];
+				Biome b = biomes[x][y][z];
+				Tile t = b.getDetailTile(x, y, z);
+				t.setGround(b.getGround());
+				world.setTile(t);
 			}
 		}
 	}
@@ -139,6 +149,12 @@ public class WorldGenerator {
 				}
 			}
 		}
+	}
+
+	private boolean isInWorldBounds(int x, int y) {
+		if (x < 0 || x > Settings.WORLD_WIDTH - 1 || y < 0 || y > Settings.WORLD_HEIGHT - 1)
+			return false;
+		return true;
 	}
 
 	private boolean isSurface(Tile t) {
@@ -187,68 +203,24 @@ public class WorldGenerator {
 
 	private Direction isLadderUp(Tile t) {
 		Coords3D c = t.getCoords3D();
-		if (world.getTile(c.getLeft()).isSolid())
+		if (world.getTile(c.getLeft()).needsRamp())
 			if (!world.getTile(c.getLeft().getAbove()).isSolid())
 				return Direction.LEFT;
-		if (world.getTile(c.getRight()).isSolid())
+		if (world.getTile(c.getRight()).needsRamp())
 			if (!world.getTile(c.getRight().getAbove()).isSolid())
 				return Direction.RIGHT;
-		if (world.getTile(c.getBottom()).isSolid())
+		if (world.getTile(c.getBottom()).needsRamp())
 			if (!world.getTile(c.getBottom().getAbove()).isSolid())
 				return Direction.BOTTOM;
-		if (world.getTile(c.getTop()).isSolid())
+		if (world.getTile(c.getTop()).needsRamp())
 			if (!world.getTile(c.getTop().getAbove()).isSolid())
 				return Direction.TOP;
 
 		return null;
 	}
 
-	private static World generateSurface(World world) {
-		Random r = new Random();
-		int trees = r.nextInt(300) + 70;
-		for (int i = 0; i < trees; i++) {
-			int x = r.nextInt(Settings.WORLD_WIDTH);
-			int y = r.nextInt(Settings.WORLD_HEIGHT);
-			world.setTile(new TileTree(x, y, 0));
-		}
-
-		int bushes = r.nextInt(200) + 50;
-		for (int i = 0; i < bushes; i++) {
-			int x = r.nextInt(Settings.WORLD_WIDTH);
-			int y = r.nextInt(Settings.WORLD_HEIGHT);
-			world.setTile(new TileBush(x, y, 0));
-		}
-
-		int stones = r.nextInt(50) + 20;
-		for (int i = 0; i < stones; i++) {
-			int x = r.nextInt(Settings.WORLD_WIDTH);
-			int y = r.nextInt(Settings.WORLD_HEIGHT);
-			world.setTile(new TileStone(x, y, 0));
-		}
-
-		int shrooms = r.nextInt(20) + 10;
-		for (int i = 0; i < shrooms; i++) {
-			int x = r.nextInt(Settings.WORLD_WIDTH);
-			int y = r.nextInt(Settings.WORLD_HEIGHT);
-			world.setTile(new TileMushroom(x, y, 0));
-		}
-
-		return world;
-	}
-
-	private static World generateBaseTiles(World w) {
-		for (int x = 0; x < Settings.WORLD_WIDTH; x++) {
-			for (int y = 0; y < Settings.WORLD_HEIGHT; y++) {
-				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {
-					if (z == 0)
-						w.setTile(new TileLand(x, y, z));
-					else {
-						w.setTile(new TileRock(x, y, z));
-					}
-				}
-			}
-		}
-		return w;
+	public int getSurfaceLevel(int x, int y) {
+		return surfaceLevel[x][y];
 	}
 
 }

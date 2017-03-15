@@ -19,9 +19,15 @@ public class MenuMine extends Menu {
 	}
 
 	private void createMiningTaskGroup(Zone2D zone) {
-		TaskGroupMining taskGroup = new TaskGroupMining(zone);
-		menuManager.getCore().getTaskDistributor().addTaskGroup(taskGroup);
-		new Thread(taskGroup).start();
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				TaskMiningWhole t = new TaskMiningWhole(zone);
+				menuManager.getCore().getTaskDistributor().addTask(t);
+			}
+		}).start();
+
 	}
 
 	@Override

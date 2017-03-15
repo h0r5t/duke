@@ -1,6 +1,7 @@
 package core;
 
 import java.awt.Color;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -137,7 +138,7 @@ public class GameData {
 		unitIDCharMap = new HashMap<Integer, ArrayList<Character>>();
 
 		ArrayList<Character> list = new ArrayList<Character>();
-		list.add(new Character("☺", Color.ORANGE, 26));
+		list.add(new Character("☺", Color.WHITE, 26));
 		unitIDCharMap.put(0, list);
 
 		list = new ArrayList<Character>();
@@ -164,6 +165,21 @@ public class GameData {
 		list = new ArrayList<Character>();
 		list.add(new Character(")", Colors.COLOR_ITEM_WOOD, 26));
 		itemIDCharMap.put(2, list);
+	}
+
+	public static Tile getTileInstanceFromId(String className, int x, int y, int z) {
+		try {
+			Class<?> c = Class.forName("core." + className);
+
+			Constructor<?> ctor = c.getConstructors()[0];
+			Object object = ctor.newInstance(new Object[] { x, y, z });
+
+			return (Tile) object;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public static Integer getTileID(String s) {

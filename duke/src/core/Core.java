@@ -52,7 +52,7 @@ public class Core implements Runnable {
 	}
 
 	private void spawnUnits(ArrayList<Coords3D> embarkArea) {
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 7; i++) {
 			Coords3D c = embarkArea.get(i);
 			UnitWorker worker = new UnitWorker(c.getX(), c.getY(), c.getZ());
 			unitManager.addUnit(worker);
@@ -65,18 +65,18 @@ public class Core implements Runnable {
 				MobGoblin goblin = new MobGoblin(c2.getX(), c2.getY(), c2.getZ());
 				unitManager.addUnit(goblin);
 			}
-
 		}
-
 	}
 
 	private void loop() {
 		world.update(this);
 		menuManager.update();
 		taskDistributor.update();
-		gamePanel.repaint();
 		unitManager.update();
+		inputManager.update();
 		fluidManager.udpate();
+
+		gamePanel.repaint();
 	}
 
 	@Override

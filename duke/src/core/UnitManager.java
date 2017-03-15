@@ -58,13 +58,16 @@ public class UnitManager {
 		return available;
 	}
 
+	public ArrayList<UnitWorker> getWorkerUnits() {
+		return workerUnits;
+	}
+
 	public Unit getNextAvailableUnit() {
 		for (Unit u : units) {
 			if (!u.hasTask()) {
 				return u;
 			}
 		}
-
 		return null;
 	}
 

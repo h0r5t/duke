@@ -137,10 +137,6 @@ public class ViewManager {
 
 				if (tile != null) {
 					ArrayList<Unit> units = w.getUnitsAt(tile.getCoords3D());
-					if (units != null) {
-						for (Unit u : units)
-							u.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, 0);
-					}
 					ArrayList<Item> items = w.getItemsAt(tile.getCoords3D());
 					for (Item i : items) {
 						int moveDeltaX = 0;
@@ -158,11 +154,52 @@ public class ViewManager {
 								(y - ystart) * tileSize - yrest + moveDeltaY, 0);
 
 					}
+					if (units != null) {
+						for (Unit u : units)
+							u.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, 0);
+					}
 					ArrayList<Projectile> projectiles = tile.getProjectiles();
 					for (Projectile p : projectiles) {
 						p.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, 0);
 					}
 
+				}
+
+				if (tile.isAir()) {
+					for (int i = 0; i < Settings.DRAW_UNITS_DARKER_LEVELS_AMOUNT - 1; i++) {
+						Tile tile2 = w.getTile(x, y, z + i + 1);
+						if (tile2 != null && !(tile2 instanceof TileAir)) {
+
+							ArrayList<Unit> units = w.getUnitsAt(tile2.getCoords3D());
+							ArrayList<Item> items = w.getItemsAt(tile2.getCoords3D());
+							for (Item item : items) {
+								int moveDeltaX = 0;
+								int moveDeltaY = 0;
+								if (units != null) {
+									for (Unit u : units) {
+										if (u.getItemInHands() == item) {
+											moveDeltaX = u.getCurrentMovementDeltas()[0];
+											moveDeltaY = u.getCurrentMovementDeltas()[1];
+										}
+									}
+								}
+
+								item.draw(g, (x - xstart) * tileSize - xrest + moveDeltaX,
+										(y - ystart) * tileSize - yrest + moveDeltaY, i + 1);
+
+							}
+							if (units != null) {
+								for (Unit u : units)
+									u.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, i + 1);
+							}
+							ArrayList<Projectile> projectiles = tile2.getProjectiles();
+							for (Projectile p : projectiles) {
+								p.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, i + 1);
+							}
+
+							break;
+						}
+					}
 				}
 
 				if (cursor.getXpos() == x && cursor.getYpos() == y) {

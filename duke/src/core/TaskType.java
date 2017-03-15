@@ -2,17 +2,17 @@ package core;
 
 public enum TaskType {
 
-	MOVE,
+	MOVING,
 
-	MINE,
+	MINING,
 
-	HAUL,
+	HAULING,
 
-	PICK_UP_ITEM,
+	PICKING_UP_ITEM,
 
-	DROP_ITEM,
+	DROPPING_ITEM,
 
-	BUILD,
+	BUILDING,
 
 	BUSY;
 

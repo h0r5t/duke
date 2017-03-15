@@ -6,7 +6,7 @@ public class UnitWorker extends Unit {
 	private AIStrolling myAI;
 
 	public UnitWorker(int x, int y, int z) {
-		super(GameData.getUnitID("unit_worker"), x, y, z, 16);
+		super(GameData.getUnitID("unit_worker"), x, y, z, 10);
 		taskPriorities = new TaskPriorities();
 
 		myAI = new AIStrolling(this);

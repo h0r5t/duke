@@ -12,6 +12,11 @@ public class TileRock extends Tile {
 	}
 
 	@Override
+	public boolean needsRamp() {
+		return true;
+	}
+
+	@Override
 	public boolean canBeMined() {
 		return true;
 	}

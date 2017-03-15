@@ -15,11 +15,20 @@ public class PathFinder {
 	}
 
 	public static boolean shouldBeReachableSurrounding(Coords3D point) {
-		return pathExists(reachablePoint, point)
-				|| pathExists(reachablePoint, point.getRight())
-				|| pathExists(reachablePoint, point.getLeft())
-				|| pathExists(reachablePoint, point.getTop())
+		return pathExists(reachablePoint, point) || pathExists(reachablePoint, point.getRight())
+				|| pathExists(reachablePoint, point.getLeft()) || pathExists(reachablePoint, point.getTop())
 				|| pathExists(reachablePoint, point.getBottom());
+	}
+
+	public static double estimateDistance2D(Coords3D source, Coords3D target) {
+		int x = Math.abs(source.getX() - target.getX());
+		int y = Math.abs(source.getY() - target.getY());
+		return x + y;
+	}
+
+	public static int estimateTimeNeeded(Unit u, Coords3D target) {
+		int distance = (int) estimateDistance2D(u.getCoords(), target);
+		return (int) (distance * u.getMoveSpeed() * Settings.TICK_TIME);
 	}
 
 	public static boolean shouldBeReachable(Coords3D point) {
@@ -31,8 +40,7 @@ public class PathFinder {
 		return t.isPossible();
 	}
 
-	public static Coords3D findTargetTileWithShortestPath(Coords3D from,
-			ArrayList<Coords3D> to) {
+	public static Coords3D findTargetTileWithShortestPath(Coords3D from, ArrayList<Coords3D> to) {
 		if (to.size() == 1)
 			return to.get(0);
 		Tile currentShortest = null;
@@ -59,14 +67,12 @@ public class PathFinder {
 
 		Path path = new Path(true);
 		GraphSearch_Astar search = new GraphSearch_Astar(Core.getWorld());
-		LinkedList<GraphNode> route = search.search(from.getTile().id(),
-				to.getTile().id());
+		LinkedList<GraphNode> route = search.search(from.getTile().id(), to.getTile().id());
 		if (route == null) {
 			return new Path(false);
 		}
 		for (GraphNode node : route) {
-			Tile t = (Tile) node;
-			path.add(t.getCoords3D());
+			path.add(new Coords3D((int) node.x(), (int) node.y(), (int) node.z()));
 		}
 		return path;
 	}

@@ -121,18 +121,18 @@ public class World extends Graph {
 			addZEdgesForTile(x, y, z);
 		}
 
-		if (getTile(x, y, z).isVisible()) {
-			getTile(x + 1, y, z).setVisible(true);
-			getTile(x + -1, y, z).setVisible(true);
+		if (getTile(x, y, z).isExposed()) {
+			getTile(x + 1, y, z).setExposed(true);
+			getTile(x + -1, y, z).setExposed(true);
 
-			getTile(x, y + 1, z).setVisible(true);
-			getTile(x, y - 1, z).setVisible(true);
+			getTile(x, y + 1, z).setExposed(true);
+			getTile(x, y - 1, z).setExposed(true);
 
-			getTile(x + 1, y + 1, z).setVisible(true);
-			getTile(x + 1, y - 1, z).setVisible(true);
+			getTile(x + 1, y + 1, z).setExposed(true);
+			getTile(x + 1, y - 1, z).setExposed(true);
 
-			getTile(x - 1, y + 1, z).setVisible(true);
-			getTile(x - 1, y - 1, z).setVisible(true);
+			getTile(x - 1, y + 1, z).setExposed(true);
+			getTile(x - 1, y - 1, z).setExposed(true);
 		}
 
 	}
@@ -143,7 +143,7 @@ public class World extends Graph {
 			setTile(new TileLand(targetToMine.getX(), targetToMine.getY(), targetToMine.getZ()));
 		else {
 			Tile t = new TileGround(targetToMine.getX(), targetToMine.getY(), targetToMine.getZ());
-			t.setVisible(true);
+			t.setExposed(true);
 			setTile(t);
 		}
 		if (droppedItem != null) {
@@ -156,6 +156,8 @@ public class World extends Graph {
 				itemManager.addUnclaimedItem(droppedItem);
 			}
 		}
+
+		core.getTaskDistributor().wasMined(targetToMine);
 	}
 
 	public Tile getTile(int x, int y, int z) {
@@ -192,7 +194,7 @@ public class World extends Graph {
 		}
 
 		if (x > 0) {
-			if (!getTile(x - 1, y, z).blocksPath()) {
+			if (!getTile(x - 1, y, z).blocksPath() && !getTile(x - 1, y, z).isAir()) {
 				addEdge(tiles[x][y][z], tiles[x - 1][y][z], 0);
 			} else {
 				try {
@@ -202,7 +204,7 @@ public class World extends Graph {
 			}
 		}
 		if (x < Settings.WORLD_WIDTH - 1) {
-			if (!getTile(x + 1, y, z).blocksPath()) {
+			if (!getTile(x + 1, y, z).blocksPath() && !getTile(x + 1, y, z).isAir()) {
 				addEdge(tiles[x][y][z], tiles[x + 1][y][z], 0);
 			} else {
 				try {
@@ -212,7 +214,7 @@ public class World extends Graph {
 			}
 		}
 		if (y > 0) {
-			if (!getTile(x, y - 1, z).blocksPath()) {
+			if (!getTile(x, y - 1, z).blocksPath() && !getTile(x, y - 1, z).isAir()) {
 				addEdge(tiles[x][y][z], tiles[x][y - 1][z], 0);
 			} else {
 				try {
@@ -222,7 +224,7 @@ public class World extends Graph {
 			}
 		}
 		if (y < Settings.WORLD_HEIGHT - 1) {
-			if (!getTile(x, y + 1, z).blocksPath()) {
+			if (!getTile(x, y + 1, z).blocksPath() && !getTile(x, y + 1, z).isAir()) {
 				addEdge(tiles[x][y][z], tiles[x][y + 1][z], 0);
 			} else {
 				try {
@@ -243,12 +245,10 @@ public class World extends Graph {
 			} else if (d == Direction.RIGHT && x < Settings.WORLD_WIDTH) {
 				addEdge(tiles[x][y][z], tiles[x + 1][y][z - 1], 0);
 				addEdge(tiles[x + 1][y][z - 1], tiles[x][y][z], 0);
-			}
-			if (d == Direction.BOTTOM && y < Settings.WORLD_HEIGHT) {
+			} else if (d == Direction.BOTTOM && y < Settings.WORLD_HEIGHT) {
 				addEdge(tiles[x][y][z], tiles[x][y + 1][z - 1], 0);
 				addEdge(tiles[x][y + 1][z - 1], tiles[x][y][z], 0);
-			}
-			if (d == Direction.TOP && y > 0) {
+			} else if (d == Direction.TOP && y > 0) {
 				addEdge(tiles[x][y][z], tiles[x][y - 1][z - 1], 0);
 				addEdge(tiles[x][y - 1][z - 1], tiles[x][y][z], 0);
 			}

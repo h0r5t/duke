@@ -11,13 +11,18 @@ public class TaskMove extends Task {
 	private boolean pathFindingStarted = false;
 
 	public TaskMove(Coords3D target) {
-		super(TaskType.MOVE);
+		super(TaskType.MOVING);
 		this.possibleTargets = new ArrayList<Coords3D>();
 		possibleTargets.add(target);
 	}
 
+	@Override
+	public double getDistance2D(Unit unit) {
+		return PathFinder.estimateDistance2D(unit.getCoords(), possibleTargets.get(0));
+	}
+
 	public TaskMove(ArrayList<Coords3D> possibleTargets) {
-		super(TaskType.MOVE);
+		super(TaskType.MOVING);
 		this.possibleTargets = possibleTargets;
 	}
 

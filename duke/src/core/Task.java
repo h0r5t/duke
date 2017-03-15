@@ -11,6 +11,10 @@ public abstract class Task {
 		taskID = UniqueIDFactory.getID();
 	}
 
+	public double getDistance2D(Unit unit) {
+		return 0;
+	}
+
 	public TaskType getType() {
 		return myType;
 	}

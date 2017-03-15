@@ -6,7 +6,7 @@ public class TaskActionDropItem extends TaskAction {
 	private Unit unit;
 
 	public TaskActionDropItem(Item i) {
-		super(TaskType.DROP_ITEM);
+		super(TaskType.DROPPING_ITEM);
 		item = i;
 	}
 

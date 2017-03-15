@@ -6,7 +6,7 @@ public class TaskActionPickupItem extends TaskAction {
 	private Unit unit;
 
 	public TaskActionPickupItem(Item i) {
-		super(TaskType.PICK_UP_ITEM);
+		super(TaskType.PICKING_UP_ITEM);
 		item = i;
 	}
 

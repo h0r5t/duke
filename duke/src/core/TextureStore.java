@@ -1,7 +1,9 @@
 package core;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class TextureStore {
 
@@ -10,7 +12,8 @@ public class TextureStore {
 	private static HashMap<Integer, ArrayList<TextureCharacter>> unitTextures;
 	private static HashMap<Integer, ArrayList<TextureCharacter>> itemTextures;
 	private static HashMap<Direction, TextureBorder[]> borderTextures;
-	private static TextureFill darknessTexture;
+	private static TextureFill darknessBackgroundTexture;
+	private static TextureCharacter[] darknessTextures;
 
 	public static void load() {
 		tileTextures = new HashMap<>();
@@ -19,8 +22,10 @@ public class TextureStore {
 		itemTextures = new HashMap<>();
 		borderTextures = new HashMap<>();
 
-		darknessTexture = new TextureFill(Colors.COLOR_DARKNESS);
+		darknessBackgroundTexture = new TextureFill(Colors.COLOR_DARKNESS);
+		darknessTextures = new TextureCharacter[4];
 
+		loadDarknessTextures();
 		loadTileTextures();
 		loadGroundTextures();
 		loadUnitTextures();
@@ -28,8 +33,19 @@ public class TextureStore {
 		loadBorderTextures();
 	}
 
-	public static TextureFill getDarknessTexture() {
-		return darknessTexture;
+	private static void loadDarknessTextures() {
+		darknessTextures[0] = new TextureCharacter(new Character(" ", Color.LIGHT_GRAY, 16));
+		darknessTextures[1] = new TextureCharacter(new Character("'", Color.LIGHT_GRAY, 16));
+		darknessTextures[2] = new TextureCharacter(new Character(",", Color.LIGHT_GRAY, 16));
+		darknessTextures[3] = new TextureCharacter(new Character("´", Color.LIGHT_GRAY, 16));
+	}
+
+	public static TextureFill getDarknessBackgroundTexture() {
+		return darknessBackgroundTexture;
+	}
+
+	public static TextureCharacter getDarknessForeGroundTexture(int id) {
+		return darknessTextures[id];
 	}
 
 	private static void loadBorderTextures() {
@@ -124,4 +140,19 @@ public class TextureStore {
 	public static TextureBorder getBorderTexture(Direction location, int strokeNum) {
 		return borderTextures.get(location)[strokeNum];
 	}
+
+	public static int getDarknessTextureID() {
+		int r = new Random().nextInt(100);
+		if (r == 0) {
+			return 1;
+		}
+		if (r == 1) {
+			return 2;
+		}
+		if (r == 2) {
+			return 3;
+		}
+		return 0;
+	}
+
 }

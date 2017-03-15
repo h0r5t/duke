@@ -21,6 +21,7 @@ public class InputManager implements Runnable {
 	public void update() {
 		mainInputController.keysPressed(keysPressed);
 		core.getMenuManager().keysPressed(keysPressed);
+		mainInputController.update();
 	}
 
 	public void keyPressed(KeyEvent e) {

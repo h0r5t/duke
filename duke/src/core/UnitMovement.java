@@ -42,25 +42,28 @@ public class UnitMovement {
 		if (!moving)
 			lastDeltas = new int[] { 0, 0 };
 
-		int deltaX = 0;
-		int deltaY = 0;
-		if (currentDelta < Settings.TILE_SIZE) {
-			if (movingRight)
-				deltaX = (int) (currentDelta - Settings.TILE_SIZE);
-			else if (movingLeft)
-				deltaX = (int) (Settings.TILE_SIZE - currentDelta);
-			else if (movingDown)
-				deltaY = (int) (currentDelta - Settings.TILE_SIZE);
-			else if (movingUp)
-				deltaY = (int) (Settings.TILE_SIZE - currentDelta);
-			currentDelta += moveDelta;
-		} else {
-			deltaX = 0;
-			deltaY = 0;
-			reset();
+		else {
+			int deltaX = 0;
+			int deltaY = 0;
+			if (currentDelta < Settings.TILE_SIZE) {
+				if (movingRight)
+					deltaX = (int) (currentDelta - Settings.TILE_SIZE);
+				else if (movingLeft)
+					deltaX = (int) (Settings.TILE_SIZE - currentDelta);
+				else if (movingDown)
+					deltaY = (int) (currentDelta - Settings.TILE_SIZE);
+				else if (movingUp)
+					deltaY = (int) (Settings.TILE_SIZE - currentDelta);
+				currentDelta += moveDelta;
+			} else {
+				deltaX = 0;
+				deltaY = 0;
+				reset();
+			}
+
+			lastDeltas = new int[] { deltaX, deltaY };
 		}
 
-		lastDeltas = new int[] { deltaX, deltaY };
 	}
 
 	private void reset() {

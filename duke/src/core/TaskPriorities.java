@@ -1,24 +1,21 @@
 package core;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class TaskPriorities {
 
-	private HashMap<TaskType, Integer> prios;
+	private ArrayList<TaskType> prios;
 
 	public TaskPriorities() {
-		prios = new HashMap<>();
-		prios.put(TaskType.MINE, 4);
-		prios.put(TaskType.BUILD, 3);
-		prios.put(TaskType.HAUL, 2);
-		prios.put(TaskType.MOVE, 1);
+		prios = new ArrayList<TaskType>();
+		prios.add(TaskType.MINING);
+		prios.add(TaskType.BUILDING);
+		prios.add(TaskType.HAULING);
+		prios.add(TaskType.MOVING);
 	}
 
-	public int getPriorityForTask(Task t) {
-		if (prios.containsKey(t.getType()))
-			return prios.get(t.getType());
-		else
-			return 0;
+	public ArrayList<TaskType> getPrios() {
+		return prios;
 	}
 
 }

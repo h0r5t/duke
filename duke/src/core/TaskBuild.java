@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class TaskBuild extends TaskChain {
 
 	public TaskBuild(Building building, LogisticsManager logisticsMgr) {
-		super(TaskType.BUILD);
+		super(TaskType.BUILDING);
 
 		ArrayList<Item> inputItems = new ArrayList<>();
 

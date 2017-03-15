@@ -24,7 +24,8 @@ public class Settings {
 
 	public static boolean DRAW_TILE_BORDERS = false;
 
-	public static int DRAW_DARKER_LEVELS_AMOUNT = 4;
+	public static int DRAW_DARKER_LEVELS_AMOUNT = 5;
+	public static int DRAW_UNITS_DARKER_LEVELS_AMOUNT = 3;
 
 	public static int MENU_HEIGHT = 75;
 	public static int MENU_GROUP_WIDTH = 150;
