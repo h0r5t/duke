@@ -78,10 +78,11 @@ public class TaskDistributor {
 	}
 
 	public void wasMined(Coords3D c) {
-		for (Task t : taskTypeMap.get(TaskType.MINING)) {
-			TaskMiningWhole tm = (TaskMiningWhole) t;
-			tm.wasMined(c);
-		}
+		if (taskTypeMap.containsKey(TaskType.MINING))
+			for (Task t : taskTypeMap.get(TaskType.MINING)) {
+				TaskMiningWhole tm = (TaskMiningWhole) t;
+				tm.wasMined(c);
+			}
 	}
 
 }

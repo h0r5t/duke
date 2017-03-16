@@ -4,6 +4,8 @@ public enum TaskType {
 
 	MOVING,
 
+	TREE_CHOPPING,
+
 	MINING,
 
 	HAULING,

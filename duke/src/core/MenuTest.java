@@ -10,16 +10,14 @@ public class MenuTest extends Menu {
 
 	@Override
 	public String getName() {
-		return "place";
+		return "chop tree";
 	}
 
 	@Override
 	public void start() {
-		Zone2D zone = (Zone2D) getSelectionResult(new SelectorZone2D(menuManager, SelectionType.TYPE_DESIGNATION));
-		for (Coords3D c : zone.getCoords()) {
-			Core.getWorld().wasMined(c);
-		}
-
+		Coords3D c = (Coords3D) getSelectionResult(new SelectorCursor(menuManager));
+		TaskChopTree t = new TaskChopTree(c);
+		menuManager.getCore().getTaskDistributor().addTask(t);
 	}
 
 	@Override

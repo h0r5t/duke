@@ -5,7 +5,7 @@ public class TileRamp extends Tile {
 	private Direction direction;
 
 	public TileRamp(int x, int y, int z, Direction d) {
-		super(GameData.getTileID("tile_ramp"), x, y, z);
+		super(x, y, z);
 		this.direction = d;
 	}
 

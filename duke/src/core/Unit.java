@@ -1,6 +1,5 @@
 package core;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 
 public abstract class Unit {
@@ -144,11 +143,11 @@ public abstract class Unit {
 		TextureStore.getUnitTexture(unitID, myChar).draw(g, posX, posY, darkerLevel);
 
 		// draw health bar
-
-		g.setColor(Color.GREEN);
-		g.fillRect(posX + 3, posY - 1, (int) ((health / 100) * (Settings.TILE_SIZE - 6)), 3);
-		g.setColor(Color.BLACK);
-		g.drawRect(posX + 3, posY - 1, Settings.TILE_SIZE - 6, 3);
+		// g.setColor(Color.GREEN);
+		// g.fillRect(posX + 3, posY - 1, (int) ((health / 100) *
+		// (Settings.TILE_SIZE - 6)), 3);
+		// g.setColor(Color.BLACK);
+		// g.drawRect(posX + 3, posY - 1, Settings.TILE_SIZE - 6, 3);
 	}
 
 	public Tile getTile() {

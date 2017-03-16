@@ -3,7 +3,7 @@ package core;
 public class BuildingCraftingTable extends Building {
 
 	public BuildingCraftingTable(Coords3D coords) {
-		super(GameData.getTileID("tile_building_crafting_table"), coords.getX(), coords.getY(), coords.getZ());
+		super(coords.getX(), coords.getY(), coords.getZ());
 
 		addItemInput(new ItemInput(GameData.getItemID("item_wood"), 3));
 	}

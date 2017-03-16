@@ -72,12 +72,9 @@ public class MenuManager extends InputAdapter {
 				setMenu(new MenuBuildingTest(this));
 			} else if (e.getKeyCode() == KeyEvent.VK_F) {
 				setMenu(new MenuFluidTest(this));
-			} else if (e.getKeyCode() == KeyEvent.VK_E) {
-				setMenu(new MenuTest(this));
 			} else if (e.getKeyCode() == KeyEvent.VK_T) {
-				setMenu(new MenuTest2(this));
+				setMenu(new MenuTest(this));
 			}
-
 		} else
 			currentMenu.keyReleased(e);
 	}

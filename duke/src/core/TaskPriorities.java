@@ -9,6 +9,7 @@ public class TaskPriorities {
 	public TaskPriorities() {
 		prios = new ArrayList<TaskType>();
 		prios.add(TaskType.MINING);
+		prios.add(TaskType.TREE_CHOPPING);
 		prios.add(TaskType.BUILDING);
 		prios.add(TaskType.HAULING);
 		prios.add(TaskType.MOVING);

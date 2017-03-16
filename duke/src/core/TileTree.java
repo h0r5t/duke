@@ -3,7 +3,7 @@ package core;
 public class TileTree extends Tile {
 
 	public TileTree(int x, int y, int z) {
-		super(GameData.getTileID("tile_woods"), x, y, z);
+		super(x, y, z);
 	}
 
 	@Override

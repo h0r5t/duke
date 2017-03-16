@@ -83,7 +83,6 @@ public class World extends Graph {
 		}
 
 		Tile previousTile = getTile(tile.getCoords3D());
-		tile.setGround(previousTile.getGround());
 
 		// check for near fluids
 		for (int x = -1; x <= 1; x++) {
@@ -139,13 +138,12 @@ public class World extends Graph {
 
 	public void wasMined(Coords3D targetToMine) {
 		Item droppedItem = targetToMine.getTile().getDrop();
-		if (targetToMine.getZ() == 0)
-			setTile(new TileLand(targetToMine.getX(), targetToMine.getY(), targetToMine.getZ()));
-		else {
-			Tile t = new TileGround(targetToMine.getX(), targetToMine.getY(), targetToMine.getZ());
-			t.setExposed(true);
-			setTile(t);
-		}
+
+		Tile t = new TileGround(targetToMine.getX(), targetToMine.getY(), targetToMine.getZ());
+		t.setExposed(true);
+		t.setGround(t.getDefaultGround());
+		setTile(t);
+
 		if (droppedItem != null) {
 			addItem(droppedItem, targetToMine);
 			Stockpile stockpile = core.getLogisticsManager().getStockPileManager().getStockpileForItem(droppedItem);

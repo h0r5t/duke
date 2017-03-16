@@ -22,7 +22,7 @@ public class TaskActionMine extends TaskAction {
 
 		if ((Math.abs(unitX - tileX) <= 1 && Math.abs(unitY - tileY) == 0)
 				|| (Math.abs(unitX - tileX) == 0 && Math.abs(unitY - tileY) <= 1)) {
-			startTimer(100, 0);
+			startTimer(1000, 0);
 		} else {
 			setStatus(TaskStatus.DONE);
 		}

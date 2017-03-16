@@ -18,9 +18,9 @@ public abstract class Tile extends GraphNode {
 	private Fluid fluid;
 	private int darknessTextureID;
 
-	public Tile(int tileID, int x, int y, int z) {
+	public Tile(int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
-		this.tileID = tileID;
+		this.tileID = GameData.getTileID(getClass().getName().replace("core.", ""));
 		this.selections = new ArrayList<Zone2D>();
 		this.projectiles = new ArrayList<Projectile>();
 		this.fluid = null;

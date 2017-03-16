@@ -6,8 +6,8 @@ public abstract class Building extends Tile {
 
 	private ArrayList<ItemInput> itemInput;
 
-	public Building(int tileID, int x, int y, int z) {
-		super(tileID, x, y, z);
+	public Building(int x, int y, int z) {
+		super(x, y, z);
 		itemInput = new ArrayList<ItemInput>();
 	}
 

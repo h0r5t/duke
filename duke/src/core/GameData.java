@@ -34,6 +34,8 @@ public class GameData {
 		groundIDs.put("ground_water", 3);
 		groundIDs.put("ground_stockpile", 4);
 		groundIDs.put("ground_snow", 5);
+		groundIDs.put("ground_wood", 6);
+		groundIDs.put("ground_leaves", 7);
 
 		groundIDColorMap = new HashMap<>();
 		groundIDColorMap.put(-1, Color.BLACK);
@@ -43,24 +45,29 @@ public class GameData {
 		groundIDColorMap.put(3, Colors.COLOR_GROUND_WATER);
 		groundIDColorMap.put(4, Colors.COLOR_GROUND_STOCKPILE);
 		groundIDColorMap.put(5, Color.WHITE);
+		groundIDColorMap.put(6, Colors.COLOR_WOOD);
+		groundIDColorMap.put(7, Colors.COLOR_GROUND_LEAVES);
 	}
 
 	public static void loadTiles() {
 		tileIDs = new HashMap<String, Integer>();
-		tileIDs.put("tile_oob", -1);
-		tileIDs.put("tile_land", 0);
-		tileIDs.put("tile_woods", 1);
-		tileIDs.put("tile_water", 2);
-		tileIDs.put("tile_ladderup", 3);
-		tileIDs.put("tile_ladderdown", 4);
-		tileIDs.put("tile_rock", 5);
-		tileIDs.put("tile_bush", 6);
-		tileIDs.put("tile_stone", 7);
-		tileIDs.put("tile_mushroom", 8);
-		tileIDs.put("tile_air", 9);
-		tileIDs.put("tile_ground", 10);
-		tileIDs.put("tile_ramp", 11);
-		tileIDs.put("tile_building_crafting_table", 100);
+		tileIDs.put("TileOOB", -1);
+		tileIDs.put("TileLand", 0);
+		tileIDs.put("TileTree", 1);
+		tileIDs.put("TileWater", 2);
+		tileIDs.put("TileLadderUp", 3);
+		tileIDs.put("TileLadderDown", 4);
+		tileIDs.put("TileRock", 5);
+		tileIDs.put("TileBush", 6);
+		tileIDs.put("TileStone", 7);
+		tileIDs.put("TileMushroom", 8);
+		tileIDs.put("TileAir", 9);
+		tileIDs.put("TileGround", 10);
+		tileIDs.put("TileRamp", 11);
+		tileIDs.put("TileTrunk", 12);
+		tileIDs.put("TileLeaves", 13);
+
+		tileIDs.put("BuildingCraftingTable", 100);
 
 		tileIDCharMap = new HashMap<Integer, ArrayList<Character>>();
 		ArrayList<Character> list = new ArrayList<Character>();
@@ -77,8 +84,8 @@ public class GameData {
 		tileIDCharMap.put(0, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("♣", Colors.COLOR_WOODS, 30));
-		list.add(new Character("♠", Colors.COLOR_WOODS, 30));
+		list.add(new Character("♣", Colors.COLOR_WOOD, 30));
+		list.add(new Character("♠", Colors.COLOR_WOOD, 30));
 		tileIDCharMap.put(1, list);
 
 		list = new ArrayList<Character>();
@@ -101,6 +108,8 @@ public class GameData {
 		list = new ArrayList<Character>();
 		list.add(new Character("¥", Colors.COLOR_BUSH, 14));
 		list.add(new Character("φ", Colors.COLOR_BUSH, 14));
+		list.add(new Character("♣", Colors.COLOR_BUSH, 14));
+		list.add(new Character("♠", Colors.COLOR_BUSH, 14));
 		tileIDCharMap.put(6, list);
 
 		list = new ArrayList<Character>();
@@ -123,6 +132,14 @@ public class GameData {
 		list.add(new Character("▲", Color.GRAY, 20));
 		tileIDCharMap.put(11, list);
 
+		list = new ArrayList<Character>();
+		list.add(new Character("O", Colors.COLOR_TRUNK, 24));
+		tileIDCharMap.put(12, list);
+
+		list = new ArrayList<Character>();
+		list.add(new Character("¼", Colors.COLOR_LEAVES, 20));
+		tileIDCharMap.put(13, list);
+
 		// buidlings
 
 		list = new ArrayList<Character>();
@@ -138,7 +155,7 @@ public class GameData {
 		unitIDCharMap = new HashMap<Integer, ArrayList<Character>>();
 
 		ArrayList<Character> list = new ArrayList<Character>();
-		list.add(new Character("☺", Color.WHITE, 26));
+		list.add(new Character("☺", Colors.COLOR_DWARF, 26));
 		unitIDCharMap.put(0, list);
 
 		list = new ArrayList<Character>();
@@ -165,21 +182,6 @@ public class GameData {
 		list = new ArrayList<Character>();
 		list.add(new Character(")", Colors.COLOR_ITEM_WOOD, 26));
 		itemIDCharMap.put(2, list);
-	}
-
-	public static Tile getTileInstanceFromId(String className, int x, int y, int z) {
-		try {
-			Class<?> c = Class.forName("core." + className);
-
-			Constructor<?> ctor = c.getConstructors()[0];
-			Object object = ctor.newInstance(new Object[] { x, y, z });
-
-			return (Tile) object;
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	public static Integer getTileID(String s) {
@@ -246,6 +248,21 @@ public class GameData {
 
 	public static Color getGroundColor(int groundID) {
 		return groundIDColorMap.get(groundID);
+	}
+
+	public static Tile getTileInstanceFromId(String className, int x, int y, int z) {
+		try {
+			Class<?> c = Class.forName("core." + className);
+
+			Constructor<?> ctor = c.getConstructors()[0];
+			Object object = ctor.newInstance(new Object[] { x, y, z });
+
+			return (Tile) object;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

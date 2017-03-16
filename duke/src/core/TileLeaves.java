@@ -1,19 +1,18 @@
 package core;
 
-public class TileAir extends Tile {
+public class TileLeaves extends Tile {
 
-	public TileAir(int x, int y, int z) {
+	public TileLeaves(int x, int y, int z) {
 		super(x, y, z);
 	}
 
 	@Override
 	public boolean isSolid() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public Ground getDefaultGround() {
-		return new GroundAir();
+		return new GroundLeaves();
 	}
-
 }

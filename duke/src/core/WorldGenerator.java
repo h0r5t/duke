@@ -109,8 +109,9 @@ public class WorldGenerator {
 			for (int y = 0; y < Settings.WORLD_HEIGHT; y++) {
 				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {
 					Tile tile = world.getTile(x, y, z);
-					if (tile instanceof TileAir)
+					if (tile instanceof TileAir) {
 						continue;
+					}
 					if (isSurface(tile)) {
 						Biome b = biomes[x][y][z];
 						surfaceLevel[x][y] = z;
@@ -129,8 +130,32 @@ public class WorldGenerator {
 				int z = surfaceLevel[x][y];
 				Biome b = biomes[x][y][z];
 				Tile t = b.getDetailTile(x, y, z);
-				t.setGround(b.getGround());
+				if (t instanceof TileTrunk) {
+					createTree(x, y, z);
+				} else {
+					t.setGround(b.getGround());
+					world.setTile(t);
+				}
+			}
+		}
+	}
+
+	private void createTree(int x, int y, int z) {
+		for (int i = 0; i < 5; i++) {
+			if (i < 4) {
+				Tile t = new TileTrunk(x, y, z - i);
 				world.setTile(t);
+			}
+
+			if (i > 2) {
+				for (int a = -1; a <= 1; a++) {
+					for (int b = -1; b <= 1; b++) {
+						if (a == 0 && b == 0 && i < 4)
+							continue;
+						Tile t = new TileLeaves(x + a, y + b, z - i);
+						world.setTile(t);
+					}
+				}
 			}
 		}
 	}
