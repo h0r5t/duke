@@ -1,6 +1,5 @@
 package core;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Cursor implements Visual {
@@ -8,11 +7,21 @@ public class Cursor implements Visual {
 	private Core core;
 	private int xpos;
 	private int ypos;
+	private SelectionType selectionType;
 
 	public Cursor(Core core, int x, int y) {
 		this.core = core;
 		xpos = x;
 		ypos = y;
+		selectionType = SelectionType.TYPE_CURSOR;
+	}
+
+	public void setSelectionType(SelectionType t) {
+		this.selectionType = t;
+	}
+
+	public void resetSelectionType() {
+		this.selectionType = SelectionType.TYPE_CURSOR;
 	}
 
 	public int getXpos() {
@@ -49,7 +58,7 @@ public class Cursor implements Visual {
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
-		g.setColor(Color.YELLOW);
+		g.setColor(SelectionType.getColorForType(selectionType));
 		g.drawRect(posX, posY, Settings.TILE_SIZE - 1, Settings.TILE_SIZE - 1);
 	}
 

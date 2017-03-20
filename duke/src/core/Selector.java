@@ -3,12 +3,12 @@ package core;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public abstract class MenuSelector extends InputAdapter {
+public abstract class Selector extends InputAdapter {
 
 	protected MenuManager menuManager;
 	private boolean isDone;
 
-	public MenuSelector(MenuManager menuManager) {
+	public Selector(MenuManager menuManager) {
 		this.menuManager = menuManager;
 		this.isDone = false;
 	}

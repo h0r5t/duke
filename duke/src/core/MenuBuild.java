@@ -1,10 +1,9 @@
 package core;
 
-public class MenuZones extends Menu {
+public class MenuBuild extends Menu {
 
-	public MenuZones(MenuManager menuManager) {
+	public MenuBuild(MenuManager menuManager) {
 		super(menuManager);
-		addItem(new MenuItem("stockpiles", "s", new MenuStockpiles(menuManager)));
 	}
 
 	@Override
@@ -14,7 +13,7 @@ public class MenuZones extends Menu {
 
 	@Override
 	public String getName() {
-		return "zones";
+		return "build";
 	}
 
 	@Override

@@ -5,18 +5,39 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class MenuManager extends InputAdapter {
 
 	private Core core;
 	private Menu currentMenu;
+	private ArrayList<Menu> menuHistory;
 
 	public MenuManager(Core core) {
 		this.core = core;
+		currentMenu = new MenuMain(this);
+		this.menuHistory = new ArrayList<>();
 	}
 
 	public Core getCore() {
 		return core;
+	}
+
+	public void switchToMenu(Menu m) {
+		if (!(currentMenu instanceof MenuMain))
+			menuHistory.add(currentMenu);
+		currentMenu = m;
+		new Thread(currentMenu).start();
+	}
+
+	public void goToLastMenu() {
+		if (menuHistory.size() > 0) {
+			currentMenu = menuHistory.remove(menuHistory.size() - 1);
+		} else {
+			currentMenu = new MenuMain(this);
+			new Thread(currentMenu).start();
+		}
+
 	}
 
 	public Cursor getCursor() {
@@ -30,19 +51,13 @@ public class MenuManager extends InputAdapter {
 	}
 
 	public void draw(Graphics2D g) {
-
 		g.setFont(new Font("Arial", Font.BOLD, 14));
 		g.setColor(Color.WHITE);
 		g.drawString("height:" + (Settings.WORLD_DEPTH - getCursor().getZpos()), 10, 30);
 		g.drawString("fluid:" + getCore().getFluidManager().getCalculations(), 10, 45);
 
-		if (currentMenu != null) {
-			g.setColor(Color.WHITE);
-			Font font = new Font("Arial", Font.BOLD, 14);
-			g.drawString(currentMenu.getName(), 10, Settings.GAME_FRAME_HEIGHT - 50);
-
+		if (currentMenu != null)
 			currentMenu.drawMenu(g);
-		}
 	}
 
 	//
@@ -57,31 +72,8 @@ public class MenuManager extends InputAdapter {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (currentMenu == null) {
-			if (e.getKeyCode() == KeyEvent.VK_R) {
-				setMenu(new MenuMine(this));
-			} else if (e.getKeyCode() == KeyEvent.VK_M) {
-				setMenu(new MenuMove(this));
-			} else if (e.getKeyCode() == KeyEvent.VK_Z) {
-				setMenu(new MenuZones(this));
-			} else if (e.getKeyCode() == KeyEvent.VK_Q) {
-				setMenu(new MenuInfo(this));
-			} else if (e.getKeyCode() == KeyEvent.VK_P) {
-				setMenu(new MenuProjectileTest(this));
-			} else if (e.getKeyCode() == KeyEvent.VK_B) {
-				setMenu(new MenuBuildingTest(this));
-			} else if (e.getKeyCode() == KeyEvent.VK_F) {
-				setMenu(new MenuFluidTest(this));
-			} else if (e.getKeyCode() == KeyEvent.VK_T) {
-				setMenu(new MenuTest(this));
-			}
-		} else
+		if (currentMenu != null)
 			currentMenu.keyReleased(e);
-	}
-
-	private void setMenu(Menu m) {
-		currentMenu = m;
-		new Thread(currentMenu).start();
 	}
 
 	@Override

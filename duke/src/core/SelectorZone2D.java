@@ -2,7 +2,7 @@ package core;
 
 import java.awt.event.MouseEvent;
 
-public class SelectorZone2D extends MenuSelector {
+public class SelectorZone2D extends Selector {
 
 	private Zone2D zone;
 	private MenuManager menuManager;
@@ -13,6 +13,7 @@ public class SelectorZone2D extends MenuSelector {
 		super(menuManager);
 		this.menuManager = menuManager;
 		this.selectionType = selectionType;
+		menuManager.getCursor().setSelectionType(SelectionType.TYPE_DESIGNATION);
 	}
 
 	@Override
@@ -22,11 +23,12 @@ public class SelectorZone2D extends MenuSelector {
 
 	@Override
 	public void onEnter() {
+		Cursor cursor = menuManager.getCursor();
 		if (zone == null) {
-			Cursor cursor = menuManager.getCursor();
 			zone = new Zone2D(cursor.getXpos(), cursor.getYpos(), cursor.getZpos(), selectionType);
 		} else {
 			zone.reset();
+			cursor.resetSelectionType();
 			finish();
 		}
 	}
@@ -37,6 +39,7 @@ public class SelectorZone2D extends MenuSelector {
 			zone.reset();
 		zone = null;
 		finish();
+		menuManager.getCursor().resetSelectionType();
 	}
 
 	private void cursorMoved() {

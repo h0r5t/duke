@@ -5,11 +5,13 @@ public abstract class TaskAction extends Task implements Callbackable {
 	private boolean wasCalled;
 	private boolean callbackCalled;
 	private int callbackContext;
+	private int sleepTime;
 
-	public TaskAction(TaskType type) {
+	public TaskAction(TaskType type, int sleepTime) {
 		super(type);
 		wasCalled = false;
 		callbackCalled = false;
+		this.sleepTime = sleepTime;
 	}
 
 	@Override
@@ -26,11 +28,16 @@ public abstract class TaskAction extends Task implements Callbackable {
 
 	}
 
+	@Override
+	public int getEstimatedTimeNeeded(Unit u) {
+		return sleepTime;
+	}
+
 	protected abstract void doAction(Unit unit);
 
-	protected void startTimer(int milliseconds, int context) {
-		Timer.startTimer(this, milliseconds, context);
-		callbackContext = context;
+	protected void startTimer() {
+		Timer.startTimer(this, sleepTime, 0);
+		callbackContext = 0;
 	}
 
 	@Override

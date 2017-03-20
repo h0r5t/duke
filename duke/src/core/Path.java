@@ -14,7 +14,10 @@ public class Path {
 	}
 
 	public void set(Path p) {
-		path = p.getPathList();
+		if (p != null)
+			path = p.getPathList();
+		else
+			isPossible = false;
 	}
 
 	public boolean isPossible() {

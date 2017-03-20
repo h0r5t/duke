@@ -1,0 +1,40 @@
+package core;
+
+public class MenuStockpiles extends Menu {
+
+	public MenuStockpiles(MenuManager menuManager) {
+		super(menuManager);
+		addFooterItem(new MenuItem("create", "e"));
+		addFooterItem(new MenuItem("remove", "r"));
+	}
+
+	@Override
+	protected void itemWasClicked(MenuItem i) {
+		if (i.getHotkey().equals("e")) {
+			Zone2D zone = (Zone2D) getSelectionResult(new SelectorZone2D(menuManager, SelectionType.TYPE_ZONE));
+			if (zone == null)
+				return;
+			menuManager.getCore().getLogisticsManager().getStockPileManager().addStockpile(new Stockpile(zone));
+			zone.reset();
+
+		} else if (i.getHotkey().equals("r")) {
+			Coords3D c = (Coords3D) getSelectionResult(new SelectorCursor(menuManager));
+			if (c == null)
+				return;
+			Stockpile sp = menuManager.getCore().getLogisticsManager().getStockPileManager().getStockpileForPos(c);
+			if (sp != null)
+				menuManager.getCore().getLogisticsManager().getStockPileManager().removeStockpile(sp);
+		}
+	}
+
+	@Override
+	public String getName() {
+		return "stockpiles";
+	}
+
+	@Override
+	public void start() {
+
+	}
+
+}

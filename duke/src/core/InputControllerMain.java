@@ -7,69 +7,33 @@ public class InputControllerMain extends InputAdapter {
 
 	private Core core;
 	private ViewManager viewManager;
-	private int currentCameraSpeedX;
-	private int currentCameraSpeedY;
-	private boolean movedX = false;
-	private boolean movedY = false;
 
 	public InputControllerMain(Core core) {
 		this.core = core;
 		this.viewManager = core.getViewManager();
-		currentCameraSpeedX = 0;
-		currentCameraSpeedY = 0;
 	}
 
 	public void update() {
-		viewManager.shiftScreenX(currentCameraSpeedX);
-		viewManager.shiftScreenY(currentCameraSpeedY);
 
-		if (!movedX) {
-			if (currentCameraSpeedX > 0)
-				currentCameraSpeedX -= 1;
-			else if (currentCameraSpeedX < 0)
-				currentCameraSpeedX += 1;
-		}
-		if (!movedY) {
-			if (currentCameraSpeedY > 0)
-				currentCameraSpeedY -= 1;
-			else if (currentCameraSpeedY < 0)
-				currentCameraSpeedY += 1;
-		}
-
-		movedY = false;
-		movedX = false;
 	}
 
 	@Override
 	public void keysPressed(DefaultHashMap<Integer, Boolean> keysPressed) {
 		if (keysPressed.getDefault(KeyEvent.VK_D, false)) {
-			currentCameraSpeedX += 1;
-			movedX = true;
+			viewManager.shiftScreenX(Settings.SHIFT_SPEED);
 		}
 
 		if (keysPressed.getDefault(KeyEvent.VK_A, false)) {
-			currentCameraSpeedX -= 1;
-			movedX = true;
+			viewManager.shiftScreenX(-Settings.SHIFT_SPEED);
 		}
 
 		if (keysPressed.getDefault(KeyEvent.VK_S, false)) {
-			currentCameraSpeedY += 1;
-			movedY = true;
+			viewManager.shiftScreenY(Settings.SHIFT_SPEED);
 		}
 
 		if (keysPressed.getDefault(KeyEvent.VK_W, false)) {
-			currentCameraSpeedY -= 1;
-			movedY = true;
+			viewManager.shiftScreenY(-Settings.SHIFT_SPEED);
 		}
-
-		if (currentCameraSpeedX > Settings.SHIFT_SPEED)
-			currentCameraSpeedX = Settings.SHIFT_SPEED;
-		if (currentCameraSpeedX < -Settings.SHIFT_SPEED)
-			currentCameraSpeedX = -Settings.SHIFT_SPEED;
-		if (currentCameraSpeedY > Settings.SHIFT_SPEED)
-			currentCameraSpeedY = Settings.SHIFT_SPEED;
-		if (currentCameraSpeedY < -Settings.SHIFT_SPEED)
-			currentCameraSpeedY = -Settings.SHIFT_SPEED;
 
 		if (keysPressed.getDefault(KeyEvent.VK_RIGHT, false))
 			core.getInputManager().getCursor().moveX(1);

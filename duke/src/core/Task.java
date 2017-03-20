@@ -17,6 +17,8 @@ public abstract class Task {
 		return 0;
 	}
 
+	public abstract int getEstimatedTimeNeeded(Unit u);
+
 	public TaskType getType() {
 		return myType;
 	}

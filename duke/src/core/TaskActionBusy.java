@@ -6,7 +6,7 @@ public class TaskActionBusy extends TaskAction {
 	private SimpleCallback callback;
 
 	public TaskActionBusy(int timeInMs, SimpleCallback callback) {
-		super(TaskType.BUSY);
+		super(TaskType.BUSY, timeInMs);
 		this.timeInMs = timeInMs;
 		this.callback = callback;
 	}
@@ -19,7 +19,7 @@ public class TaskActionBusy extends TaskAction {
 
 	@Override
 	protected void doAction(Unit unit) {
-		startTimer(timeInMs, 0);
+		startTimer();
 	}
 
 	@Override

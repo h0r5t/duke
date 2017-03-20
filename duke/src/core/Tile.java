@@ -209,13 +209,8 @@ public abstract class Tile extends GraphNode {
 		}
 
 		if (isSelected()) {
-			if (selections.get(0).getSelectionType() == SelectionType.TYPE_DESIGNATION) {
-				g.setColor(Color.CYAN);
-				g.drawRect(posX - 1, posY - 1, Settings.TILE_SIZE, Settings.TILE_SIZE);
-			} else if (selections.get(0).getSelectionType() == SelectionType.TYPE_ZONE) {
-				g.setColor(Color.CYAN);
-				g.drawRect(posX - 1, posY - 1, Settings.TILE_SIZE, Settings.TILE_SIZE);
-			}
+			g.setColor(SelectionType.getColorForType(selections.get(0).getSelectionType()));
+			g.drawRect(posX - 1, posY - 1, Settings.TILE_SIZE, Settings.TILE_SIZE);
 		}
 	}
 

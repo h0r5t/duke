@@ -47,7 +47,6 @@ public class WorldGenerator {
 						if (direction != null) {
 							Biome b = biomes[x][y][z];
 							tile = new TileRamp(x, y, z, direction);
-							tile.setGround(b.getGround());
 							world.setTile(tile);
 						}
 					}

@@ -16,14 +16,19 @@ public class TaskMove extends Task {
 		possibleTargets.add(target);
 	}
 
+	public TaskMove(ArrayList<Coords3D> possibleTargets) {
+		super(TaskType.MOVING);
+		this.possibleTargets = possibleTargets;
+	}
+
 	@Override
 	public double getDistance2D(Unit unit) {
 		return PathFinder.estimateDistance2D(unit.getCoords(), possibleTargets.get(0));
 	}
 
-	public TaskMove(ArrayList<Coords3D> possibleTargets) {
-		super(TaskType.MOVING);
-		this.possibleTargets = possibleTargets;
+	@Override
+	public int getEstimatedTimeNeeded(Unit u) {
+		return PathFinder.estimateTimeNeeded(u, possibleTargets.get(0));
 	}
 
 	@Override
@@ -46,7 +51,7 @@ public class TaskMove extends Task {
 				if (pathFindingStarted && pathFuture.isReady()) {
 					path = pathFuture.getContained();
 					if (!path.isPossible()) {
-						setStatus(TaskStatus.DONE);
+						setStatus(TaskStatus.FAILED);
 						return;
 					} else {
 						if (!unit.isMoving()) {

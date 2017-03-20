@@ -20,15 +20,21 @@ public class TextureCharacter extends Texture {
 		for (int i = 0; i < images.length; i++) {
 			BufferedImage img = new BufferedImage(Settings.TILE_SIZE, Settings.TILE_SIZE, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = (Graphics2D) img.getGraphics();
-			g.setColor(ColorUtils.makeColorDarker(c.getColor(), i, c.getColor().getAlpha()));
+			Color fgColor = ColorUtils.makeColorDarker(c.getColor(), i, c.getColor().getAlpha());
 
 			if (c.isFill()) {
 				g.setColor(Color.BLACK);
 				g.fillRect(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
-				g.setColor(ColorUtils.makeColorDarker(c.getColor(), i, c.getColor().getAlpha()));
+				g.setColor(fgColor);
 				g.fillRect(1, 1, Settings.TILE_SIZE - 2, Settings.TILE_SIZE - 2);
 
 			} else {
+				if (c.getBgColor() != null) {
+					Color bgColor = ColorUtils.makeColorDarker(c.getBgColor(), i, c.getBgColor().getAlpha());
+					g.setColor(bgColor);
+					g.fillRect(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
+				}
+				g.setColor(fgColor);
 				FontMetrics metrics = g.getFontMetrics(font);
 				String text = c.getChar() + "";
 				int x = (rect.width - metrics.stringWidth(text)) / 2;

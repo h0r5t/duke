@@ -38,7 +38,18 @@ public class TaskChain extends Task {
 			taskChain.get(0).update(unit);
 			if (taskChain.get(0).getStatus() == TaskStatus.DONE) {
 				taskChain.remove(0);
+			} else if (taskChain.get(0).getStatus() == TaskStatus.FAILED) {
+				setStatus(TaskStatus.FAILED);
 			}
 		}
+	}
+
+	@Override
+	public int getEstimatedTimeNeeded(Unit u) {
+		int sum = 0;
+		for (Task t : taskChain) {
+			sum += t.getEstimatedTimeNeeded(u);
+		}
+		return sum;
 	}
 }

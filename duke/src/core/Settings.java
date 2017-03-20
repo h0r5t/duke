@@ -28,15 +28,19 @@ public class Settings {
 	public static int DRAW_UNITS_DARKER_LEVELS_AMOUNT = 3;
 
 	public static int MENU_HEIGHT = 75;
-	public static int MENU_GROUP_WIDTH = 150;
+	public static int MENU_WIDTH = 450;
 	public static int MENU_ELEMENT_HEIGHT = 30;
+
+	public static int MENU_STARTX() {
+		return Settings.GAME_FRAME_WIDTH - MENU_WIDTH;
+	}
 
 	public static int MENU_STARTY() {
 		return Settings.GAME_FRAME_HEIGHT - MENU_HEIGHT - 5;
 	}
 
 	public static int SCREEN_WIDTH_IN_TILES() {
-		return (Settings.GAME_FRAME_WIDTH) / Settings.TILE_SIZE;
+		return (Settings.GAME_FRAME_WIDTH - MENU_WIDTH) / Settings.TILE_SIZE;
 	}
 
 	public static int SCREEN_HEIGHT_IN_TILES() {

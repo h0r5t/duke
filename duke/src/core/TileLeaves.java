@@ -10,9 +10,4 @@ public class TileLeaves extends Tile {
 	public boolean isSolid() {
 		return true;
 	}
-
-	@Override
-	public Ground getDefaultGround() {
-		return new GroundLeaves();
-	}
 }

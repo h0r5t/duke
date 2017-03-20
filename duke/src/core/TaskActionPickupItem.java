@@ -6,7 +6,7 @@ public class TaskActionPickupItem extends TaskAction {
 	private Unit unit;
 
 	public TaskActionPickupItem(Item i) {
-		super(TaskType.PICKING_UP_ITEM);
+		super(TaskType.PICKING_UP_ITEM, 250);
 		item = i;
 	}
 
@@ -19,7 +19,7 @@ public class TaskActionPickupItem extends TaskAction {
 	@Override
 	protected void doAction(Unit unit) {
 		this.unit = unit;
-		startTimer(250, 0);
+		startTimer();
 	}
 
 	@Override

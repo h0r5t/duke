@@ -83,6 +83,7 @@ public class World extends Graph {
 		}
 
 		Tile previousTile = getTile(tile.getCoords3D());
+		tile.setGround(previousTile.getGround());
 
 		// check for near fluids
 		for (int x = -1; x <= 1; x++) {
@@ -290,6 +291,9 @@ public class World extends Graph {
 		if (tile.getX() < 0 || tile.getX() > Settings.WORLD_WIDTH - 1 || tile.getY() < 0
 				|| tile.getY() > Settings.WORLD_HEIGHT - 1 || tile.getZ() < 0 || tile.getZ() > Settings.WORLD_DEPTH - 1)
 			return;
+		Tile previousTile = getTile(tile.getCoords3D());
+		if (previousTile != null)
+			tile.setGround(previousTile.getGround());
 		removeNode(tiles[tile.getX()][tile.getY()][tile.getZ()]);
 		tiles[tile.getX()][tile.getY()][tile.getZ()] = tile.id();
 		addNode(tile);

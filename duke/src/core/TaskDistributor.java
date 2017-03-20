@@ -6,50 +6,35 @@ public class TaskDistributor {
 
 	private Core core;
 	private ArrayList<Task> toAdd;
-	private ArrayList<Coords3D> designatedCoords;
 	private MultiMap<TaskType, Task> taskTypeMap;
+	private TaskWorkerPairFinder pairFinder;
 
 	public TaskDistributor(Core core) {
 		this.core = core;
 		toAdd = new ArrayList<>();
-		designatedCoords = new ArrayList<>();
 		taskTypeMap = new MultiMap<>();
-	}
-
-	public void addDesignatedCoords(Coords3D c) {
-		designatedCoords.add(c);
-	}
-
-	public ArrayList<Coords3D> getDesignatedCoords() {
-		return designatedCoords;
-	}
-
-	public boolean isDesignated(Coords3D c) {
-		return designatedCoords.contains(c);
+		pairFinder = new TaskWorkerPairFinder(core, this);
+		new Thread(pairFinder).start();
 	}
 
 	public void addTask(Task t) {
 		toAdd.add(t);
 	}
 
-	private void assignTasksToUnits() {
-		for (UnitWorker u : core.getUnitManager().getAvailableWorkerUnits()) {
-			for (TaskType type : u.getTaskPriorities().getPrios()) {
-				ArrayList<Task> openTasks = (ArrayList<Task>) taskTypeMap.get(type);
-				if (openTasks != null && openTasks.size() > 0) {
-					Task t = openTasks.get(0);
-					if (t.getStatus() == TaskStatus.OPEN)
-						if (t.isReachableFor(u)) {
-							assignTaskToUnit(t, u);
-							break;
-						}
-				}
-			}
+	private void assignPairs() {
+		ArrayList<TaskWorkerPair> pairs = pairFinder.getOptimalPairs();
+		for (TaskWorkerPair pair : pairs) {
+			assignTaskToUnit(pair.getTask(), pair.getWorker());
 		}
+	}
+
+	public MultiMap<TaskType, Task> getTasks() {
+		return taskTypeMap;
 	}
 
 	private void assignTaskToUnit(Task t, Unit u) {
 		u.setCurrentTask(t);
+		t.setStatus(TaskStatus.ASSIGNED);
 		removeTaskFromHashMap(t);
 	}
 
@@ -58,7 +43,7 @@ public class TaskDistributor {
 		distributeOpenTasks();
 	}
 
-	private void removeTaskFromHashMap(Task t) {
+	public void removeTaskFromHashMap(Task t) {
 		taskTypeMap.removeOne(t.getType(), t);
 	}
 
@@ -74,7 +59,7 @@ public class TaskDistributor {
 	}
 
 	private void distributeOpenTasks() {
-		assignTasksToUnits();
+		assignPairs();
 	}
 
 	public void wasMined(Coords3D c) {

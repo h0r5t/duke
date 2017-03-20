@@ -34,8 +34,6 @@ public class GameData {
 		groundIDs.put("ground_water", 3);
 		groundIDs.put("ground_stockpile", 4);
 		groundIDs.put("ground_snow", 5);
-		groundIDs.put("ground_wood", 6);
-		groundIDs.put("ground_leaves", 7);
 
 		groundIDColorMap = new HashMap<>();
 		groundIDColorMap.put(-1, Color.BLACK);
@@ -45,8 +43,6 @@ public class GameData {
 		groundIDColorMap.put(3, Colors.COLOR_GROUND_WATER);
 		groundIDColorMap.put(4, Colors.COLOR_GROUND_STOCKPILE);
 		groundIDColorMap.put(5, Color.WHITE);
-		groundIDColorMap.put(6, Colors.COLOR_WOOD);
-		groundIDColorMap.put(7, Colors.COLOR_GROUND_LEAVES);
 	}
 
 	public static void loadTiles() {
@@ -133,11 +129,11 @@ public class GameData {
 		tileIDCharMap.put(11, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("O", Colors.COLOR_TRUNK, 24));
+		list.add(new Character("O", Colors.COLOR_TRUNK, 24, Colors.COLOR_WOOD));
 		tileIDCharMap.put(12, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("¼", Colors.COLOR_LEAVES, 20));
+		list.add(new Character("¼", Colors.COLOR_LEAVES, 20, Colors.COLOR_GROUND_LEAVES));
 		tileIDCharMap.put(13, list);
 
 		// buidlings

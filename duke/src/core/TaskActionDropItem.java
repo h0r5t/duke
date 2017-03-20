@@ -6,7 +6,7 @@ public class TaskActionDropItem extends TaskAction {
 	private Unit unit;
 
 	public TaskActionDropItem(Item i) {
-		super(TaskType.DROPPING_ITEM);
+		super(TaskType.DROPPING_ITEM, 250);
 		item = i;
 	}
 
@@ -19,7 +19,7 @@ public class TaskActionDropItem extends TaskAction {
 	@Override
 	protected void doAction(Unit unit) {
 		this.unit = unit;
-		startTimer(250, 0);
+		startTimer();
 	}
 
 	@Override

@@ -12,11 +12,6 @@ public class TileTrunk extends Tile {
 	}
 
 	@Override
-	public Ground getDefaultGround() {
-		return new GroundWood();
-	}
-
-	@Override
 	public Item getDrop() {
 		return new ItemWood();
 	}

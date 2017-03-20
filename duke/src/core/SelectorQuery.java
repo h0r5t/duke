@@ -1,12 +1,12 @@
 package core;
 
-public class SelectorToolTipQuery {
+public class SelectorQuery {
 
 	private String name;
 	private String[] options;
 	private int selectedOption;
 
-	public SelectorToolTipQuery(String name, String[] options) {
+	public SelectorQuery(String name, String[] options) {
 		this.name = name;
 		this.options = options;
 		this.selectedOption = 0;

@@ -25,4 +25,9 @@ public class MenuBuildingTest extends Menu {
 
 	}
 
+	@Override
+	protected void itemWasClicked(MenuItem i) {
+
+	}
+
 }
