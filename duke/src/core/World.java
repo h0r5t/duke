@@ -142,7 +142,6 @@ public class World extends Graph {
 
 		Tile t = new TileGround(targetToMine.getX(), targetToMine.getY(), targetToMine.getZ());
 		t.setExposed(true);
-		t.setGround(t.getDefaultGround());
 		setTile(t);
 
 		if (droppedItem != null) {

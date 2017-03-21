@@ -119,6 +119,7 @@ public class WorldGenerator {
 					} else {
 						tile = new TileRock(x, y, z);
 						world.setTile(tile);
+						tile.setGround(tile.getDefaultGround());
 					}
 				}
 			}
@@ -132,8 +133,8 @@ public class WorldGenerator {
 				if (t instanceof TileTrunk) {
 					createTree(x, y, z);
 				} else {
-					t.setGround(b.getGround());
 					world.setTile(t);
+					t.setGround(b.getGround());
 				}
 			}
 		}

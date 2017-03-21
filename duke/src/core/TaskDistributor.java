@@ -13,8 +13,6 @@ public class TaskDistributor {
 		this.core = core;
 		toAdd = new ArrayList<>();
 		taskTypeMap = new MultiMap<>();
-		pairFinder = new TaskWorkerPairFinder(core, this);
-		new Thread(pairFinder).start();
 	}
 
 	public void addTask(Task t) {
@@ -22,10 +20,21 @@ public class TaskDistributor {
 	}
 
 	private void assignPairs() {
-		ArrayList<TaskWorkerPair> pairs = pairFinder.getOptimalPairs();
-		for (TaskWorkerPair pair : pairs) {
-			assignTaskToUnit(pair.getTask(), pair.getWorker());
+
+		if (pairFinder == null) {
+			pairFinder = new TaskWorkerPairFinder(taskTypeMap, core.getUnitManager().getAvailableWorkerUnits());
+			new Thread(pairFinder).start();
 		}
+
+		if (pairFinder.isDone()) {
+			ArrayList<TaskWorkerPair> pairs = pairFinder.getOptimalPairs();
+			for (TaskWorkerPair pair : pairs) {
+				assignTaskToUnit(pair.getTask(), pair.getWorker());
+			}
+			pairFinder = new TaskWorkerPairFinder(taskTypeMap, core.getUnitManager().getAvailableWorkerUnits());
+			new Thread(pairFinder).start();
+		}
+
 	}
 
 	public MultiMap<TaskType, Task> getTasks() {
@@ -40,7 +49,7 @@ public class TaskDistributor {
 
 	public void update() {
 		addTasks();
-		distributeOpenTasks();
+		assignPairs();
 	}
 
 	public void removeTaskFromHashMap(Task t) {
@@ -56,10 +65,6 @@ public class TaskDistributor {
 			addTaskToHashMap(t);
 		}
 		toAdd.clear();
-	}
-
-	private void distributeOpenTasks() {
-		assignPairs();
 	}
 
 	public void wasMined(Coords3D c) {

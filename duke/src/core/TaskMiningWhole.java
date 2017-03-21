@@ -21,6 +21,13 @@ public class TaskMiningWhole extends TaskChain {
 		return isReachable;
 	}
 
+	@Override
+	public int getEstimatedTimeNeeded(Unit u) {
+		if (tasks.size() == 0)
+			return 0;
+		return tasks.get(0).getEstimatedTimeNeeded(u);
+	}
+
 	private void releaseFirstTasks(Zone2D zone) {
 		ArrayList<Coords3D> added = new ArrayList<>();
 		for (Coords3D c : miningCoords) {

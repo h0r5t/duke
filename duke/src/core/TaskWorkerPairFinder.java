@@ -4,38 +4,36 @@ import java.util.ArrayList;
 
 public class TaskWorkerPairFinder implements Runnable {
 
-	private Core core;
-	private TaskDistributor taskDistributor;
+	private MultiMap<TaskType, Task> taskMap;
+	private ArrayList<UnitWorker> availableWorkers;
 	private ArrayList<TaskWorkerPair> taskWorkerPairs;
 	private boolean done;
 
-	public TaskWorkerPairFinder(Core core, TaskDistributor td) {
-		this.core = core;
-		this.taskDistributor = td;
+	public TaskWorkerPairFinder(MultiMap<TaskType, Task> taskMap, ArrayList<UnitWorker> availableWorkers) {
 		done = false;
+		this.taskMap = (MultiMap<TaskType, Task>) taskMap.clone();
+		this.availableWorkers = (ArrayList<UnitWorker>) availableWorkers.clone();
+		this.taskWorkerPairs = new ArrayList<>();
 	}
 
 	@Override
 	public void run() {
-		while (true) {
-			findOptimalPairs();
-		}
+		findOptimalPairs();
+		done = true;
+	}
+
+	public boolean isDone() {
+		return done;
 	}
 
 	public ArrayList<TaskWorkerPair> getOptimalPairs() {
-		done = false;
 		return taskWorkerPairs;
 	}
 
 	private void findOptimalPairs() {
-		if (done)
+		if (availableWorkers.size() == 0) {
 			return;
-		MultiMap<TaskType, Task> taskMap = taskDistributor.getTasks();
-		ArrayList<UnitWorker> availableWorkers = new ArrayList<>(core.getUnitManager().getAvailableWorkerUnits());
-		taskWorkerPairs = new ArrayList<>();
-
-		if (availableWorkers.size() == 0)
-			return;
+		}
 
 		for (TaskType type : taskMap.keySet()) {
 			ArrayList<UnitWorker> workersWithTaskEnabled = getWorkersWithTaskEnabled(availableWorkers, type);
@@ -44,12 +42,19 @@ public class TaskWorkerPairFinder implements Runnable {
 					int minDuration = Integer.MAX_VALUE;
 					UnitWorker bestWorker = null;
 					for (UnitWorker u : workersWithTaskEnabled) {
+						if (!task.isReachableFor(u))
+							continue;
 						int duration = u.getEstimatedDurationToDoTask(task);
-						if (duration < minDuration)
+						if (duration < minDuration) {
 							bestWorker = u;
+							minDuration = duration;
+						}
 					}
-					taskWorkerPairs.add(new TaskWorkerPair(task, bestWorker));
-					availableWorkers.remove(bestWorker);
+					if (bestWorker != null) {
+						taskWorkerPairs.add(new TaskWorkerPair(task, bestWorker));
+						availableWorkers.remove(bestWorker);
+					}
+
 				}
 			}
 		}
