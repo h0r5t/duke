@@ -6,7 +6,7 @@ public class TaskActionMine extends TaskAction {
 	private Unit unit;
 
 	public TaskActionMine(Coords3D targetToMine) {
-		super(TaskType.MINING, 1000);
+		super(TaskType.MINING, 300);
 		this.targetToMine = targetToMine;
 	}
 

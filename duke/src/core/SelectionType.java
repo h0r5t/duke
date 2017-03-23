@@ -8,7 +8,9 @@ public enum SelectionType {
 
 	TYPE_DESIGNATION,
 
-	TYPE_ZONE;
+	TYPE_ZONE,
+
+	TYPE_CLAIM;
 
 	public static Color getColorForType(SelectionType t) {
 		if (t == SelectionType.TYPE_CURSOR)
@@ -17,6 +19,8 @@ public enum SelectionType {
 			return Color.CYAN;
 		else if (t == SelectionType.TYPE_ZONE)
 			return Color.CYAN;
+		else if (t == SelectionType.TYPE_CLAIM)
+			return Color.GREEN;
 		return Color.BLACK;
 	}
 

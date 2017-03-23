@@ -50,7 +50,7 @@ public abstract class Tile extends GraphNode {
 		return ground;
 	}
 
-	public Item getDrop() {
+	public ItemDrop getDrop() {
 		return null;
 	}
 

@@ -6,6 +6,7 @@ public abstract class Item {
 
 	private int itemID;
 	private Character myChar;
+	private boolean isClaimed;
 
 	public Item(int itemID) {
 		this.itemID = itemID;
@@ -25,6 +26,14 @@ public abstract class Item {
 
 	public void destroy() {
 		Core.getWorld().removeItem(this);
+	}
+
+	public boolean isClaimed() {
+		return isClaimed;
+	}
+
+	public void setClaimed(boolean isClaimed) {
+		this.isClaimed = isClaimed;
 	}
 
 	protected void getChar() {

@@ -22,8 +22,8 @@ public class TileRock extends Tile {
 	}
 
 	@Override
-	public Item getDrop() {
-		return new ItemStone();
+	public ItemDrop getDrop() {
+		return new ItemDrop(new ItemStone(), 40);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ public class MenuMain extends Menu {
 		addItem(new MenuItem("designations", "r", new MenuDesignations(menuManager)));
 		addItem(new MenuItem("build", "b", new MenuBuild(menuManager)));
 		addItem(new MenuItem("zones", "z", new MenuZones(menuManager)));
+		addItem(new MenuItem("claim", "c", new MenuClaim(menuManager)));
 	}
 
 	@Override

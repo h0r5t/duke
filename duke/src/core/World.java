@@ -18,7 +18,7 @@ public class World extends Graph {
 		this.core = core;
 		createEdges = false;
 		tiles = new int[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT][Settings.WORLD_DEPTH];
-		itemManager = new ItemManager();
+		itemManager = new ItemManager(core);
 		projectiles = new ArrayList<>();
 		projectilesToRemove = new ArrayList<>();
 	}
@@ -138,7 +138,7 @@ public class World extends Graph {
 	}
 
 	public void wasMined(Coords3D targetToMine) {
-		Item droppedItem = targetToMine.getTile().getDrop();
+		Item droppedItem = targetToMine.getTile().getDrop().getItem();
 
 		Tile t = new TileGround(targetToMine.getX(), targetToMine.getY(), targetToMine.getZ());
 		t.setExposed(true);
@@ -146,13 +146,7 @@ public class World extends Graph {
 
 		if (droppedItem != null) {
 			addItem(droppedItem, targetToMine);
-			Stockpile stockpile = core.getLogisticsManager().getStockPileManager().getStockpileForItem(droppedItem);
-			if (stockpile != null && stockpile.getNextFreeSlot() != null) {
-				TaskHaul haulTask = new TaskHaul(droppedItem, stockpile);
-				core.getTaskDistributor().addTask(haulTask);
-			} else {
-				itemManager.addUnclaimedItem(droppedItem);
-			}
+			itemManager.claimItem(droppedItem);
 		}
 
 		core.getTaskDistributor().wasMined(targetToMine);
@@ -264,6 +258,10 @@ public class World extends Graph {
 		// addEdge(tiles[x][y][z], tiles[x][y][z - 1], 0);
 		// }
 		// }
+	}
+
+	public ItemManager getItemManager() {
+		return itemManager;
 	}
 
 	public void createInitialEdges() {

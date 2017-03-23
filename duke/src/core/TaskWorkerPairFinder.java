@@ -52,7 +52,7 @@ public class TaskWorkerPairFinder implements Runnable {
 					}
 					if (bestWorker != null) {
 						taskWorkerPairs.add(new TaskWorkerPair(task, bestWorker));
-						availableWorkers.remove(bestWorker);
+						workersWithTaskEnabled.remove(bestWorker);
 					}
 
 				}

@@ -5,26 +5,14 @@ import java.util.HashMap;
 
 public class ItemManager {
 
+	private Core core;
 	private HashMap<Coords3D, ArrayList<Item>> coordsItemsMap;
 	private HashMap<Item, Coords3D> itemsCoordsMap;
-	private ArrayList<Item> unclaimedItems;
 
-	public ItemManager() {
+	public ItemManager(Core core) {
+		this.core = core;
 		coordsItemsMap = new HashMap<>();
 		itemsCoordsMap = new HashMap<>();
-		unclaimedItems = new ArrayList<Item>();
-	}
-
-	public void addUnclaimedItem(Item i) {
-		unclaimedItems.add(i);
-	}
-
-	private ArrayList<Item> getUnclaimedItems() {
-		return (ArrayList<Item>) unclaimedItems.clone();
-	}
-
-	private void removeUnclaimedItem(Item i) {
-		unclaimedItems.remove(i);
 	}
 
 	public void addItem(Item i, Coords3D c) {
@@ -58,21 +46,27 @@ public class ItemManager {
 		return new ArrayList<Item>(itemsCoordsMap.keySet());
 	}
 
-	public void update(Core core) {
-		checkForItemsToBeHauled(core);
-	}
-
-	private void checkForItemsToBeHauled(Core core) {
-		for (Item i : getUnclaimedItems()) {
-			Stockpile p = core.getLogisticsManager().getStockPileManager().getStockpileForItem(i);
-			if (p != null) {
-				Coords3D slot = p.getNextFreeSlot();
-				if (slot != null) {
-					TaskHaul haulTask = new TaskHaul(i, p);
-					core.getTaskDistributor().addTask(haulTask);
-					removeUnclaimedItem(i);
-				}
+	public void claimAllItemsInZone(Zone2D zone) {
+		for (Coords3D c : zone.getCoords()) {
+			for (Item i : Core.getWorld().getItemsAt(c)) {
+				if (!i.isClaimed())
+					claimItem(i);
 			}
 		}
 	}
+
+	public void claimItem(Item i) {
+		Stockpile p = core.getLogisticsManager().getStockPileManager().getStockpileForItem(i);
+		if (p != null) {
+			if (!p.isFull()) {
+				i.setClaimed(true);
+				TaskHaul haulTask = new TaskHaul(i, p);
+				core.getTaskDistributor().addTask(haulTask);
+			}
+		}
+	}
+
+	public void update(Core core) {
+	}
+
 }

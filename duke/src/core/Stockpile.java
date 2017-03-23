@@ -52,6 +52,10 @@ public class Stockpile {
 		return null;
 	}
 
+	public boolean isFull() {
+		return getNextFreeSlot() == null;
+	}
+
 	public ArrayList<Item> getItemsOfType(int itemID, int amount) {
 		// TEST TEST TEST wip
 		itemIDsAmountMap.clear();

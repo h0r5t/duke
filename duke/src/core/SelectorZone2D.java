@@ -13,7 +13,7 @@ public class SelectorZone2D extends Selector {
 		super(menuManager);
 		this.menuManager = menuManager;
 		this.selectionType = selectionType;
-		menuManager.getCursor().setSelectionType(SelectionType.TYPE_DESIGNATION);
+		menuManager.getCursor().setSelectionType(selectionType);
 	}
 
 	@Override

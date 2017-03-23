@@ -12,8 +12,8 @@ public class TileTrunk extends Tile {
 	}
 
 	@Override
-	public Item getDrop() {
-		return new ItemWood();
+	public ItemDrop getDrop() {
+		return new ItemDrop(new ItemWood(), 100);
 	}
 
 }
