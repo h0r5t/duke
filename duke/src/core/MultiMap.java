@@ -33,6 +33,23 @@ public class MultiMap<K, V> extends HashMap<K, List<V>> {
 		}
 	}
 
+	public V removeAny(K key) {
+		if (hasAtLeastOneOf(key)) {
+			return (this.get(key).get(this.get(key).size() - 1));
+		}
+		return null;
+	}
+
+	public boolean hasAtLeastOneOf(K key) {
+		if (this.containsKey(key)) {
+			if (this.get(key).isEmpty()) {
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
+
 	public void print() {
 		for (Entry<K, List<V>> e : this.entrySet()) {
 			System.out.println(e.getKey() + ": ");

@@ -6,4 +6,9 @@ public abstract class Equipment extends Item {
 		super(itemID);
 	}
 
+	@Override
+	public int getVolume() {
+		return 1;
+	}
+
 }

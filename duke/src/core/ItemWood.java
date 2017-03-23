@@ -16,4 +16,9 @@ public class ItemWood extends Item {
 		return false;
 	}
 
+	@Override
+	public int getVolume() {
+		return 4;
+	}
+
 }

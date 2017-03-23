@@ -15,6 +15,8 @@ public abstract class Item {
 
 	public abstract String getName();
 
+	public abstract int getVolume();
+
 	public Coords3D getCoords3D() {
 		return Core.getWorld().getItemPos(this);
 	}

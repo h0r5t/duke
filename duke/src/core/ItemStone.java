@@ -16,4 +16,9 @@ public class ItemStone extends Item {
 		return false;
 	}
 
+	@Override
+	public int getVolume() {
+		return 2;
+	}
+
 }
