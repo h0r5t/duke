@@ -126,4 +126,9 @@ public class TaskMiningWhole extends TaskChain {
 		taskEnded(new TaskMining(c, this));
 	}
 
+	@Override
+	public void onPickUp(Unit u) {
+
+	}
+
 }

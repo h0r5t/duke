@@ -35,7 +35,18 @@ public class MultiMap<K, V> extends HashMap<K, List<V>> {
 
 	public V removeAny(K key) {
 		if (hasAtLeastOneOf(key)) {
-			return (this.get(key).get(this.get(key).size() - 1));
+			return (this.get(key).get(this.remove(key).size() - 1));
+		}
+		return null;
+	}
+
+	public ArrayList<V> removeAmount(K key, int amount) {
+		if (count(key) >= amount) {
+			ArrayList<V> list = new ArrayList<>();
+			for (int i = 0; i < amount; i++) {
+				list.add(removeAny(key));
+			}
+			return list;
 		}
 		return null;
 	}
@@ -48,6 +59,13 @@ public class MultiMap<K, V> extends HashMap<K, List<V>> {
 			return true;
 		}
 		return false;
+	}
+
+	public int count(K key) {
+		if (hasAtLeastOneOf(key)) {
+			return this.get(key).size();
+		}
+		return 0;
 	}
 
 	public void print() {

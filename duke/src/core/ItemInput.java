@@ -2,16 +2,16 @@ package core;
 
 public class ItemInput {
 
-	private int itemID;
+	private Class<? extends Item> itemClass;
 	private int amount;
 
-	public ItemInput(int itemID, int amount) {
-		this.itemID = itemID;
+	public ItemInput(Class<? extends Item> itemClass, int amount) {
+		this.itemClass = itemClass;
 		this.amount = amount;
 	}
 
-	public int getItemID() {
-		return itemID;
+	public Class<? extends Item> getItemType() {
+		return itemClass;
 	}
 
 	public int getAmount() {

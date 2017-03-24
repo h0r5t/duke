@@ -15,7 +15,7 @@ public abstract class Building extends Tile {
 		itemInput.add(input);
 	}
 
-	public ArrayList<ItemInput> getItemInput() {
+	public ArrayList<ItemInput> getItemInputs() {
 		return itemInput;
 	}
 

@@ -48,6 +48,7 @@ public class WorldGenerator {
 							Biome b = biomes[x][y][z];
 							tile = new TileRamp(x, y, z, direction);
 							world.setTile(tile);
+							tile.setGround(b.getGround());
 						}
 					}
 				}
@@ -56,19 +57,18 @@ public class WorldGenerator {
 	}
 
 	private void setEmbarkArea() {
-		int width = 4;
-		int height = 4;
+		int width = 5;
+		int height = 5;
 		int xstart = 25;
 		int ystart = 25;
-		for (int x = 0; x < width; x++) {
+		l: for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {
-					Tile tile = world.getTile(xstart + x, ystart + y, z);
-					if (isSurface(tile)) {
-						embarkArea.add(tile.getCoords3D());
-						break;
-					}
+				Tile tile = world.getTile(xstart + x, ystart + y, surfaceLevel[xstart + x][ystart + y]);
+				if (isSurface(tile) && !tile.blocksPath()) {
+					embarkArea.add(tile.getCoords3D());
 				}
+				if (embarkArea.size() >= 20)
+					break l;
 			}
 		}
 		PathFinder.setReachablePoint(embarkArea.get(0));
@@ -114,8 +114,8 @@ public class WorldGenerator {
 					if (isSurface(tile)) {
 						Biome b = biomes[x][y][z];
 						surfaceLevel[x][y] = z;
-						tile.setGround(b.getGround());
 						world.setTile(tile);
+						tile.setGround(b.getGround());
 					} else {
 						tile = new TileRock(x, y, z);
 						world.setTile(tile);
@@ -134,7 +134,6 @@ public class WorldGenerator {
 					createTree(x, y, z);
 				} else {
 					world.setTile(t);
-					t.setGround(b.getGround());
 				}
 			}
 		}

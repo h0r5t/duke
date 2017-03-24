@@ -13,6 +13,11 @@ public class TaskActionPickupItem extends TaskAction {
 	@Override
 	public void callback(int context) {
 		unit.setItemInHands(item);
+		StockpileManager stockM = Core.getLogisticsManager().getStockpileManager();
+		Stockpile s = stockM.getStockpileForPos(unit.getCoords());
+		if (s != null) {
+			s.removeItem(item);
+		}
 		setStatus(TaskStatus.DONE);
 	}
 

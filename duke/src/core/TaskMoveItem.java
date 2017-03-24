@@ -19,4 +19,9 @@ public class TaskMoveItem extends TaskChain {
 		queueTask(d1);
 	}
 
+	@Override
+	public void onPickUp(Unit u) {
+
+	}
+
 }

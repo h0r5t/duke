@@ -56,14 +56,9 @@ public class ItemManager {
 	}
 
 	public void claimItem(Item i) {
-		Stockpile p = core.getLogisticsManager().getStockPileManager().getStockpileForItem(i);
-		if (p != null) {
-			if (!p.isFull()) {
-				i.setClaimed(true);
-				TaskHaul haulTask = new TaskHaul(i, p);
-				core.getTaskDistributor().addTask(haulTask);
-			}
-		}
+		i.setClaimed(true);
+		TaskHaul haulTask = new TaskHaul(i);
+		core.getTaskDistributor().addTask(haulTask);
 	}
 
 	public void update(Core core) {

@@ -186,11 +186,11 @@ public abstract class Tile extends GraphNode {
 	}
 
 	public void draw(Graphics2D g, int posX, int posY, int darkerLevel) {
-		if (ground != null)
-			ground.draw(g, posX, posY, darkerLevel);
-
 		if (this instanceof TileAir)
 			return;
+
+		if (ground != null)
+			ground.draw(g, posX, posY, darkerLevel);
 
 		if (isExposed) {
 			TextureStore.getTileTexture(tileID, myChar).draw(g, posX, posY, darkerLevel);

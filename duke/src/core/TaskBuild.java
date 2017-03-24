@@ -9,9 +9,13 @@ public class TaskBuild extends TaskChain {
 
 		ArrayList<Item> inputItems = new ArrayList<>();
 
-		for (ItemInput input : building.getItemInput()) {
-			Stockpile s = logisticsMgr.getStockpileToGetItem(input.getItemID());
-			ArrayList<Item> items = s.getItemsOfType(input.getItemID(), input.getAmount());
+		for (ItemInput input : building.getItemInputs()) {
+			Stockpile s = logisticsMgr.getStockpileManager().getStockpileWithItem(input.getItemType());
+			ArrayList<Item> items = s.getItemsOfType(input.getItemType(), input.getAmount());
+			if (items == null) {
+				setStatus(TaskStatus.FAILED);
+				return;
+			}
 			for (Item item : items) {
 				TaskMoveItem moveItem = new TaskMoveItem(item, building.getCoords3D());
 				inputItems.add(item);
@@ -29,6 +33,11 @@ public class TaskBuild extends TaskChain {
 				}
 			}
 		}));
+	}
+
+	@Override
+	public void onPickUp(Unit u) {
+
 	}
 
 }

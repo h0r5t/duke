@@ -53,4 +53,9 @@ public class TaskMining extends TaskChain {
 		}
 	}
 
+	@Override
+	public void onPickUp(Unit u) {
+
+	}
+
 }

@@ -5,7 +5,7 @@ public class BuildingCraftingTable extends Building {
 	public BuildingCraftingTable(Coords3D coords) {
 		super(coords.getX(), coords.getY(), coords.getZ());
 
-		addItemInput(new ItemInput(GameData.getItemID("item_wood"), 3));
+		addItemInput(new ItemInput(ItemWood.class, 3));
 	}
 
 	@Override

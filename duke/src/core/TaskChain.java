@@ -2,9 +2,10 @@ package core;
 
 import java.util.ArrayList;
 
-public class TaskChain extends Task {
+public abstract class TaskChain extends Task {
 
 	protected ArrayList<Task> taskChain;
+	private boolean isPickUp = true;
 
 	public TaskChain(TaskType taskType) {
 		super(taskType);
@@ -23,6 +24,8 @@ public class TaskChain extends Task {
 
 	@Override
 	public boolean isReachableFor(Unit unit) {
+		if (taskChain.size() == 0)
+			return true;
 		return taskChain.get(0).isReachableFor(unit);
 	}
 
@@ -30,8 +33,15 @@ public class TaskChain extends Task {
 		taskChain.add(t);
 	}
 
+	public abstract void onPickUp(Unit u);
+
 	@Override
 	public void update(Unit unit) {
+		if (isPickUp) {
+			onPickUp(unit);
+			isPickUp = false;
+		}
+
 		if (taskChain.isEmpty()) {
 			setStatus(TaskStatus.DONE);
 		} else {

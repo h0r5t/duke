@@ -21,4 +21,9 @@ public class TaskChopTree extends TaskChain {
 		Core.getWorld().wasMined(targetTrunk);
 	}
 
+	@Override
+	public void onPickUp(Unit u) {
+
+	}
+
 }

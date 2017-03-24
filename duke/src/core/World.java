@@ -7,7 +7,7 @@ import pathfinder.Graph;
 public class World extends Graph {
 
 	private Core core;
-	private boolean createEdges;
+	private boolean createEdgesWhenPlacingTiles;
 	private int[][][] tiles;
 	private ItemManager itemManager;
 	private ArrayList<Projectile> projectiles;
@@ -16,7 +16,7 @@ public class World extends Graph {
 	public World(Core core) {
 		super();
 		this.core = core;
-		createEdges = false;
+		createEdgesWhenPlacingTiles = false;
 		tiles = new int[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT][Settings.WORLD_DEPTH];
 		itemManager = new ItemManager(core);
 		projectiles = new ArrayList<>();
@@ -77,13 +77,14 @@ public class World extends Graph {
 	}
 
 	public void setTile(Tile tile) {
-		if (!createEdges) {
+		if (!createEdgesWhenPlacingTiles) {
 			setTileINITIAL(tile);
 			return;
 		}
 
 		Tile previousTile = getTile(tile.getCoords3D());
 		tile.setGround(previousTile.getGround());
+		tile.setExposed(previousTile.isExposed());
 
 		// check for near fluids
 		for (int x = -1; x <= 1; x++) {
@@ -141,8 +142,8 @@ public class World extends Graph {
 		Item droppedItem = targetToMine.getTile().getDrop().getItem();
 
 		Tile t = new TileGround(targetToMine.getX(), targetToMine.getY(), targetToMine.getZ());
-		t.setExposed(true);
 		setTile(t);
+		t.setExposed(true);
 
 		if (droppedItem != null) {
 			addItem(droppedItem, targetToMine);
@@ -265,7 +266,7 @@ public class World extends Graph {
 	}
 
 	public void createInitialEdges() {
-		createEdges = true;
+		createEdgesWhenPlacingTiles = true;
 		for (int x = 0; x < Settings.WORLD_WIDTH; x++) {
 			for (int y = 0; y < Settings.WORLD_HEIGHT; y++) {
 				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {

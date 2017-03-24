@@ -5,58 +5,43 @@ import java.util.HashMap;
 
 public class StockpileManager {
 
-	private HashMap<Integer, Stockpile> tileIDStockpileMap;
+	private HashMap<Coords3D, Stockpile> tileIDStockpileMap;
 
 	public StockpileManager() {
 		tileIDStockpileMap = new HashMap<>();
 	}
 
-	public void setStockpileMarkers(boolean b) {
-		for (Stockpile s : getStockpiles()) {
-			s.setMarkers(b);
-		}
-	}
-
 	public void addStockpile(Stockpile s) {
 		for (Coords3D c : s.getZone().getCoords()) {
-			tileIDStockpileMap.put(c.getTile().id(), s);
+			tileIDStockpileMap.put(c, s);
 		}
 	}
 
 	public void removeStockpile(Stockpile s) {
-		s.setMarkers(false);
 		for (Coords3D c : s.getZone().getCoords()) {
-			tileIDStockpileMap.remove(c.getTile().id());
+			tileIDStockpileMap.remove(c);
 		}
 	}
 
 	public Stockpile getStockpileForPos(Coords3D c) {
-		return tileIDStockpileMap.get(c.getTile().id());
+		return tileIDStockpileMap.get(c);
 	}
 
 	private ArrayList<Stockpile> getStockpiles() {
 		return new ArrayList<Stockpile>(tileIDStockpileMap.values());
 	}
 
-	public Stockpile getStockpileForItem(Item item) {
+	public Stockpile getStockpileForItem(Class<? extends Item> i) {
 		for (Stockpile s : getStockpiles()) {
-			if (s.allowsItem(item) && s.getNextFreeSlot() != null)
+			if (s.getNextFreeSlot() != null)
 				return s;
 		}
 		return null;
 	}
 
-	public Stockpile getStockpileForItem(int itemID) {
+	public Stockpile getStockpileWithItem(Class<? extends Item> i) {
 		for (Stockpile s : getStockpiles()) {
-			if (s.allowsItem(itemID) && s.getNextFreeSlot() != null)
-				return s;
-		}
-		return null;
-	}
-
-	public Stockpile getStockpileWithItem(int itemID) {
-		for (Stockpile s : getStockpiles()) {
-			if (s.hasItemOfType(itemID))
+			if (s.hasItemOfType(i))
 				return s;
 		}
 

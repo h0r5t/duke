@@ -14,7 +14,7 @@ public class Core implements Runnable {
 	private TaskDistributor taskDistributor;
 	private UnitManager unitManager;
 	private MenuManager menuManager;
-	private LogisticsManager logisticsManager;
+	private static LogisticsManager logisticsManager;
 	private FluidManager fluidManager;
 
 	private static World world;
@@ -38,7 +38,7 @@ public class Core implements Runnable {
 		taskDistributor = new TaskDistributor(this);
 		unitManager = new UnitManager(this);
 		menuManager = new MenuManager(this);
-		logisticsManager = new LogisticsManager(this);
+		logisticsManager = new LogisticsManager();
 		fluidManager = new FluidManager(this);
 		inputManager = new InputManager(this);
 		new Thread(inputManager).start();
@@ -54,11 +54,11 @@ public class Core implements Runnable {
 	private void spawnUnits(ArrayList<Coords3D> embarkArea) {
 		for (int i = 0; i < 7; i++) {
 			Coords3D c = embarkArea.get(i);
+			TileLand t = new TileLand(c.getX(), c.getY(), c.getZ());
+			world.setTile(t);
+
 			UnitWorker worker = new UnitWorker(c.getX(), c.getY(), c.getZ());
 			unitManager.addUnit(worker);
-			if (i > 0)
-				worker.getInventory().addItem(new ItemWood());
-			worker.getInventory().addItem(new ItemStone());
 
 			if (i == 2) {
 				Coords3D c2 = embarkArea.get(4);
@@ -126,7 +126,7 @@ public class Core implements Runnable {
 		return menuManager;
 	}
 
-	public LogisticsManager getLogisticsManager() {
+	public static LogisticsManager getLogisticsManager() {
 		return logisticsManager;
 	}
 

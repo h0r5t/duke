@@ -14,16 +14,16 @@ public class MenuStockpiles extends Menu {
 			Zone2D zone = (Zone2D) getSelectionResult(new SelectorZone2D(menuManager, SelectionType.TYPE_ZONE));
 			if (zone == null)
 				return;
-			menuManager.getCore().getLogisticsManager().getStockPileManager().addStockpile(new Stockpile(zone));
+			menuManager.getCore().getLogisticsManager().getStockpileManager().addStockpile(new Stockpile(zone));
 			zone.reset();
 
 		} else if (i.getHotkey().equals("r")) {
 			Coords3D c = (Coords3D) getSelectionResult(new SelectorCursor(menuManager));
 			if (c == null)
 				return;
-			Stockpile sp = menuManager.getCore().getLogisticsManager().getStockPileManager().getStockpileForPos(c);
+			Stockpile sp = menuManager.getCore().getLogisticsManager().getStockpileManager().getStockpileForPos(c);
 			if (sp != null)
-				menuManager.getCore().getLogisticsManager().getStockPileManager().removeStockpile(sp);
+				menuManager.getCore().getLogisticsManager().getStockpileManager().removeStockpile(sp);
 		}
 	}
 

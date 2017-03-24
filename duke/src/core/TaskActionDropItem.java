@@ -13,6 +13,11 @@ public class TaskActionDropItem extends TaskAction {
 	@Override
 	public void callback(int context) {
 		unit.removeItemFromHands();
+		StockpileManager stockM = Core.getLogisticsManager().getStockpileManager();
+		Stockpile s = stockM.getStockpileForPos(unit.getCoords());
+		if (s != null) {
+			s.addItem(item);
+		}
 		setStatus(TaskStatus.DONE);
 	}
 
