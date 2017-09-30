@@ -14,7 +14,7 @@ public abstract class Unit {
 	private Item itemInHands;
 	private Inventory inventory;
 	private double health;
-	private UnitMovement unitMovement;
+	protected UnitMovement unitMovement;
 
 	public Unit(int id, int x, int y, int z, int moveSpeed) {
 		this.unitID = id;

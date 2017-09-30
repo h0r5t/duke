@@ -6,14 +6,14 @@ import java.awt.event.MouseEvent;
 public class InputManager implements Runnable {
 
 	private Core core;
-	private InputControllerMain mainInputController;
+	private CameraAndCursorController mainInputController;
 	private DefaultHashMap<Integer, Boolean> keysPressed;
 	private Cursor cursor;
 
 	public InputManager(Core core) {
 		this.core = core;
 		keysPressed = new DefaultHashMap<Integer, Boolean>();
-		mainInputController = new InputControllerMain(core);
+		mainInputController = new CameraAndCursorController(core);
 
 		cursor = new Cursor(core, 5, 5);
 	}
@@ -72,9 +72,8 @@ public class InputManager implements Runnable {
 		while (true) {
 			update();
 			try {
-				Thread.sleep(20);
+				Thread.sleep(40);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

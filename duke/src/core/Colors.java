@@ -6,7 +6,7 @@ public class Colors {
 
 	public static final Color COLOR_DWARF = Color.decode("#FFEAB0");
 
-	public static final Color COLOR_AIR = Color.decode("#143151");
+	public static final Color COLOR_AIR = Color.decode("#000307");
 	public static final Color COLOR_LAND = Color.decode("#008000");
 	public static final Color COLOR_WATER = Color.decode("#005c99");
 	public static final Color COLOR_WOOD = Color.decode("#3B2402");

@@ -151,11 +151,11 @@ public class GameData {
 		unitIDCharMap = new HashMap<Integer, ArrayList<Character>>();
 
 		ArrayList<Character> list = new ArrayList<Character>();
-		list.add(new Character("☺", Colors.COLOR_DWARF, 26));
+		list.add(new Character("ö", Colors.COLOR_DWARF, 22));
 		unitIDCharMap.put(0, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("g", Color.GREEN, 18));
+		list.add(new Character("G", Color.GREEN, 18));
 		unitIDCharMap.put(1, list);
 	}
 

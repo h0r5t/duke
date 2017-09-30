@@ -7,6 +7,8 @@ public class Cursor implements Visual {
 	private Core core;
 	private int xpos;
 	private int ypos;
+	private int xdelay;
+	private int ydelay;
 	private SelectionType selectionType;
 
 	public Cursor(Core core, int x, int y) {
@@ -37,6 +39,8 @@ public class Cursor implements Visual {
 	}
 
 	public void moveX(int x) {
+		if (Math.abs(x) == 1)
+			xdelay = x * Settings.TILE_SIZE;
 		xpos += x;
 		if (xpos < 0)
 			xpos = 0;
@@ -47,6 +51,8 @@ public class Cursor implements Visual {
 	}
 
 	public void moveY(int y) {
+		if (Math.abs(y) == 1)
+			ydelay = y * Settings.TILE_SIZE;
 		ypos += y;
 		if (ypos < 0)
 			ypos = 0;
@@ -58,8 +64,21 @@ public class Cursor implements Visual {
 
 	@Override
 	public void draw(Graphics2D g, int posX, int posY) {
+		int drawPosX = posX - xdelay;
+		int drawPosY = posY - ydelay;
 		g.setColor(SelectionType.getColorForType(selectionType));
-		g.drawRect(posX, posY, Settings.TILE_SIZE - 1, Settings.TILE_SIZE - 1);
+		g.drawRect(drawPosX, drawPosY, Settings.TILE_SIZE - 1, Settings.TILE_SIZE - 1);
+
+		if (xdelay > 0) {
+			xdelay -= 1;
+		} else if (xdelay < 0)
+			xdelay += 1;
+
+		if (ydelay > 0) {
+			ydelay -= 1;
+		} else if (ydelay < 0)
+			ydelay += 1;
+
 	}
 
 	public void setToTile(Tile tile) {
