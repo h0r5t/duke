@@ -7,10 +7,20 @@ public abstract class Item {
 	private int itemID;
 	private Character myChar;
 	private boolean isClaimed;
+	private boolean isVisible;
 
 	public Item(int itemID) {
 		this.itemID = itemID;
+		this.isVisible = true;
 		getChar();
+	}
+
+	public boolean isVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
 	}
 
 	public abstract String getName();

@@ -11,7 +11,7 @@ public class TaskActionPickupItem extends TaskAction {
 	}
 
 	@Override
-	public void callback(int context) {
+	public void callback(Unit unit) {
 		unit.setItemInHands(item);
 		StockpileManager stockM = Core.getLogisticsManager().getStockpileManager();
 		Stockpile s = stockM.getStockpileForPos(unit.getCoords());

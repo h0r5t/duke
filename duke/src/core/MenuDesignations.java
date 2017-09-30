@@ -58,4 +58,16 @@ public class MenuDesignations extends Menu {
 
 	}
 
+	@Override
+	public void onUpdate() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onCursorMoved(Cursor cursor) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

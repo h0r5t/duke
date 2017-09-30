@@ -16,8 +16,8 @@ public class Settings {
 	public static int CHAR_FONT_SIZE = 30;
 
 	public static int WORLD_DEPTH = 50;
-	public static int WORLD_WIDTH = 100;
-	public static int WORLD_HEIGHT = 100;
+	public static int WORLD_WIDTH = 50;
+	public static int WORLD_HEIGHT = 50;
 
 	public static int OVERWORLD_DEPTH = 40;
 	public static int CAMERA_START_Z = 1;

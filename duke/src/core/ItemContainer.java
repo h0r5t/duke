@@ -2,7 +2,7 @@ package core;
 
 public abstract class ItemContainer extends Item {
 
-	private MultiMap<Class<? extends Item>, Item> containedItems;
+	private MultiMap<Integer, Item> containedItems;
 	private int containedVolume;
 
 	public ItemContainer(int itemID) {
@@ -11,15 +11,31 @@ public abstract class ItemContainer extends Item {
 		this.containedVolume = 0;
 	}
 
-	public boolean addItem(Item i) {
+	public void reserveSpaceFor(Item item) {
+		this.containedVolume += item.getVolume();
+	}
+
+	public boolean canAddItem(Item i) {
 		if (containedVolume + i.getVolume() > getMaxContainerVolume())
 			return false;
-		this.containedItems.putOne(i.getClass(), i);
+		if (i instanceof ItemContainer)
+			return false;
+		return true;
+	}
+
+	public boolean addItem(Item i) {
+		if (!canAddItem(i))
+			return false;
+		this.containedItems.putOne(i.getItemID(), i);
 		containedVolume += i.getVolume();
 		return true;
 	}
 
-	public boolean hasItemOfType(Class<? extends Item> i) {
+	public boolean hasItemOfType(Item i) {
+		return containedItems.hasAtLeastOneOf(i.getItemID());
+	}
+
+	public boolean hasItemOfType(Integer i) {
 		return containedItems.hasAtLeastOneOf(i);
 	}
 
@@ -27,7 +43,7 @@ public abstract class ItemContainer extends Item {
 		return containedVolume == 0;
 	}
 
-	public Item removeItemOfType(Class<? extends Item> i) {
+	public Item removeItemOfType(Integer i) {
 		Item returnItem = containedItems.removeAny(i);
 		if (returnItem != null)
 			containedVolume -= returnItem.getVolume();
@@ -35,5 +51,9 @@ public abstract class ItemContainer extends Item {
 	}
 
 	public abstract int getMaxContainerVolume();
+
+	public MultiMap<Integer, Item> getContainedItems() {
+		return containedItems;
+	}
 
 }

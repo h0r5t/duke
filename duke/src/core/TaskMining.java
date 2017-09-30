@@ -9,7 +9,7 @@ public class TaskMining extends TaskChain {
 		super(TaskType.MINING);
 		this.miningTarget = targetToMine;
 		this.myTaskWhole = taskMiningWhole;
-		TaskMove moveTask = new TaskMove(getPossibleTargets(targetToMine));
+		TaskMove moveTask = new TaskMove(getReachableSurroundingTiles(targetToMine));
 		queueTask(moveTask);
 
 		TaskActionMine miningTask = new TaskActionMine(targetToMine);

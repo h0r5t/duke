@@ -139,19 +139,21 @@ public class ViewManager {
 					ArrayList<Unit> units = w.getUnitsAt(tile.getCoords3D());
 					ArrayList<Item> items = w.getItemsAt(tile.getCoords3D());
 					for (Item i : items) {
-						int moveDeltaX = 0;
-						int moveDeltaY = 0;
-						if (units != null) {
-							for (Unit u : units) {
-								if (u.getItemInHands() == i) {
-									moveDeltaX = u.getCurrentMovementDeltas()[0];
-									moveDeltaY = u.getCurrentMovementDeltas()[1];
+						if (i.isVisible()) {
+							int moveDeltaX = 0;
+							int moveDeltaY = 0;
+							if (units != null) {
+								for (Unit u : units) {
+									if (u.getItemInHands() == i) {
+										moveDeltaX = u.getCurrentMovementDeltas()[0];
+										moveDeltaY = u.getCurrentMovementDeltas()[1];
+									}
 								}
 							}
-						}
 
-						i.draw(g, (x - xstart) * tileSize - xrest + moveDeltaX,
-								(y - ystart) * tileSize - yrest + moveDeltaY, 0);
+							i.draw(g, (x - xstart) * tileSize - xrest + moveDeltaX,
+									(y - ystart) * tileSize - yrest + moveDeltaY, 0);
+						}
 
 					}
 					if (units != null) {
@@ -173,19 +175,21 @@ public class ViewManager {
 							ArrayList<Unit> units = w.getUnitsAt(tile2.getCoords3D());
 							ArrayList<Item> items = w.getItemsAt(tile2.getCoords3D());
 							for (Item item : items) {
-								int moveDeltaX = 0;
-								int moveDeltaY = 0;
-								if (units != null) {
-									for (Unit u : units) {
-										if (u.getItemInHands() == item) {
-											moveDeltaX = u.getCurrentMovementDeltas()[0];
-											moveDeltaY = u.getCurrentMovementDeltas()[1];
+								if (item.isVisible()) {
+									int moveDeltaX = 0;
+									int moveDeltaY = 0;
+									if (units != null) {
+										for (Unit u : units) {
+											if (u.getItemInHands() == item) {
+												moveDeltaX = u.getCurrentMovementDeltas()[0];
+												moveDeltaY = u.getCurrentMovementDeltas()[1];
+											}
 										}
 									}
-								}
 
-								item.draw(g, (x - xstart) * tileSize - xrest + moveDeltaX,
-										(y - ystart) * tileSize - yrest + moveDeltaY, i + 1);
+									item.draw(g, (x - xstart) * tileSize - xrest + moveDeltaX,
+											(y - ystart) * tileSize - yrest + moveDeltaY, i + 1);
+								}
 
 							}
 							if (units != null) {

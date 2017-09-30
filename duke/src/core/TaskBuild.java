@@ -23,16 +23,16 @@ public class TaskBuild extends TaskChain {
 			}
 		}
 
-		queueTask(new TaskActionBusy(3000, new SimpleCallback() {
+		queueTask(new TaskActionCustom(TaskType.BUSY, 3000) {
 
 			@Override
-			public void callback() {
+			public void callback(Unit unit) {
 				building.wasBuilt();
 				for (Item i : inputItems) {
 					i.destroy();
 				}
 			}
-		}));
+		});
 	}
 
 	@Override

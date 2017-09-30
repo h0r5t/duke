@@ -29,7 +29,7 @@ public class TaskActionMine extends TaskAction {
 	}
 
 	@Override
-	public void callback(int context) {
+	public void callback(Unit unit) {
 		Core.getWorld().wasMined(targetToMine);
 		setStatus(TaskStatus.DONE);
 	}

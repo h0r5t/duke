@@ -9,6 +9,7 @@ public class MenuMain extends Menu {
 		addItem(new MenuItem("zones", "z", new MenuZones(menuManager)));
 		addItem(new MenuItem("claim", "c", new MenuClaim(menuManager)));
 		addItem(new MenuItem("test", "t", new MenuTest(menuManager)));
+		addItem(new MenuItem("inspect", "k", new MenuInspect(menuManager)));
 	}
 
 	@Override
@@ -23,6 +24,18 @@ public class MenuMain extends Menu {
 
 	@Override
 	protected void itemWasClicked(MenuItem i) {
+	}
+
+	@Override
+	public void onUpdate() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onCursorMoved(Cursor cursor) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -22,10 +22,10 @@ public abstract class TaskAction extends Task implements Callbackable {
 		}
 
 		if (callbackCalled) {
-			callback(callbackContext);
+			callback(unit);
 			callbackCalled = false;
+			setStatus(TaskStatus.DONE);
 		}
-
 	}
 
 	@Override

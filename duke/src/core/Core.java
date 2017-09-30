@@ -37,10 +37,10 @@ public class Core implements Runnable {
 		viewManager = new ViewManager(this);
 		taskDistributor = new TaskDistributor(this);
 		unitManager = new UnitManager(this);
+		inputManager = new InputManager(this);
 		menuManager = new MenuManager(this);
 		logisticsManager = new LogisticsManager();
 		fluidManager = new FluidManager(this);
-		inputManager = new InputManager(this);
 		new Thread(inputManager).start();
 	}
 
@@ -59,12 +59,16 @@ public class Core implements Runnable {
 
 			UnitWorker worker = new UnitWorker(c.getX(), c.getY(), c.getZ());
 			unitManager.addUnit(worker);
+		}
 
-			if (i == 2) {
-				Coords3D c2 = embarkArea.get(4);
-				MobGoblin goblin = new MobGoblin(c2.getX(), c2.getY(), c2.getZ());
-				unitManager.addUnit(goblin);
-			}
+		for (int i = 10; i < 13; i++) {
+			Coords3D c = embarkArea.get(i);
+			TileLand t = new TileLand(c.getX(), c.getY(), c.getZ());
+			world.setTile(t);
+
+			ItemContainerBarrel barrel = new ItemContainerBarrel();
+			Core.getWorld().addItem(barrel, c);
+			logisticsManager.addItemContainer(barrel);
 		}
 	}
 

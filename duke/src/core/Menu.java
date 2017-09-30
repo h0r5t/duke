@@ -16,12 +16,14 @@ public abstract class Menu extends InputAdapter implements Runnable {
 	private MenuMainPane mainPane;
 	private ArrayList<MenuItem> footerItems;
 	private Font footerFont = new Font("Arial", Font.PLAIN, 18);
+	private Coords3D previousCursorPosition;
 
 	public Menu(MenuManager menuManager) {
 		this.menuManager = menuManager;
 		this.mainItems = new ArrayList<>();
 		this.footerItems = new ArrayList<>();
 		mainPane = new MenuMainPane(this);
+		previousCursorPosition = menuManager.getCursor().getCoords3D();
 	}
 
 	public Selector getCurrentSelector() {
@@ -92,7 +94,17 @@ public abstract class Menu extends InputAdapter implements Runnable {
 		if (currentSelector != null) {
 			currentSelector.update();
 		}
+		Coords3D cursorPos = menuManager.getCursor().getCoords3D();
+		if (!cursorPos.equals(previousCursorPosition)) {
+			onCursorMoved(menuManager.getCursor());
+			previousCursorPosition = cursorPos;
+		}
+		onUpdate();
 	}
+
+	public abstract void onUpdate();
+
+	public abstract void onCursorMoved(Cursor cursor);
 
 	@Override
 	public void keysPressed(DefaultHashMap<Integer, Boolean> keysPressed) {

@@ -40,8 +40,10 @@ public abstract class Unit {
 		this.itemInHands = itemInHands;
 	}
 
-	public void removeItemFromHands() {
+	public Item removeItemFromHands() {
+		Item itemCopy = itemInHands;
 		this.itemInHands = null;
+		return itemCopy;
 	}
 
 	public Inventory getInventory() {
@@ -64,6 +66,7 @@ public abstract class Unit {
 		}
 
 		if (this.health <= 0) {
+			onDeath();
 			Core.getWorld().removeUnit(this);
 		}
 		unitMovement.updatePositionDeltas();

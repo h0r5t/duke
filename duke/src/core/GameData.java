@@ -151,11 +151,11 @@ public class GameData {
 		unitIDCharMap = new HashMap<Integer, ArrayList<Character>>();
 
 		ArrayList<Character> list = new ArrayList<Character>();
-		list.add(new Character("ö", Colors.COLOR_DWARF, 22));
+		list.add(new Character("☺", Colors.COLOR_DWARF, 20));
 		unitIDCharMap.put(0, list);
 
 		list = new ArrayList<Character>();
-		list.add(new Character("G", Color.GREEN, 18));
+		list.add(new Character("g", Color.GREEN, 16));
 		unitIDCharMap.put(1, list);
 	}
 
@@ -164,6 +164,7 @@ public class GameData {
 		itemIDs.put("item_stone", 0);
 		itemIDs.put("item_wood", 1);
 		itemIDs.put("item_bow", 2);
+		itemIDs.put("item_barrel", 3);
 
 		itemIDCharMap = new HashMap<Integer, ArrayList<Character>>();
 
@@ -178,6 +179,10 @@ public class GameData {
 		list = new ArrayList<Character>();
 		list.add(new Character(")", Colors.COLOR_ITEM_WOOD, 26));
 		itemIDCharMap.put(2, list);
+
+		list = new ArrayList<Character>();
+		list.add(new Character("Θ", Colors.COLOR_ITEM_WOOD, 20));
+		itemIDCharMap.put(3, list);
 	}
 
 	public static Integer getTileID(String s) {
