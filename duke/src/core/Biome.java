@@ -43,7 +43,7 @@ public abstract class Biome {
 	}
 
 	public Ground getGround() {
-		return new GroundBlack();
+		return new GroundAir();
 	}
 
 	public String getDefaultSurfaceTile() {

@@ -23,24 +23,22 @@ public class MenuInspect extends Menu {
 
 	@Override
 	public void onUpdate() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onCursorMoved(Cursor cursor) {
-		// TEST TEST TEST
 		getMenuItems().clear();
-		Coords3D location = cursor.getCoords3D();
+		Coords3D location = menuManager.getCursor().getCoords3D();
 
 		for (Item i : Core.getWorld().getItemsAt(location)) {
 			if (i instanceof ItemContainerBarrel) {
 				MultiMap<Integer, Item> map = ((ItemContainerBarrel) i).getContainedItems();
 				for (Integer id : map.keySet()) {
-					addItem(new MenuItem(id + "", map.get(id) + ""));
+					addItem(new MenuItem(id + "", map.get(id).size() + ""));
 				}
 			}
 		}
+	}
+
+	@Override
+	public void onCursorMoved(Cursor cursor) {
+
 	}
 
 }

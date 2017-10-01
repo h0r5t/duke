@@ -17,6 +17,7 @@ public class ViewManager {
 		this.core = core;
 		this.sky = new Sky();
 		this.darkerLevelsMap = new HashMap<>();
+
 	}
 
 	public void moveZ(int delta) {
@@ -75,6 +76,9 @@ public class ViewManager {
 				// draw tiles
 				Tile tile = w.getTile(x, y, z);
 				if (tile != null && !(tile instanceof TileAir)) {
+					if (tile.getGround() instanceof GroundAir) {
+						new GroundGrass().draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, 0);
+					}
 					tile.draw(g, (x - xstart) * tileSize - xrest, (y - ystart) * tileSize - yrest, 0);
 				}
 

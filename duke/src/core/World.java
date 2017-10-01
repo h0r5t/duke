@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import pathfinder.Graph;
 
@@ -146,11 +147,44 @@ public class World extends Graph {
 		t.setExposed(true);
 
 		if (droppedItem != null) {
-			addItem(droppedItem, targetToMine);
+			addItem(droppedItem, getRandomSurroundingLocation(targetToMine));
 			itemManager.claimItem(droppedItem);
 		}
 
 		core.getTaskDistributor().wasMined(targetToMine);
+	}
+
+	private Coords3D getRandomSurroundingLocation(Coords3D target) {
+		Random random = new Random();
+		int r = random.nextInt(2);
+		if (r == 0)
+			return target;
+
+		ArrayList<Coords3D> list = getReachableSurroundingTiles(target);
+		r = new Random().nextInt(list.size());
+		return list.get(r);
+	}
+
+	public ArrayList<Coords3D> getReachableSurroundingTiles(Coords3D target) {
+		int x = target.getX();
+		int y = target.getY();
+
+		ArrayList<Coords3D> possibleTargets = new ArrayList<Coords3D>();
+		Tile t1 = Core.getWorld().getTile(x + 1, y, target.getZ());
+		Tile t2 = Core.getWorld().getTile(x - 1, y, target.getZ());
+		Tile t3 = Core.getWorld().getTile(x, y + 1, target.getZ());
+		Tile t4 = Core.getWorld().getTile(x, y - 1, target.getZ());
+
+		if (!t1.blocksPath())
+			possibleTargets.add(t1.getCoords3D());
+		if (!t2.blocksPath())
+			possibleTargets.add(t2.getCoords3D());
+		if (!t3.blocksPath())
+			possibleTargets.add(t3.getCoords3D());
+		if (!t4.blocksPath())
+			possibleTargets.add(t4.getCoords3D());
+
+		return possibleTargets;
 	}
 
 	public Tile getTile(int x, int y, int z) {

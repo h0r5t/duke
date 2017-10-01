@@ -2,7 +2,7 @@ package core;
 
 public class TileLadderDown extends Tile {
 	public TileLadderDown(int x, int y, int z) {
-		super(x, y, z);
+		super(GameData.getTileID("tile_ladder_down"), x, y, z);
 	}
 
 	@Override

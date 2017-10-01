@@ -23,6 +23,7 @@ public class GamePanel extends JPanel {
 	public GamePanel(InputManager inputManager, ViewManager viewMgr) {
 		this.inputManager = inputManager;
 		this.viewManager = viewMgr;
+		setFocusTraversalKeysEnabled(false);
 		addKeyListener(new KL());
 		addMouseMotionListener(new MML());
 		addMouseListener(new ML());
@@ -31,8 +32,7 @@ public class GamePanel extends JPanel {
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		viewManager.draw(g2);
 	}
 

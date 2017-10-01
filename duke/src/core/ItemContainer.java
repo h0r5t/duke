@@ -1,17 +1,22 @@
 package core;
 
+import java.util.ArrayList;
+
 public abstract class ItemContainer extends Item {
 
 	private MultiMap<Integer, Item> containedItems;
+	private ArrayList<Item> reservedFor;
 	private int containedVolume;
 
 	public ItemContainer(int itemID) {
 		super(itemID);
 		this.containedItems = new MultiMap<>();
 		this.containedVolume = 0;
+		this.reservedFor = new ArrayList<>();
 	}
 
 	public void reserveSpaceFor(Item item) {
+		this.reservedFor.add(item);
 		this.containedVolume += item.getVolume();
 	}
 
@@ -24,6 +29,10 @@ public abstract class ItemContainer extends Item {
 	}
 
 	public boolean addItem(Item i) {
+		if (reservedFor.contains(i)) {
+			reservedFor.remove(i);
+			containedVolume -= i.getVolume();
+		}
 		if (!canAddItem(i))
 			return false;
 		this.containedItems.putOne(i.getItemID(), i);

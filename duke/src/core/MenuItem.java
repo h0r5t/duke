@@ -9,6 +9,10 @@ public class MenuItem {
 	private String hotkey;
 	private Menu link;
 
+	public MenuItem(String text) {
+		this.text = text;
+	}
+
 	public MenuItem(String text, String hotkey) {
 		this.text = text;
 		this.hotkey = hotkey;
@@ -41,10 +45,15 @@ public class MenuItem {
 	}
 
 	public void draw(Graphics2D g, int x, int y) {
-		g.setColor(Color.GREEN);
-		g.drawString(hotkey.toLowerCase() + ":", x, y);
-		g.setColor(Color.WHITE);
-		g.drawString(text, x + 30, y);
+		if (hotkey != null) {
+			g.setColor(Color.GREEN);
+			g.drawString(hotkey.toLowerCase() + ":", x, y);
+			g.setColor(Color.WHITE);
+			g.drawString(text, x + 30, y);
+		} else {
+			g.setColor(Color.WHITE);
+			g.drawString(text, x, y);
+		}
 	}
 
 }

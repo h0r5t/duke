@@ -18,9 +18,9 @@ public abstract class Tile extends GraphNode {
 	private Fluid fluid;
 	private int darknessTextureID;
 
-	public Tile(int x, int y, int z) {
+	public Tile(int tileID, int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
-		this.tileID = GameData.getTileID(getClass().getName().replace("core.", ""));
+		this.tileID = tileID;
 		this.selections = new ArrayList<Zone2D>();
 		this.projectiles = new ArrayList<Projectile>();
 		this.fluid = null;
@@ -39,7 +39,7 @@ public abstract class Tile extends GraphNode {
 	}
 
 	public Ground getDefaultGround() {
-		return new GroundBlack();
+		return new GroundAir();
 	}
 
 	public void setGround(Ground ground) {
@@ -170,6 +170,15 @@ public abstract class Tile extends GraphNode {
 			if (darkerLevel == 0 || darkerLevel == Settings.DRAW_DARKER_LEVELS_AMOUNT - 1)
 				strokeNum = 1;
 
+			// dont draw borders if they are on every side, e.g. tree trunks
+
+			if (getCoords3D().getLeft().getTile() instanceof TileAir
+					&& getCoords3D().getRight().getTile() instanceof TileAir
+					&& getCoords3D().getTop().getTile() instanceof TileAir
+					&& getCoords3D().getBottom().getTile() instanceof TileAir) {
+				return;
+			}
+
 			if (getCoords3D().getLeft().getTile() instanceof TileAir) {
 				TextureStore.getBorderTexture(Direction.LEFT, strokeNum).draw(g, posX, posY, 0);
 			}
@@ -189,8 +198,18 @@ public abstract class Tile extends GraphNode {
 		if (this instanceof TileAir)
 			return;
 
-		if (ground != null)
-			ground.draw(g, posX, posY, darkerLevel);
+		if (ground != null) {
+			if (ground instanceof GroundAir) {
+				for (int i = 1; i < Settings.DRAW_DARKER_LEVELS_AMOUNT - darkerLevel; i++) {
+					Tile tileBelow = Core.getWorld().getTile((int) super.x(), (int) super.y(), (int) super.z() + i);
+					if (!(tileBelow.getGround() instanceof GroundAir)) {
+						tileBelow.getGround().draw(g, posX, posY, darkerLevel + i);
+						break;
+					}
+				}
+			} else
+				ground.draw(g, posX, posY, darkerLevel);
+		}
 
 		if (isExposed) {
 			TextureStore.getTileTexture(tileID, myChar).draw(g, posX, posY, darkerLevel);

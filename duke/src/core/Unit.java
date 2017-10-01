@@ -25,7 +25,6 @@ public abstract class Unit {
 		this.moveCooldown = 50 - moveSpeed;
 		this.inventory = new Inventory();
 		this.unitMovement = new UnitMovement(this);
-		getChar();
 	}
 
 	public void damage(int damage) {
@@ -76,10 +75,6 @@ public abstract class Unit {
 	public abstract void onDeath();
 
 	public abstract void update();
-
-	protected void getChar() {
-		myChar = GameData.getRandomUnitCharacter(unitID);
-	}
 
 	public int getUnitID() {
 		return unitID;
@@ -146,7 +141,7 @@ public abstract class Unit {
 		posX += movementDeltas[0];
 		posY += movementDeltas[1];
 
-		TextureStore.getUnitTexture(unitID, myChar).draw(g, posX, posY, darkerLevel);
+		TextureStore.getUnitTexture(unitID).draw(g, posX, posY, darkerLevel);
 
 		// draw health bar
 		// g.setColor(Color.GREEN);

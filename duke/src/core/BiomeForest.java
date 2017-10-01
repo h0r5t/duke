@@ -4,9 +4,9 @@ public class BiomeForest extends Biome {
 
 	public BiomeForest(WorldGenerator wGen) {
 		super(wGen);
-		addProbability("TileTrunk", 1); // will get expanded to full tree later
-		addProbability("TileBush", 10);
-		addProbability("TileStone", 5);
+		addProbability("TileTrunkOnGround", 1); // will get expanded to full tree later
+		addProbability("TileBush", 3);
+		addProbability("TileStone", 2);
 		addProbability("TileMushroom", 1);
 	}
 

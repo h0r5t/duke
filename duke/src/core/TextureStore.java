@@ -1,16 +1,17 @@
 package core;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 public class TextureStore {
 
-	private static HashMap<Integer, ArrayList<TextureCharacter>> tileTextures;
+	private static HashMap<Integer, TextureImage> unitTextures;
+	private static HashMap<Integer, ArrayList<Texture>> tileTextures;
 	private static HashMap<Integer, TextureFill> groundTextures;
-	private static HashMap<Integer, ArrayList<TextureCharacter>> unitTextures;
-	private static HashMap<Integer, ArrayList<TextureCharacter>> itemTextures;
+	private static HashMap<Integer, TextureImage> itemTextures;
 	private static HashMap<Direction, TextureBorder[]> borderTextures;
 	private static TextureFill darknessBackgroundTexture;
 	private static TextureCharacter[] darknessTextures;
@@ -58,41 +59,43 @@ public class TextureStore {
 	}
 
 	private static void loadTileTextures() {
-		for (int id : GameData.getTileIDs().values()) {
-			ArrayList<TextureCharacter> list = new ArrayList<>();
+		for (String nameID : GameData.getTileIDs().keySet()) {
+			int numID = GameData.getTileIDs().get(nameID);
 
-			ArrayList<Character> chars = GameData.getAllTileCharacters(id);
-			for (Character c : chars) {
-				TextureCharacter t = new TextureCharacter(c);
-				list.add(t);
+			ArrayList<Texture> list = new ArrayList<>();
+
+			BufferedImage tileTexture = FileSystem.loadImage(FileSystem.TEXTURES_TILES_DIR, nameID);
+			if (tileTexture != null) {
+				TextureImage tex = new TextureImage(tileTexture);
+				list.add(tex);
+				tileTextures.put(numID, list);
 			}
-			tileTextures.put(id, list);
+
+			else {
+				ArrayList<Character> chars = GameData.getAllTileCharacters(numID);
+				for (Character c : chars) {
+					TextureCharacter t = new TextureCharacter(c);
+					list.add(t);
+				}
+				tileTextures.put(numID, list);
+			}
+
 		}
 	}
 
 	private static void loadUnitTextures() {
-		for (int id : GameData.getUnitIDs().values()) {
-			ArrayList<TextureCharacter> list = new ArrayList<>();
-
-			ArrayList<Character> chars = GameData.getAllUnitCharacters(id);
-			for (Character c : chars) {
-				TextureCharacter t = new TextureCharacter(c);
-				list.add(t);
-			}
-			unitTextures.put(id, list);
+		for (String unitID : GameData.getUnitIDs().keySet()) {
+			int numID = GameData.getUnitIDs().get(unitID);
+			BufferedImage img = FileSystem.loadImage(FileSystem.TEXTURES_UNITS_DIR, unitID);
+			unitTextures.put(numID, new TextureImage(img));
 		}
 	}
 
 	private static void loadItemTextures() {
-		for (int id : GameData.getItemIDs().values()) {
-			ArrayList<TextureCharacter> list = new ArrayList<>();
-
-			ArrayList<Character> chars = GameData.getAllItemCharacters(id);
-			for (Character c : chars) {
-				TextureCharacter t = new TextureCharacter(c);
-				list.add(t);
-			}
-			itemTextures.put(id, list);
+		for (String itemID : GameData.getItemIDs().keySet()) {
+			int numID = GameData.getItemIDs().get(itemID);
+			BufferedImage img = FileSystem.loadImage(FileSystem.TEXTURES_ITEMS_DIR, itemID);
+			itemTextures.put(numID, new TextureImage(img));
 		}
 	}
 
@@ -103,10 +106,13 @@ public class TextureStore {
 		}
 	}
 
-	public static TextureCharacter getTileTexture(int tileID, Character c) {
-		for (TextureCharacter t : tileTextures.get(tileID)) {
-			if (t.getCharacter().getChar() == c.getChar()) {
+	public static Texture getTileTexture(int tileID, Character c) {
+		for (Texture t : tileTextures.get(tileID)) {
+			if (t instanceof TextureImage)
 				return t;
+			TextureCharacter tc = (TextureCharacter) t;
+			if (tc.getCharacter().getChar() == c.getChar()) {
+				return tc;
 			}
 		}
 
@@ -117,24 +123,12 @@ public class TextureStore {
 		return groundTextures.get(groundID);
 	}
 
-	public static TextureCharacter getUnitTexture(int unitID, Character c) {
-		for (TextureCharacter t : unitTextures.get(unitID)) {
-			if (t.getCharacter().getChar() == c.getChar()) {
-				return t;
-			}
-		}
-
-		return null;
+	public static TextureImage getUnitTexture(int unitID) {
+		return unitTextures.get(unitID);
 	}
 
-	public static TextureCharacter getItemTexture(int itemID, Character c) {
-		for (TextureCharacter t : itemTextures.get(itemID)) {
-			if (t.getCharacter().getChar() == c.getChar()) {
-				return t;
-			}
-		}
-
-		return null;
+	public static TextureImage getItemTexture(int itemID) {
+		return itemTextures.get(itemID);
 	}
 
 	public static TextureBorder getBorderTexture(Direction location, int strokeNum) {

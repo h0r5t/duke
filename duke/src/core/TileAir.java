@@ -3,7 +3,7 @@ package core;
 public class TileAir extends Tile {
 
 	public TileAir(int x, int y, int z) {
-		super(x, y, z);
+		super(GameData.getTileID("tile_air"), x, y, z);
 	}
 
 	@Override

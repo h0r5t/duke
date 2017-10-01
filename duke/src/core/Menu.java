@@ -128,7 +128,8 @@ public abstract class Menu extends InputAdapter implements Runnable {
 				}
 			}
 
-			else if (e.getKeyCode() == KeyEvent.VK_ESCAPE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+			else if (e.getKeyCode() == KeyEvent.VK_ESCAPE || e.getKeyCode() == KeyEvent.VK_BACK_SPACE
+					|| e.getKeyCode() == KeyEvent.VK_TAB) {
 				menuManager.goToLastMenu();
 			}
 

@@ -8,6 +8,7 @@ public class TextureFill extends Texture {
 
 	public TextureFill(Color color) {
 		images = new BufferedImage[Settings.DRAW_DARKER_LEVELS_AMOUNT];
+
 		for (int i = 0; i < images.length; i++) {
 			BufferedImage img = new BufferedImage(Settings.TILE_SIZE, Settings.TILE_SIZE, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = (Graphics2D) img.getGraphics();

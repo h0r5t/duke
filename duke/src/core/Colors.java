@@ -6,7 +6,7 @@ public class Colors {
 
 	public static final Color COLOR_DWARF = Color.decode("#FFEAB0");
 
-	public static final Color COLOR_AIR = Color.decode("#000307");
+	public static final Color COLOR_AIR = new Color(0, 0, 255, 0);
 	public static final Color COLOR_LAND = Color.decode("#008000");
 	public static final Color COLOR_WATER = Color.decode("#005c99");
 	public static final Color COLOR_WOOD = Color.decode("#3B2402");
@@ -17,6 +17,7 @@ public class Colors {
 	public static final Color COLOR_ITEM_WOOD = Color.decode("#472206");
 	public static final Color COLOR_TRUNK = Color.decode("#5E3E0B");
 	public static final Color COLOR_LEAVES = Color.decode("#1D4F11");
+	public static final Color COLOR_NONE = new Color(0, 0, 0, 0);
 
 	public static final Color COLOR_GROUND_STOCKPILE = Color.decode("#4d2600");
 	public static final Color COLOR_GROUND_GRASS = Color.decode("#001a00");

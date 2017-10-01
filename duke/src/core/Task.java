@@ -23,6 +23,10 @@ public abstract class Task {
 		return myType;
 	}
 
+	protected ArrayList<Coords3D> getReachableSurroundingTiles(Coords3D coords3d) {
+		return Core.getWorld().getReachableSurroundingTiles(coords3d);
+	}
+
 	public abstract boolean isReachableFor(Unit unit);
 
 	public TaskStatus getStatus() {
@@ -37,23 +41,6 @@ public abstract class Task {
 
 	public int getTaskID() {
 		return taskID;
-	}
-
-	protected ArrayList<Coords3D> getReachableSurroundingTiles(Coords3D target) {
-		int x = target.getX();
-		int y = target.getY();
-
-		ArrayList<Coords3D> possibleTargets = new ArrayList<Coords3D>();
-		Tile t1 = Core.getWorld().getTile(x + 1, y, target.getZ());
-		Tile t2 = Core.getWorld().getTile(x - 1, y, target.getZ());
-		Tile t3 = Core.getWorld().getTile(x, y + 1, target.getZ());
-		Tile t4 = Core.getWorld().getTile(x, y - 1, target.getZ());
-		possibleTargets.add(t1.getCoords3D());
-		possibleTargets.add(t2.getCoords3D());
-		possibleTargets.add(t3.getCoords3D());
-		possibleTargets.add(t4.getCoords3D());
-
-		return possibleTargets;
 	}
 
 }

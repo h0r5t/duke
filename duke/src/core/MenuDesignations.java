@@ -29,7 +29,7 @@ public class MenuDesignations extends Menu {
 			Coords3D c = (Coords3D) getSelectionResult(new SelectorCursor(menuManager));
 			if (c == null)
 				return;
-			if (c.getTile() instanceof TileTrunk) {
+			if (c.getTile() instanceof TileTrunk || c.getTile() instanceof TileTrunkOnGround) {
 				TaskChopTree t = new TaskChopTree(c);
 				menuManager.getCore().getTaskDistributor().addTask(t);
 			}

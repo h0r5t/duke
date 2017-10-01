@@ -30,14 +30,15 @@ public class TaskHaul extends TaskChain {
 		// if no container, put on a stockpile
 		else {
 			Stockpile p = Core.getLogisticsManager().getStockpileManager().getStockpileForItem(itemToHaul.getClass());
-			bringToStockpile(p);
+			if (p != null && !p.isFull())
+				bringToStockpile(p);
 
 			// no space anywhere, item cannot be hauled
-			if (p == null || p.isFull()) {
+			else {
 				itemToHaul.setClaimed(false);
 				setStatus(TaskStatus.DONE);
-				return;
 			}
+
 		}
 
 	}

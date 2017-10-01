@@ -12,7 +12,6 @@ public abstract class Item {
 	public Item(int itemID) {
 		this.itemID = itemID;
 		this.isVisible = true;
-		getChar();
 	}
 
 	public boolean isVisible() {
@@ -48,10 +47,6 @@ public abstract class Item {
 		this.isClaimed = isClaimed;
 	}
 
-	protected void getChar() {
-		myChar = GameData.getRandomItemCharacter(getItemID());
-	}
-
 	public abstract boolean blocksPath();
 
 	public int getItemID() {
@@ -59,7 +54,7 @@ public abstract class Item {
 	}
 
 	public void draw(Graphics2D g, int posX, int posY, int darkerLevel) {
-		TextureStore.getItemTexture(itemID, myChar).draw(g, posX, posY, darkerLevel);
+		TextureStore.getItemTexture(itemID).draw(g, posX, posY, darkerLevel);
 	}
 
 }
