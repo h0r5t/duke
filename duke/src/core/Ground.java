@@ -10,8 +10,8 @@ public abstract class Ground {
 		this.groundID = groundID;
 	}
 
-	public void draw(Graphics2D g, int x, int y, int darkerLevel) {
-		TextureStore.getGroundTexture(groundID).draw(g, x, y, darkerLevel);
+	public void draw(Graphics2D g, int x, int y) {
+		TextureStore.getGroundTexture(groundID).draw(g, x, y);
 	}
 
 }

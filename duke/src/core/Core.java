@@ -52,9 +52,9 @@ public class Core implements Runnable {
 	}
 
 	private void spawnUnits(ArrayList<Coords3D> embarkArea) {
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 1; i++) {
 			Coords3D c = embarkArea.get(i);
-			TileLand t = new TileLand(c.getX(), c.getY(), c.getZ());
+			TileGrass t = new TileGrass(c.getX(), c.getY(), c.getZ());
 			world.setTile(t);
 
 			UnitWorker worker = new UnitWorker(c.getX(), c.getY(), c.getZ());
@@ -63,7 +63,7 @@ public class Core implements Runnable {
 
 		for (int i = 10; i < 13; i++) {
 			Coords3D c = embarkArea.get(i);
-			TileLand t = new TileLand(c.getX(), c.getY(), c.getZ());
+			TileGrass t = new TileGrass(c.getX(), c.getY(), c.getZ());
 			world.setTile(t);
 
 			ItemContainerBarrel barrel = new ItemContainerBarrel();
@@ -86,20 +86,12 @@ public class Core implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			long time1 = System.currentTimeMillis();
 
 			gamePanel.requestFocus();
 			loop();
 
-			long time2 = System.currentTimeMillis() - time1;
-
-			long sleepTime = Settings.TICK_TIME - time2;
-			if (sleepTime < 0) {
-				sleepTime = 0;
-			}
-
 			try {
-				Thread.sleep(sleepTime);
+				Thread.sleep(Settings.TICK_TIME);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

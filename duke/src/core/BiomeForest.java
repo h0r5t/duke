@@ -4,10 +4,11 @@ public class BiomeForest extends Biome {
 
 	public BiomeForest(WorldGenerator wGen) {
 		super(wGen);
-		addProbability("TileTrunkOnGround", 1); // will get expanded to full tree later
-		addProbability("TileBush", 3);
-		addProbability("TileStone", 2);
-		addProbability("TileMushroom", 1);
+		addProbability(new TileGrass(0, 0, 0), 5);
+		addProbability(new TileTrunkOnGround(0, 0, 0), 1); // will get expanded to full tree later
+		addProbability(new TileBush(0, 0, 0), 3);
+		addProbability(new TileStone(0, 0, 0), 2);
+		addProbability(new TileMushroom(0, 0, 0), 1);
 	}
 
 	@Override
@@ -16,7 +17,7 @@ public class BiomeForest extends Biome {
 	}
 
 	@Override
-	public String getDefaultSurfaceTile() {
-		return "TileLand";
+	public Tile getDefaultSurfaceTile() {
+		return new TileGround(0, 0, 0);
 	}
 }

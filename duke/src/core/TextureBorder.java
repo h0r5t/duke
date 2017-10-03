@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public class TextureBorder extends Texture {
+public class TextureBorder {
+
+	private BufferedImage[] images;
 
 	public TextureBorder(float stroke, Direction location) {
 		images = new BufferedImage[1];
@@ -29,7 +31,6 @@ public class TextureBorder extends Texture {
 		images[0] = img;
 	}
 
-	@Override
 	public void draw(Graphics2D g, int x, int y, int darkerLevel) {
 		g.drawImage(images[0], x - 2, y - 2, images[0].getWidth(), images[0].getHeight(), null);
 	}

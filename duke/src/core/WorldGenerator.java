@@ -16,7 +16,7 @@ public class WorldGenerator {
 	public World generateWorld(Core core) {
 		world = new World(core);
 		biomes = new Biome[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT][Settings.WORLD_DEPTH];
-		region = new RegionHills();
+		region = new RegionPlain();
 		embarkArea = new ArrayList<>();
 		surfaceLevel = new int[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT];
 
@@ -33,6 +33,19 @@ public class WorldGenerator {
 
 		applyVision();
 		setEmbarkArea();
+
+		cleanUp();
+	}
+
+	private void cleanUp() {
+		for (int x = 0; x < Settings.WORLD_WIDTH; x++) {
+			for (int y = 0; y < Settings.WORLD_HEIGHT; y++) {
+				for (int z = 0; z < Settings.WORLD_DEPTH; z++) {
+					Tile tile = world.getTile(x, y, z);
+					tile.initAfterWorldGeneration();
+				}
+			}
+		}
 	}
 
 	private void generateRamps() {
@@ -119,7 +132,6 @@ public class WorldGenerator {
 					} else {
 						tile = new TileRock(x, y, z);
 						world.setTile(tile);
-						tile.setGround(tile.getDefaultGround());
 					}
 				}
 			}

@@ -23,7 +23,12 @@ public class TileTrunkOnGround extends Tile {
 
 	@Override
 	public Ground getDefaultGround() {
-		return new GroundGrass();
+		return new GroundWood();
+	}
+
+	@Override
+	public boolean overridesOldGround() {
+		return true;
 	}
 
 }

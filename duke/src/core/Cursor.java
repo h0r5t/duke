@@ -2,7 +2,7 @@ package core;
 
 import java.awt.Graphics2D;
 
-public class Cursor implements Visual {
+public class Cursor implements Drawable {
 
 	private Core core;
 	private int xpos;

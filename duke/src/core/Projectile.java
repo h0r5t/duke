@@ -6,7 +6,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-public abstract class Projectile {
+public abstract class Projectile implements Drawable {
 
 	protected Tile tilePosition;
 	protected double microPositionX;
@@ -28,7 +28,7 @@ public abstract class Projectile {
 		tilePosition = newTile;
 	}
 
-	public void draw(Graphics2D g, int posX, int posY, int darkerLevel) {
+	public void draw(Graphics2D g, int posX, int posY) {
 		posX += (int) (microPositionX + 0.5);
 		posY += (int) (microPositionY + 0.5);
 

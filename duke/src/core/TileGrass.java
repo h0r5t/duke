@@ -1,9 +1,9 @@
 package core;
 
-public class TileLand extends Tile {
+public class TileGrass extends Tile {
 
-	public TileLand(int x, int y, int z) {
-		super(GameData.getTileID("tile_land"), x, y, z);
+	public TileGrass(int x, int y, int z) {
+		super(GameData.getTileID("tile_grass"), x, y, z);
 	}
 
 	@Override

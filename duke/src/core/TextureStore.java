@@ -1,20 +1,19 @@
 package core;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 public class TextureStore {
 
 	private static HashMap<Integer, TextureImage> unitTextures;
-	private static HashMap<Integer, ArrayList<Texture>> tileTextures;
-	private static HashMap<Integer, TextureFill> groundTextures;
+	private static HashMap<Integer, Texture> tileTextures;
+	private static HashMap<Integer, Texture> groundTextures;
 	private static HashMap<Integer, TextureImage> itemTextures;
 	private static HashMap<Direction, TextureBorder[]> borderTextures;
 	private static TextureFill darknessBackgroundTexture;
-	private static TextureCharacter[] darknessTextures;
+	private static Texture[] darknessTextures;
+	private static HashMap<String, TextureImage> shadowMap;
 
 	public static void load() {
 		tileTextures = new HashMap<>();
@@ -22,9 +21,10 @@ public class TextureStore {
 		unitTextures = new HashMap<>();
 		itemTextures = new HashMap<>();
 		borderTextures = new HashMap<>();
+		shadowMap = new HashMap<>();
 
 		darknessBackgroundTexture = new TextureFill(Colors.COLOR_DARKNESS);
-		darknessTextures = new TextureCharacter[4];
+		darknessTextures = new Texture[1];
 
 		loadDarknessTextures();
 		loadTileTextures();
@@ -32,21 +32,42 @@ public class TextureStore {
 		loadUnitTextures();
 		loadItemTextures();
 		loadBorderTextures();
+		loadShadowTextures();
+	}
+
+	private static void loadShadowTextures() {
+		shadowMap.put("shadow_bottom",
+				new TextureImage(FileSystem.loadImage(FileSystem.TEXTURES_SHADOWS_DIR, "shadow_bottom")));
+		shadowMap.put("shadow_top",
+				new TextureImage(FileSystem.loadImage(FileSystem.TEXTURES_SHADOWS_DIR, "shadow_top")));
+		shadowMap.put("shadow_left",
+				new TextureImage(FileSystem.loadImage(FileSystem.TEXTURES_SHADOWS_DIR, "shadow_left")));
+		shadowMap.put("shadow_right",
+				new TextureImage(FileSystem.loadImage(FileSystem.TEXTURES_SHADOWS_DIR, "shadow_right")));
+		shadowMap.put("shadow_bottom_left",
+				new TextureImage(FileSystem.loadImage(FileSystem.TEXTURES_SHADOWS_DIR, "shadow_bottom_left")));
+		shadowMap.put("shadow_bottom_right",
+				new TextureImage(FileSystem.loadImage(FileSystem.TEXTURES_SHADOWS_DIR, "shadow_bottom_right")));
+		shadowMap.put("shadow_top_left",
+				new TextureImage(FileSystem.loadImage(FileSystem.TEXTURES_SHADOWS_DIR, "shadow_top_left")));
+		shadowMap.put("shadow_top_right",
+				new TextureImage(FileSystem.loadImage(FileSystem.TEXTURES_SHADOWS_DIR, "shadow_top_right")));
+	}
+
+	public static TextureImage getShadowTexture(String name) {
+		return shadowMap.get(name);
 	}
 
 	private static void loadDarknessTextures() {
-		darknessTextures[0] = new TextureCharacter(new Character(" ", Color.LIGHT_GRAY, 16));
-		darknessTextures[1] = new TextureCharacter(new Character("'", Color.LIGHT_GRAY, 16));
-		darknessTextures[2] = new TextureCharacter(new Character(",", Color.LIGHT_GRAY, 16));
-		darknessTextures[3] = new TextureCharacter(new Character("´", Color.LIGHT_GRAY, 16));
+		darknessTextures[0] = new TextureFill(Colors.COLOR_DARKNESS);
 	}
 
 	public static TextureFill getDarknessBackgroundTexture() {
 		return darknessBackgroundTexture;
 	}
 
-	public static TextureCharacter getDarknessForeGroundTexture(int id) {
-		return darknessTextures[id];
+	public static Texture getDarknessForeGroundTexture() {
+		return darknessTextures[0];
 	}
 
 	private static void loadBorderTextures() {
@@ -62,24 +83,11 @@ public class TextureStore {
 		for (String nameID : GameData.getTileIDs().keySet()) {
 			int numID = GameData.getTileIDs().get(nameID);
 
-			ArrayList<Texture> list = new ArrayList<>();
-
 			BufferedImage tileTexture = FileSystem.loadImage(FileSystem.TEXTURES_TILES_DIR, nameID);
 			if (tileTexture != null) {
 				TextureImage tex = new TextureImage(tileTexture);
-				list.add(tex);
-				tileTextures.put(numID, list);
+				tileTextures.put(numID, tex);
 			}
-
-			else {
-				ArrayList<Character> chars = GameData.getAllTileCharacters(numID);
-				for (Character c : chars) {
-					TextureCharacter t = new TextureCharacter(c);
-					list.add(t);
-				}
-				tileTextures.put(numID, list);
-			}
-
 		}
 	}
 
@@ -100,26 +108,32 @@ public class TextureStore {
 	}
 
 	private static void loadGroundTextures() {
-		for (int id : GameData.getGroundIDs().values()) {
-			TextureFill t = new TextureFill(GameData.getGroundColor(id));
-			groundTextures.put(id, t);
+		for (String nameID : GameData.getGroundIDs().keySet()) {
+			int numID = GameData.getGroundIDs().get(nameID);
+
+			BufferedImage groundTexture = FileSystem.loadImage(FileSystem.TEXTURES_GROUNDS_DIR, nameID);
+			if (groundTexture != null) {
+				TextureImage tex = new TextureImage(groundTexture);
+				groundTextures.put(numID, tex);
+			}
+
+			else {
+				TextureFill t = new TextureFill(GameData.getGroundColor(numID));
+				groundTextures.put(numID, t);
+			}
+
 		}
 	}
 
-	public static Texture getTileTexture(int tileID, Character c) {
-		for (Texture t : tileTextures.get(tileID)) {
-			if (t instanceof TextureImage)
-				return t;
-			TextureCharacter tc = (TextureCharacter) t;
-			if (tc.getCharacter().getChar() == c.getChar()) {
-				return tc;
-			}
-		}
+	public static Texture getTileTexture(int tileID) {
+		Texture t = tileTextures.get(tileID);
+		if (t instanceof TextureImage)
+			return t;
 
 		return null;
 	}
 
-	public static TextureFill getGroundTexture(int groundID) {
+	public static Texture getGroundTexture(int groundID) {
 		return groundTextures.get(groundID);
 	}
 

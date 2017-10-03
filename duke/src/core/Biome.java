@@ -17,8 +17,8 @@ public abstract class Biome {
 		addProbability(getDefaultSurfaceTile(), 100);
 	}
 
-	protected void addProbability(String tileName, double p) {
-		probabilityMap.put(tileName, p);
+	protected void addProbability(Tile tile, double p) {
+		probabilityMap.put(tile.getClass().getSimpleName(), p);
 		probSum += p;
 	}
 
@@ -46,8 +46,8 @@ public abstract class Biome {
 		return new GroundAir();
 	}
 
-	public String getDefaultSurfaceTile() {
-		return "TileRock";
+	public Tile getDefaultSurfaceTile() {
+		return new TileRock(0, 0, 0);
 	}
 
 	protected int getSurfaceLevel(int x, int y) {

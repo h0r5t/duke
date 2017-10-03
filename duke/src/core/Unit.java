@@ -2,7 +2,7 @@ package core;
 
 import java.awt.Graphics2D;
 
-public abstract class Unit {
+public abstract class Unit implements Drawable {
 
 	protected int x;
 	protected int y;
@@ -69,6 +69,9 @@ public abstract class Unit {
 			Core.getWorld().removeUnit(this);
 		}
 		unitMovement.updatePositionDeltas();
+		if (getItemInHands() != null) {
+			getItemInHands().updateDrawingDeltas(getCurrentMovementDeltas()[0], getCurrentMovementDeltas()[1]);
+		}
 		update();
 	}
 
@@ -136,12 +139,15 @@ public abstract class Unit {
 		return unitMovement.getPositionDeltas();
 	}
 
-	public void draw(Graphics2D g, int posX, int posY, int darkerLevel) {
+	public void draw(Graphics2D g, int posX, int posY) {
 		int[] movementDeltas = unitMovement.getPositionDeltas();
 		posX += movementDeltas[0];
 		posY += movementDeltas[1];
 
-		TextureStore.getUnitTexture(unitID).draw(g, posX, posY, darkerLevel);
+		// System.out.println("unit " + getX() + "," + getY() + " " + posX + "," + posY
+		// + " " + movementDeltas[0] + ","
+		// + movementDeltas[1]);
+		TextureStore.getUnitTexture(unitID).draw(g, posX, posY);
 
 		// draw health bar
 		// g.setColor(Color.GREEN);

@@ -6,9 +6,8 @@ import java.util.ArrayList;
 
 import pathfinder.GraphNode;
 
-public abstract class Tile extends GraphNode {
+public abstract class Tile extends GraphNode implements Drawable {
 
-	protected Character myChar;
 	protected int tileID;
 	protected Ground ground;
 	private boolean isVisible;
@@ -16,7 +15,6 @@ public abstract class Tile extends GraphNode {
 	private ArrayList<Zone2D> selections;
 	private ArrayList<Projectile> projectiles;
 	private Fluid fluid;
-	private int darknessTextureID;
 
 	public Tile(int tileID, int x, int y, int z) {
 		super(UniqueIDFactory.getID(), x, y, z);
@@ -25,9 +23,11 @@ public abstract class Tile extends GraphNode {
 		this.projectiles = new ArrayList<Projectile>();
 		this.fluid = null;
 		this.isVisible = false;
-		getChar();
-		setGround(getDefaultGround());
-		darknessTextureID = TextureStore.getDarknessTextureID();
+	}
+
+	public void initAfterWorldGeneration() {
+		if (getDefaultGround() != null)
+			setGround(getDefaultGround());
 	}
 
 	public boolean isAir() {
@@ -39,7 +39,7 @@ public abstract class Tile extends GraphNode {
 	}
 
 	public Ground getDefaultGround() {
-		return new GroundAir();
+		return null;
 	}
 
 	public void setGround(Ground ground) {
@@ -90,10 +90,6 @@ public abstract class Tile extends GraphNode {
 		selections.remove(selection);
 	}
 
-	protected void getChar() {
-		myChar = GameData.getRandomTileCharacter(getTileID());
-	}
-
 	public int getTileID() {
 		return tileID;
 	}
@@ -140,6 +136,10 @@ public abstract class Tile extends GraphNode {
 
 	public abstract boolean isSolid();
 
+	public boolean overridesOldGround() {
+		return false;
+	}
+
 	public boolean isLadderDown() {
 		return false;
 	}
@@ -164,63 +164,49 @@ public abstract class Tile extends GraphNode {
 		return new Coords3D(getX(), getY(), getZ());
 	}
 
-	public void drawBorders(Graphics2D g, int posX, int posY, int darkerLevel) {
-		if (Settings.DRAW_BORDERS) {
-			int strokeNum = 0;
-			if (darkerLevel == 0 || darkerLevel == Settings.DRAW_DARKER_LEVELS_AMOUNT - 1)
-				strokeNum = 1;
-
-			// dont draw borders if they are on every side, e.g. tree trunks
-
-			if (getCoords3D().getLeft().getTile() instanceof TileAir
-					&& getCoords3D().getRight().getTile() instanceof TileAir
-					&& getCoords3D().getTop().getTile() instanceof TileAir
-					&& getCoords3D().getBottom().getTile() instanceof TileAir) {
-				return;
-			}
-
-			if (getCoords3D().getLeft().getTile() instanceof TileAir) {
-				TextureStore.getBorderTexture(Direction.LEFT, strokeNum).draw(g, posX, posY, 0);
-			}
-			if (getCoords3D().getRight().getTile() instanceof TileAir) {
-				TextureStore.getBorderTexture(Direction.RIGHT, strokeNum).draw(g, posX, posY, 0);
-			}
-			if (getCoords3D().getTop().getTile() instanceof TileAir) {
-				TextureStore.getBorderTexture(Direction.TOP, strokeNum).draw(g, posX, posY, 0);
-			}
-			if (getCoords3D().getBottom().getTile() instanceof TileAir) {
-				TextureStore.getBorderTexture(Direction.BOTTOM, strokeNum).draw(g, posX, posY, 0);
-			}
-		}
+	public Tile getLeft() {
+		return getCoords3D().getLeft().getTile();
 	}
 
-	public void draw(Graphics2D g, int posX, int posY, int darkerLevel) {
+	public Tile getRight() {
+		return getCoords3D().getRight().getTile();
+	}
+
+	public Tile getTop() {
+		return getCoords3D().getTop().getTile();
+	}
+
+	public Tile getBottom() {
+		return getCoords3D().getBottom().getTile();
+	}
+
+	public void draw(Graphics2D g, int posX, int posY) {
 		if (this instanceof TileAir)
 			return;
 
 		if (ground != null) {
 			if (ground instanceof GroundAir) {
-				for (int i = 1; i < Settings.DRAW_DARKER_LEVELS_AMOUNT - darkerLevel; i++) {
+				for (int i = 1; i < Settings.DRAW_DARKER_LEVELS_AMOUNT; i++) {
 					Tile tileBelow = Core.getWorld().getTile((int) super.x(), (int) super.y(), (int) super.z() + i);
 					if (!(tileBelow.getGround() instanceof GroundAir)) {
-						tileBelow.getGround().draw(g, posX, posY, darkerLevel + i);
+						tileBelow.getGround().draw(g, posX, posY);
 						break;
 					}
 				}
 			} else
-				ground.draw(g, posX, posY, darkerLevel);
+				ground.draw(g, posX, posY);
 		}
 
 		if (isExposed) {
-			TextureStore.getTileTexture(tileID, myChar).draw(g, posX, posY, darkerLevel);
+			TextureStore.getTileTexture(tileID).draw(g, posX, posY);
 		} else {
-			TextureStore.getDarknessBackgroundTexture().draw(g, posX, posY, darkerLevel);
-			TextureStore.getDarknessForeGroundTexture(darknessTextureID).draw(g, posX, posY, darkerLevel);
+			TextureStore.getDarknessBackgroundTexture().draw(g, posX, posY);
+			TextureStore.getDarknessForeGroundTexture().draw(g, posX, posY);
 		}
 
 		// draw fluid
 		if (fluid != null)
-			fluid.draw(g, posX, posY, darkerLevel);
+			fluid.draw(g, posX, posY);
 
 		if (Settings.DRAW_TILE_BORDERS) {
 			g.setColor(Color.DARK_GRAY);

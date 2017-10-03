@@ -8,8 +8,6 @@ public class UnitMovement {
 	private boolean movingRight;
 	private double moveDelta;
 	private double currentDelta;
-	private Coords3D source;
-	private Coords3D target;
 	private boolean moving;
 	private int[] lastDeltas;
 

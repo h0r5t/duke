@@ -6,7 +6,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-public abstract class Fluid {
+public abstract class Fluid implements Drawable {
 
 	protected Coords3D coords;
 	protected int fluidDensity;
@@ -116,12 +116,12 @@ public abstract class Fluid {
 		wakeUpNeighbours();
 	}
 
-	public void draw(Graphics2D g, int posX, int posY, int darkerLevel) {
+	public void draw(Graphics2D g, int posX, int posY) {
 		colorStore = new ColorStore(getFluidColor(), getTextColor());
-		g.setColor(colorStore.getBackgroundColor(darkerLevel));
+		g.setColor(colorStore.getBackgroundColor(0));
 		g.fillRect(posX, posY, Settings.TILE_SIZE, Settings.TILE_SIZE);
 
-		g.setColor(colorStore.getForegroundColor(darkerLevel));
+		g.setColor(colorStore.getForegroundColor(0));
 		FontMetrics metrics = g.getFontMetrics(font);
 		Rectangle rect = new Rectangle(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
 		String text = getFluidDensity() + "";
