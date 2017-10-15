@@ -138,6 +138,7 @@ public class World extends Graph {
 			getTile(x - 1, y - 1, z).setExposed(true);
 		}
 
+		Core.getEventHub().fireEvent(new EventTileChanged(previousTile, tile));
 	}
 
 	public void wasMined(Coords3D targetToMine) {

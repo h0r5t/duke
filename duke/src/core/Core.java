@@ -6,49 +6,46 @@ import java.util.ArrayList;
 
 public class Core implements Runnable {
 
-	private GameFrame gameFrame;
-	private GamePanel gamePanel;
-
 	private InputManager inputManager;
-	private ViewManager viewManager;
+	private static ViewManager viewManager;
 	private TaskDistributor taskDistributor;
 	private UnitManager unitManager;
 	private MenuManager menuManager;
 	private static LogisticsManager logisticsManager;
 	private FluidManager fluidManager;
-
+	private ChunkManager chunkManager;
+	private static EventHub eventHub;
 	private static World world;
 
 	public Core() {
+		// enable opengl for hardware accelerated rendering
+		System.setProperty("sun.java2d.opengl", "True");
+
 		modifySysOut();
+		eventHub = new EventHub();
 		GameData.load();
-		TextureStore.load();
 
 		WorldGenerator worldGen = new WorldGenerator();
 		world = worldGen.generateWorld(this);
 
+		TextureStore.load();
 		initMgrs();
-		setupGUI();
 
 		spawnUnits(worldGen.getEmbarkArea());
 	}
 
 	private void initMgrs() {
 		viewManager = new ViewManager(this);
+		chunkManager = new ChunkManager();
 		taskDistributor = new TaskDistributor(this);
 		unitManager = new UnitManager(this);
-		inputManager = new InputManager(this);
-		menuManager = new MenuManager(this);
 		logisticsManager = new LogisticsManager();
 		fluidManager = new FluidManager(this);
+		inputManager = new InputManager(this);
 		new Thread(inputManager).start();
-	}
-
-	private void setupGUI() {
-		gameFrame = new GameFrame(new GameWindowAdapter(this));
-		gamePanel = new GamePanel(inputManager, viewManager);
-		gameFrame.add(gamePanel);
-		gameFrame.setVisible(true);
+		viewManager.setInputManager(inputManager);
+		viewManager.setChunkManager(chunkManager);
+		menuManager = new MenuManager(this);
 	}
 
 	private void spawnUnits(ArrayList<Coords3D> embarkArea) {
@@ -77,17 +74,16 @@ public class Core implements Runnable {
 		menuManager.update();
 		taskDistributor.update();
 		unitManager.update();
-		inputManager.update();
 		fluidManager.udpate();
+		chunkManager.update();
 
-		gamePanel.repaint();
+		viewManager.render();
 	}
 
 	@Override
 	public void run() {
 		while (true) {
 
-			gamePanel.requestFocus();
 			loop();
 
 			try {
@@ -102,7 +98,7 @@ public class Core implements Runnable {
 		return world;
 	}
 
-	public ViewManager getViewManager() {
+	public static ViewManager getViewManager() {
 		return viewManager;
 	}
 
@@ -128,6 +124,10 @@ public class Core implements Runnable {
 
 	public FluidManager getFluidManager() {
 		return fluidManager;
+	}
+
+	public static EventHub getEventHub() {
+		return eventHub;
 	}
 
 	private void modifySysOut() {

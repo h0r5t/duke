@@ -9,21 +9,14 @@ public abstract class Texture {
 
 	protected BufferedImage image;
 
-	protected void enhance() {
-		image = toCompatibleImage(image);
+	public static BufferedImage makeCompatible(BufferedImage image) {
+		return toCompatibleImage(image);
 	}
 
-	private BufferedImage toCompatibleImage(BufferedImage image) {
+	private static BufferedImage toCompatibleImage(BufferedImage image) {
 		// obtain the current system graphical settings
 		GraphicsConfiguration gfx_config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
 				.getDefaultConfiguration();
-
-		/*
-		 * if image is already compatible and optimized for current system settings,
-		 * simply return it
-		 */
-		if (image.getColorModel().equals(gfx_config.getColorModel()))
-			return image;
 
 		// image is not optimized, so create a new image that is
 		BufferedImage new_image = gfx_config.createCompatibleImage(image.getWidth(), image.getHeight(),

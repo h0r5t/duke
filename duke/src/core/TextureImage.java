@@ -13,8 +13,7 @@ public class TextureImage extends Texture {
 		int starty = (Settings.TILE_SIZE - source.getHeight()) / 2;
 		g.drawImage(source, startx, starty, null);
 		g.dispose();
-		image = b;
-		enhance();
+		image = makeCompatible(b);
 	}
 
 	@Override

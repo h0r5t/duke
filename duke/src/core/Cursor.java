@@ -35,7 +35,7 @@ public class Cursor implements Drawable {
 	}
 
 	public int getZpos() {
-		return core.getViewManager().getCurrentZ();
+		return core.getViewManager().getGameCamera().getCurrentZ();
 	}
 
 	public void moveX(int x) {

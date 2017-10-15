@@ -2,7 +2,7 @@ package core;
 
 import java.awt.Graphics2D;
 
-public class Shadow {
+public class Shadow implements Drawable {
 
 	private String shadowDirection;
 	private int drawX;
@@ -30,7 +30,15 @@ public class Shadow {
 		this.drawY = drawY;
 	}
 
-	public void draw(Graphics2D g) {
+	public int getDrawX() {
+		return drawX;
+	}
+
+	public int getDrawY() {
+		return drawY;
+	}
+
+	public void draw(Graphics2D g, int drawX, int drawY) {
 		TextureStore.getShadowTexture(shadowDirection).draw(g, drawX, drawY);
 	}
 

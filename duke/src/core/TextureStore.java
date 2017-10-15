@@ -1,5 +1,6 @@
 package core;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Random;
@@ -12,8 +13,8 @@ public class TextureStore {
 	private static HashMap<Integer, TextureImage> itemTextures;
 	private static HashMap<Direction, TextureBorder[]> borderTextures;
 	private static TextureFill darknessBackgroundTexture;
-	private static Texture[] darknessTextures;
 	private static HashMap<String, TextureImage> shadowMap;
+	private static TextureFill[] levelDarknessTextures;
 
 	public static void load() {
 		tileTextures = new HashMap<>();
@@ -24,15 +25,34 @@ public class TextureStore {
 		shadowMap = new HashMap<>();
 
 		darknessBackgroundTexture = new TextureFill(Colors.COLOR_DARKNESS);
-		darknessTextures = new Texture[1];
+		levelDarknessTextures = new TextureFill[Settings.DRAW_DARKER_LEVELS_AMOUNT];
 
-		loadDarknessTextures();
 		loadTileTextures();
 		loadGroundTextures();
 		loadUnitTextures();
 		loadItemTextures();
 		loadBorderTextures();
 		loadShadowTextures();
+		loadLevelDarknessTextures();
+	}
+
+	private static void loadLevelDarknessTextures() {
+		int changeAlphaDelta = 255 / Settings.DRAW_DARKER_LEVELS_AMOUNT;
+		for (int i = 0; i < Settings.DRAW_DARKER_LEVELS_AMOUNT; i++) {
+
+			int delta = i * changeAlphaDelta;
+			// very dark tiles can be avoided by this:
+			// if (i > 7)
+			// delta = 7 * changeAlphaDelta;
+			Color colorAir = Colors.COLOR_SKY;
+			TextureFill tex = new TextureFill(
+					new Color(colorAir.getRed(), colorAir.getGreen(), colorAir.getBlue(), delta));
+			levelDarknessTextures[i] = tex;
+		}
+	}
+
+	public static TextureFill getLevelDarknessTexture(int i) {
+		return levelDarknessTextures[i];
 	}
 
 	private static void loadShadowTextures() {
@@ -58,16 +78,8 @@ public class TextureStore {
 		return shadowMap.get(name);
 	}
 
-	private static void loadDarknessTextures() {
-		darknessTextures[0] = new TextureFill(Colors.COLOR_DARKNESS);
-	}
-
 	public static TextureFill getDarknessBackgroundTexture() {
 		return darknessBackgroundTexture;
-	}
-
-	public static Texture getDarknessForeGroundTexture() {
-		return darknessTextures[0];
 	}
 
 	private static void loadBorderTextures() {

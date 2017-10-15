@@ -16,7 +16,7 @@ public class WorldGenerator {
 	public World generateWorld(Core core) {
 		world = new World(core);
 		biomes = new Biome[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT][Settings.WORLD_DEPTH];
-		region = new RegionPlain();
+		region = new RegionMountains();
 		embarkArea = new ArrayList<>();
 		surfaceLevel = new int[Settings.WORLD_WIDTH][Settings.WORLD_HEIGHT];
 
@@ -56,7 +56,7 @@ public class WorldGenerator {
 					if (tile instanceof TileAir)
 						continue;
 					if (isSurface(tile)) {
-						Direction direction = isLadderUp(tile);
+						Direction direction = getRampDirection(tile);
 						if (direction != null) {
 							Biome b = biomes[x][y][z];
 							tile = new TileRamp(x, y, z, direction);
@@ -240,7 +240,7 @@ public class WorldGenerator {
 		return false;
 	}
 
-	private Direction isLadderUp(Tile t) {
+	private Direction getRampDirection(Tile t) {
 		Coords3D c = t.getCoords3D();
 		if (world.getTile(c.getLeft()).needsRamp())
 			if (!world.getTile(c.getLeft().getAbove()).isSolid())

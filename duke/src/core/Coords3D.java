@@ -100,4 +100,9 @@ public class Coords3D {
 		return Core.getWorld().getTile(this);
 	}
 
+	@Override
+	public String toString() {
+		return x + "," + y + "," + z;
+	}
+
 }

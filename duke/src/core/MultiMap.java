@@ -7,8 +7,8 @@ import java.util.List;
 public class MultiMap<K, V> extends HashMap<K, List<V>> {
 
 	/**
-	 * Looks for a list that is mapped to the given key. If there is not one
-	 * then a new one is created mapped and has the value added to it.
+	 * Looks for a list that is mapped to the given key. If there is not one then a
+	 * new one is created mapped and has the value added to it.
 	 * 
 	 * @param key
 	 * @param value

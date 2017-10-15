@@ -144,9 +144,6 @@ public abstract class Unit implements Drawable {
 		posX += movementDeltas[0];
 		posY += movementDeltas[1];
 
-		// System.out.println("unit " + getX() + "," + getY() + " " + posX + "," + posY
-		// + " " + movementDeltas[0] + ","
-		// + movementDeltas[1]);
 		TextureStore.getUnitTexture(unitID).draw(g, posX, posY);
 
 		// draw health bar

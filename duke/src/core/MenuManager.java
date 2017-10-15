@@ -50,14 +50,14 @@ public class MenuManager extends InputAdapter {
 		}
 	}
 
-	public void draw(Graphics2D g) {
+	public void render(Graphics2D g) {
 		g.setFont(new Font("Arial", Font.BOLD, 14));
 		g.setColor(Color.WHITE);
 		g.drawString("height:" + (Settings.WORLD_DEPTH - getCursor().getZpos()), 10, 30);
 		g.drawString("fluid:" + getCore().getFluidManager().getCalculations(), 10, 45);
 
-		if (currentMenu != null)
-			currentMenu.drawMenu(g);
+		// if (currentMenu != null)
+		// currentMenu.drawMenu(g);
 	}
 
 	//

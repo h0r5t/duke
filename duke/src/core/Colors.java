@@ -28,4 +28,7 @@ public class Colors {
 	public static final Color COLOR_TOOLTIP = Color.decode("#cfd895");
 
 	public static final Color COLOR_DARKNESS = Color.decode("#0c0c0c");
+	public static final Color COLOR_SKY = new Color(0, 0, 5, 255);
+
+	public static final Color COLOR_TRANSPARENT = new Color(0, 0, 0, 0);
 }

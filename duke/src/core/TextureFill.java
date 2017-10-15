@@ -13,8 +13,7 @@ public class TextureFill extends Texture {
 		g.setColor(color);
 		g.fillRect(0, 0, Settings.TILE_SIZE, Settings.TILE_SIZE);
 		g.dispose();
-		image = img;
-		enhance();
+		image = makeCompatible(img);
 	}
 
 	public void draw(Graphics2D g, int x, int y) {

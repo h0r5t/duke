@@ -20,7 +20,8 @@ public class InputManager implements Runnable {
 
 	public void update() {
 		mainInputController.keysPressed(keysPressed);
-		core.getMenuManager().keysPressed(keysPressed);
+		if (core.getMenuManager() != null)
+			core.getMenuManager().keysPressed(keysPressed);
 		mainInputController.update();
 	}
 
@@ -60,7 +61,8 @@ public class InputManager implements Runnable {
 	}
 
 	public void cursorMoved() {
-		core.getMenuManager().cursorMoved(cursor);
+		if (core.getMenuManager() != null)
+			core.getMenuManager().cursorMoved(cursor);
 	}
 
 	public Cursor getCursor() {
@@ -72,7 +74,7 @@ public class InputManager implements Runnable {
 		while (true) {
 			update();
 			try {
-				Thread.sleep(40);
+				Thread.sleep(30);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -64,6 +64,7 @@ public abstract class Tile extends GraphNode implements Drawable {
 
 	public void setExposed(boolean isExposed) {
 		this.isExposed = isExposed;
+		Core.getEventHub().fireEvent(new EventTileExposureChanged(this));
 	}
 
 	public boolean isVisible() {
@@ -201,7 +202,6 @@ public abstract class Tile extends GraphNode implements Drawable {
 			TextureStore.getTileTexture(tileID).draw(g, posX, posY);
 		} else {
 			TextureStore.getDarknessBackgroundTexture().draw(g, posX, posY);
-			TextureStore.getDarknessForeGroundTexture().draw(g, posX, posY);
 		}
 
 		// draw fluid
