@@ -99,7 +99,7 @@ public class ChunkTexture implements Drawable {
 		darkerLevelsMap.clear();
 		g.dispose();
 
-		// make to compatible image, maybe it helps...
+		// make a compatible image, maybe it helps...
 		texture = Texture.makeCompatible(texture);
 	}
 
